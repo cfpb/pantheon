@@ -1,0 +1,16 @@
+/* ==========================================================================
+   dev-dash
+   Master Less file used for collating all necessary Less and CSS files
+   ========================================================================== */
+
+// @import Normalize before all other Less/CSS
+@import (less) "../../vendor/normalize-css/normalize.css";
+@import (less) "../../vendor/normalize-legacy-addon/normalize-legacy-addon.css";
+
+// @import combined CF component Less and make any overrides
+@import (less) "../../vendor/cf-concat/cf.less";
+@cf-icon-path: "/static/fonts";
+@grid_box-sizing-polyfill-path: "/static/vendor/box-sizing-polyfill";
+
+// @import app specific styles
+@import (less) "app.less";

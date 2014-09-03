@@ -1,0 +1,47 @@
+<h3>Git Repos</h3> 
+<form action="{% url "github:refresh" %}" method="POST">{% csrf_token %}
+    <input type="submit" value="refresh" />
+</form>
+<div class="gh-server">
+    <h4>GitHub Enterprise</h4>
+</div>
+{% for repo in widget.enterprise %}
+  <div class="expandable expandable__padded">
+    <button class="expandable_header expandable_target" {% if repo.model.fork %}style="color:blue;"{% endif %}>
+        {{ repo.model.full_name }}
+    </button>
+    <div class="expandable_content">
+      <p>expandable!!</p>
+      <p>
+      (tab titles)
+      {% for action in repo.actions %}
+      {{ action.name }} 
+      {% endfor %}
+      </p>
+
+      {% for action in repo.actions %}
+      (tab contents)
+        <div class="gh-action">
+          <h5>{{ action.title }}</h5>
+          <p>{{ action.description }}</p>
+          {% if action.method == "POST" or action.form %}
+            <form action="action.action" method="action.method">
+              {{ action.form }}
+              <input type="submit" value="{{ action.cta }}" />
+            </form>
+          {% else %}
+            <a href="{{ action.action }}">{{ action.cta }}</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+<div class="gh-server">
+    <h4>GitHub.com</h4>
+</div>
+{% for repo in widget.github %}
+    <div class="gh-repo" {% if repo.model.fork %}style="color:ccc;"{% endif %}>
+        {{ repo.model.full_name }}
+    </div>
+{% endfor %}
