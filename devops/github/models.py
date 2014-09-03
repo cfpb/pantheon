@@ -34,29 +34,32 @@ class RepoManager(models.Manager):
             Team.objects.sync_teams(teams_data, gh)
 
     def sync_repos(self, repos_data, owner=None):
-        out = []
+        repo_models = []
         for repo_data in repos_data:
-            out.append(self.sync_repo(repo_data, owner))
-        return out
+            repo_models.append(self.sync_repo(repo_data, owner))
+        return repo_models
 
     def sync_repo(self, repo_data, owner=None):
+        is_enterprise = not repo_data['html_url'].startswith('https://github.com/')
         try:
-            repo = self.get(html_url=repo_data['html_url'], gh_updated_at=repo_data['updated_at'])
+            repo_model = self.get(gh_id=repo_data['id'], is_enterprise=is_enterprise, gh_updated_at=repo_data['updated_at'])
         except self.model.DoesNotExist:
             default_keys = ('full_name', 'description', 'fork', 'html_url',)
-            defaults = {k: v for k, v in repo_data.items() if k in default_keys}
-            defaults['gh_updated_at'] = repo_data['updated_at']
-            defaults['enterprise'] = not repo_data['html_url'].startswith('https://github.com/')
-            defaults['owner'] = owner
-            repo, created = self.update_or_create(html_url=repo_data['html_url'], defaults=defaults)
-        return repo
+            defaults = {
+                'gh_updated_at': repo_data['updated_at'],
+                'owner': owner
+            }
+            defaults.update({k: v for k, v in repo_data.items() if k in default_keys})
+            repo_model, created = self.update_or_create(gh_id=repo_data['id'], is_enterprise=is_enterprise, defaults=defaults)
+        return repo_model
 
 # Create your models here.
 class Repo(models.Model):
+    gh_id = models.IntegerField()
     full_name = models.CharField(max_length=256)
     description = models.CharField(max_length=512, blank=True, default="")
-    fork = models.BooleanField()
-    enterprise = models.BooleanField(default=True)
+    fork = models.BooleanField(default=False)
+    is_enterprise = models.BooleanField(default=True)
     html_url = models.URLField()
     gh_updated_at = models.DateTimeField()
     teams = models.ManyToManyField('Team', related_name='repos')
@@ -82,28 +85,29 @@ class TeamManager(models.Manager):
         return out
 
     def sync_team(self, team_data, client):
+        gh_id = team_data['id']
+        is_enterprise = not team_data['url'].startswith('https://api.github.com/')
         default_keys = ('url', 'permission', 'slug',)
         defaults = {k: v for k, v in team_data.items() if k in default_keys}
-        defaults['gh_id'] = team_data['id']
-        defaults['enterprise'] = not team_data['url'].startswith('https://api.github.com/')
 
-        team, created = self.update_or_create(url=team_data['url'], defaults=defaults)
+        team, created = self.update_or_create(gh_id=gh_id, is_enterprise=is_enterprise, defaults=defaults)
 
         #if this isn't an admin team, we don't care about repos or members
         if defaults['permission'] != 'admin':
             return team
+
         # Members and Repositories
-        team_client = client.teams._(str(defaults['gh_id']))
+        team_client = client.teams._(str(gh_id))
 
         members_data = team_client.members.get().json()
         member_gh_ids = [m['id'] for m in members_data]
         # get all members in the database
-        fltr = {'ghe_id__in': member_gh_ids} if defaults['enterprise'] else {'gh_id__in': member_gh_ids}
-        members = User.objects.filter(**fltr)
-        team.members = members
+        fltr = {'ghe_id__in': member_gh_ids} if is_enterprise else {'gh_id__in': member_gh_ids}
+        member_models = User.objects.filter(**fltr)
+        team.members = member_models
         repos_data = team_client.repos.get().json()
-        repos = Repo.objects.sync_repos(repos_data)
-        team.repos = repos
+        repo_models = Repo.objects.sync_repos(repos_data)
+        team.repos = repo_models
         return team
 
 
@@ -113,7 +117,7 @@ class Team(models.Model):
     permission = models.CharField(max_length=6)
     slug = models.CharField(max_length=100)
     members = models.ManyToManyField('core.User', related_name='teams')
-    enterprise = models.BooleanField(default=True)
+    is_enterprise = models.BooleanField(default=True)
 #    org = models.ForeignKey('Org')
 
     objects = TeamManager()

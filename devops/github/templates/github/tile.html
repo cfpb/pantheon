@@ -5,7 +5,7 @@
 <div class="gh-server">
     <h4>GitHub Enterprise</h4>
 </div>
-{% for repo in widget.enterprise %}
+{% for repo in tile.enterprise %}
   <div class="expandable expandable__padded">
     <button class="expandable_header expandable_target" {% if repo.model.fork %}style="color:blue;"{% endif %}>
         {{ repo.model.full_name }}
@@ -40,7 +40,7 @@
 <div class="gh-server">
     <h4>GitHub.com</h4>
 </div>
-{% for repo in widget.github %}
+{% for repo in tile.github %}
     <div class="gh-repo" {% if repo.model.fork %}style="color:ccc;"{% endif %}>
         {{ repo.model.full_name }}
     </div>

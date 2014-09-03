@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import logout
-from widgets.views import gen_context
+from tiles.views import gen_context
 from django.template import RequestContext
 
 def home(request):

@@ -1,4 +1,4 @@
-https://www.djangoproject.com/download/1.7c3/tarball/
+django==1.7.0
 django-allauth==0.18.0
 python-social-auth==0.1.26
 universalclient==0.6.3

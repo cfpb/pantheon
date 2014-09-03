@@ -1,16 +1,16 @@
 from appring import apps
 from django.apps import apps as djangoapps
 from django.conf.urls import include, url
-from widgets.views import get_apps_with_widgets
+from tiles.views import filter_app_labels_with_tiles
 
-def load_widget_urls(urlpatterns):
+def load_tile_urls(urlpatterns):
     """
     :param patterns urlpatterns: The django url patterns object
 
-    add any urls.py for apps with widgets. namespaced to the app name.
+    add any urls.py for apps with tiles. namespaced to the app name.
     """
     all_app_labels = [app.label for app in djangoapps.get_app_configs()]
-    app_labels = get_apps_with_widgets(all_app_labels)
+    app_labels = filter_app_labels_with_tiles(all_app_labels)
     for app_label in app_labels:
         app = getattr(apps, app_label)
         try:
