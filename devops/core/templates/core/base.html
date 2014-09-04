@@ -1,0 +1,108 @@
+<html lang="en">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+
+<head>
+
+<!--
+    ===========
+    GLOBAL META
+    ===========
+-->
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--
+    ==================
+    PAGE-SPECIFIC META
+    ==================
+-->
+
+    <title>{% block title %}Title{% endblock %}</title>
+    <meta name="description" content="A Dashboard for Devs and Designers.">
+
+<!--
+    ======
+    STYLES
+    ======
+    The number of stylesheets here must be kept to a minimum.
+    Unless adding a significant amount of CSS that is specific to a single page
+    or section of the site, all new styles should be added to src/static/css/app.less.
+-->
+
+<!--[if lt IE 9]>      <link rel="stylesheet" href="/static/css/main.ie.min.css"> <![endif]-->
+<!--[if gt IE 8]><!--> <link rel="stylesheet" href="/static/css/main.min.css"> <!--<![endif]-->
+
+<!--
+    ============
+    HEAD SCRIPTS
+    ============
+    The following scripts must be included in the head. DO NOT ADD ANY MORE.
+    All other scripts should go before the closing body tag.
+    If you come across a script that makes a convincing case to be included in
+    the head, then file an issue or PR to discuss including it.
+-->
+
+<!--[if lt IE 9]>
+    <script src="/static/vendor/html5shiv/html5shiv-printshiv.min.js"></script>
+<![endif]-->
+
+    <script>
+        // Confirm availability of JS and remove no-js class from html
+        var docElement = document.documentElement;
+        docElement.className = docElement.className.replace(/(^|\s)no-js(\s|$)/, '$1$2');
+    </script>
+    {% block head %}{% endblock head %}
+
+</head>
+
+<body>
+  <header role="banner">
+      <h1>
+        {% if user.is_authenticated %}
+          <small style="float:right;">
+            (<a href="/logout">logout</a>)
+          </small>
+          <span class="cf-icon cf-icon-user"></span>
+          {{ user.username }}
+        {% else %}
+          <small style="float:right;">
+            (<a href="/login/github-enterprise">login</a>)
+          </small>
+          <span class="cf-icon cf-icon-lock"></span>
+          DevDash
+        {% endif %}
+      </h1>
+      <ul class="breadcrumbs">
+        <li>Home</li>
+        {% block breadcrumbs %} {% endblock breadcrumbs %}
+      </ul>
+      {% if messages %}
+        <ul class="messages" style="background-color: #eee;">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+      {% endif %}
+  </header>
+
+
+
+  <main id="main" role="main">
+    <div class="grid">
+      {% if user.is_authenticated %}
+        {% block content %}{% endblock content %}
+      {% else %}
+      <h2>Tools for starting, building, testing, deploying and maintaining code</h2>
+      {% endif %}
+    </div>
+  </main>
+
+  <script src="/static/js/main.min.js"></script>
+</body>
+</html>
