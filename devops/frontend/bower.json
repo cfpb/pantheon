@@ -24,6 +24,7 @@
     "cf-forms": "git://github.com/cfpb/cf-forms.git",
     "cf-grid": "git://github.com/cfpb/cf-grid.git",
     "cf-icons": "git://github.com/cfpb/cf-icons.git",
+    "cf-tabs": "git://github.com/himedlooff/cf-tabs.git#gh-pages",
     "html5shiv": "latest",
     "jquery": "~1.11.0",
     "jquery.easing": "~1.3.0"
