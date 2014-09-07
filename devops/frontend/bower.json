@@ -19,6 +19,7 @@
   "license": "https://github.com/cfpb/dev-dash/blob/master/TERMS.md",
   "dependencies": {
     "cf-alerts": "git://github.com/himedlooff/cf-alerts.git#gh-pages",
+    "cf-breadcrumbs": "git://github.com/himedlooff/cf-breadcrumbs.git#gh-pages",
     "cf-buttons": "git://github.com/cfpb/cf-buttons.git",
     "cf-core": "git://github.com/cfpb/cf-core.git",
     "cf-expandables": "git://github.com/cfpb/cf-expandables.git",
