@@ -2,7 +2,7 @@
 ##########
 *.pyc
 env-devops
-/devops/devops/settings.py
+/devops/devops/settings_secret.py
 
 # Compiled source #
 ###################

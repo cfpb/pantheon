@@ -11,7 +11,7 @@ def get_context(request, context):
         entry = {'model': repo}
         github_repo_models.append(entry)
 
-    github_repos_ctx = gen_repo_context(request, context, settings.GITHUB_REPO_ACTIONS, github_repo_models)
+    github_repos_ctx = gen_repo_context(request, context, settings.GH_REPO_ACTIONS, github_repo_models)
 
     enterprise_repo_models = []
     enterprise_qs = Repo.objects.filter(is_enterprise=True).filter(admin_repos)
@@ -19,7 +19,7 @@ def get_context(request, context):
         entry = {'model': repo}
         enterprise_repo_models.append(entry)
 
-    enterprise_repos_ctx = gen_repo_context(request, context, settings.GITHUB_ENTERPRISE_REPO_ACTIONS, enterprise_repo_models)
+    enterprise_repos_ctx = gen_repo_context(request, context, settings.GHE_REPO_ACTIONS, enterprise_repo_models)
     out = {
         'template': 'github/tile.html',
         'name': 'github',
