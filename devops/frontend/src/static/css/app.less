@@ -31,10 +31,22 @@
     }
 }
 
-.grid {
-    .grid_nested-col-group();
+.demo-grid {
+    .respond-to-min(768px, {
+        .grid_nested-col-group();
+    });
 }
 
-.grid_col-1-3 {
-    .grid_column(4);
+.demo-grid_col-1-3 {
+    .respond-to-min(768px, {
+        .grid_column(6);
+    });
+    .respond-to-min(1024px, {
+        .grid_column(4);
+    });
+}
+
+.expandable_target:focus {
+    outline: 1px dotted @gray;
+    outline-offset: 1px;
 }
