@@ -70,23 +70,27 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.auth_allowed',
     'social.pipeline.social_auth.social_user',
     'social.pipeline.user.get_username',
+    'github.pipeline.enterprise_details',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    'github.pipeline.sync',
+    'core.pipeline.sync',
 )
 
 SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY')
 SOCIAL_AUTH_GITHUB_ENTERPRISE_SECRET = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_SECRET')
 SOCIAL_AUTH_GITHUB_ENTERPRISE_SCOPE = ['user', 'repo', 'admin:repo_hook', 'admin:org', 'write:public_key']
 SOCIAL_AUTH_GITHUB_ENTERPRISE_HOST = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_HOST')
+SOCIAL_AUTH_GITHUB_ENTERPRISE_USER_FIELDS = ('first_name', 'last_name', 'username', 'email', 'contractor',)
 SOCIAL_AUTH_GITHUB_KEY = get_secret('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = get_secret('SOCIAL_AUTH_GITHUB_SECRET')
 SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'repo', 'admin:repo_hook', 'admin:org']
 GITHUB_ORG_IDS = get_secret('GITHUB_ORG_IDS', (1071563,))
 GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # from requests.auth import HTTPBasicAuth
 GHE_ADMIN_CREDENTIALS = get_secret('GHE_ADMIN_CREDENTIALS') # from requests.auth import HTTPBasicAuth
+
+SYNC = ('github',)
 
 # Application definition
 

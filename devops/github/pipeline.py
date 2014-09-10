@@ -1,11 +1,21 @@
-from github.models import Repo
+from social.pipeline.partial import partial
+from django.shortcuts import redirect
+from github.client import GitHubEnterprise
 
-def sync(user, new_association, **kwargs):
-    """
-    A social auth pipeline function. new_association is true if a
-    user has never logged in with this github credential before.
-    Since it is a new credential, we will sync the user so that
-    any repos associated with this credential are in the system.
-    """
-    if new_association:
-        Repo.objects.sync_user(user)
+@partial
+def enterprise_details(request, response, backend, details, is_new, **kwargs):
+    if backend.name != 'github-enterprise':
+        return
+    if not is_new:
+        return
+    enterprise_details = request.session.pop('enterprise_details', None)
+    if enterprise_details is None:
+        return redirect('github:enterprise_details')
+    details.update(enterprise_details)
+    ghe = GitHubEnterprise(access_token=response['access_token'])
+    updated_user_data = {
+        'name': details['fullname'],
+        'email': details['email'],
+        'location': details['location'],
+    }
+    ghe.user.patch(data=updated_user_data)

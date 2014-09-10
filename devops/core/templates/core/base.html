@@ -70,6 +70,7 @@
           </small>
           <span class="cf-icon cf-icon-user"></span>
           {{ user.username }}
+          <small>({% if user.contractor %}contractor{% else %}employee{% endif %})</small>
         {% else %}
           <small style="float:right;">
             (<a href="/login/github-enterprise">login</a>)
@@ -79,8 +80,9 @@
         {% endif %}
       </h1>
       <ul class="breadcrumbs">
-        <li>Home</li>
-        {% block breadcrumbs %} {% endblock breadcrumbs %}
+        {% block breadcrumbs %}
+          <li>Home</li>
+        {% endblock breadcrumbs %}
       </ul>
       {% if messages %}
         <ul class="messages" style="background-color: #eee;">
@@ -98,7 +100,9 @@
       {% if user.is_authenticated %}
         {% block content %}{% endblock content %}
       {% else %}
+      {% block unauthed_content %}
       <h2>Tools for starting, building, testing, deploying and maintaining code</h2>
+      {% endblock unauthed_content %}
       {% endif %}
     </div>
   </main>
