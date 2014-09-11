@@ -11,12 +11,14 @@ from django.core.urlresolvers import reverse
 """
 
 def openSource(request, context, repo):
-
-    return {
-        'short_title': 'Open Source',
-        'name': 'Open Source',
-        'title': 'Publish this Repo on GitHub.com',
-        'description': 'Start the process to open source {}. A wizard will walk you through the items that must be complete.'.format(repo.full_name),
-        'cta': 'Open The Source',
-        'action': reverse('osw:release_existing'),
-    }
+    if repo.is_enterprise:
+        return {
+            'short_title': 'Open Source',
+            'name': 'Open Source',
+            'title': 'Publish this Repo on GitHub.com',
+            'description': 'Start the process to open source {}. A wizard will walk you through the items that must be complete.'.format(repo.full_name),
+            'cta': 'Open The Source',
+            'action': reverse('osw:release_existing'),
+        }
+    else:
+        return {}

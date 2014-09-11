@@ -20,6 +20,7 @@
       </p>
 
       {% for action in repo.actions %}
+      {% autoescape off %}
       (tab contents)
         <div class="gh-action">
           <h5>{{ action.title }}</h5>
@@ -33,6 +34,7 @@
             <a href="{{ action.action }}">{{ action.cta }}</a>
           {% endif %}
         </div>
+      {% endautoescape %}
       {% endfor %}
     </div>
   </div>
