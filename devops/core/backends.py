@@ -12,5 +12,5 @@ class GitHubEnterprise(GithubOAuth2):
 
     def get_user_details(self, response):
         out = super(GitHubEnterprise, self).get_user_details(response)
-        out['location'] = response['location']
+        out['location'] = response.get('location')
         return out
