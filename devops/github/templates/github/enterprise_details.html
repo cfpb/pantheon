@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+{% load tile_container %}
+{% block title %}Confirm Enterprise Github Profile{% endblock %}
+
+{% block breadcrumbs %}
+  <li class="breadcrumbs_item"><a href="{% url "home" %}" class="breadcrumbs_link">Home</a></li>
+  <li class="breadcrumbs_item">Confirm Profile</li>
+{% endblock breadcrumbs %}
+{% block unauthed_content %}
+    <form action="{% url "github:enterprise_details" %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Continue" />
+    </form>
+{% endblock unauthed_content %}

@@ -65,11 +65,17 @@
   <header role="banner">
       <h1>
         {% if user.is_authenticated %}
+
           <small style="float:right;">
+            <form action="{% url "sync" %}" method="POST">{% csrf_token %}
+              <input type="submit" value="refresh" />
+            </form>
             (<a href="/logout">logout</a>)
           </small>
+
           <span class="cf-icon cf-icon-user"></span>
           {{ user.username }}
+          <small>({% if user.contractor %}contractor{% else %}employee{% endif %})</small>
         {% else %}
           <small style="float:right;">
             (<a href="/login/github-enterprise">login</a>)
@@ -79,15 +85,14 @@
         {% endif %}
       </h1>
       <ul class="breadcrumbs">
-        <li>Home</li>
-        {% block breadcrumbs %} {% endblock breadcrumbs %}
+        {% block breadcrumbs %}
+          <li class="breadcrumbs_item">Home</li>
+        {% endblock breadcrumbs %}
       </ul>
       {% if messages %}
-        <ul class="messages" style="background-color: #eee;">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
+        {% for message in messages %}
+        <div class="alert{% if message.tags %} alert__{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
       {% endif %}
   </header>
 
@@ -98,7 +103,9 @@
       {% if user.is_authenticated %}
         {% block content %}{% endblock content %}
       {% else %}
+      {% block unauthed_content %}
       <h2>Tools for starting, building, testing, deploying and maintaining code</h2>
+      {% endblock unauthed_content %}
       {% endif %}
     </div>
   </main>

@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
     url(r'^$', 'core.views.home', name='home'),
     url(r'^logout', 'core.views.logout_view', name='logout'),
+    url(r'^refresh', 'core.views.sync', name='sync'),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/', include(admin.site.urls)),
 )

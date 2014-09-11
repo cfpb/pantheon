@@ -1,7 +1,4 @@
 <h3>Git Repos</h3> 
-<form action="{% url "github:refresh" %}" method="POST">{% csrf_token %}
-    <input type="submit" value="refresh" />
-</form>
 <div class="gh-server">
     <h4>GitHub Enterprise</h4>
 </div>
@@ -11,31 +8,33 @@
         {{ repo.model.full_name }}
     </button>
     <div class="expandable_content">
-      <p>expandable!!</p>
-      <p>
-      (tab titles)
-      {% for action in repo.actions %}
-      {{ action.name }} 
-      {% endfor %}
-      </p>
-
-      {% for action in repo.actions %}
-      {% autoescape off %}
-      (tab contents)
-        <div class="gh-action">
-          <h5>{{ action.title }}</h5>
-          <p>{{ action.description }}</p>
-          {% if action.method == "POST" or action.form %}
-            <form action="action.action" method="action.method">
-              {{ action.form }}
-              <input type="submit" value="{{ action.cta }}" />
-            </form>
-          {% else %}
-            <a href="{{ action.action }}">{{ action.cta }}</a>
-          {% endif %}
-        </div>
-      {% endautoescape %}
-      {% endfor %}
+      <div class="tabs">
+        <ul class="tabs_list" role="tablist">
+          {% for action in repo.actions %}
+            <li class="tabs_list-item" role="presentation">
+              <button class="tabs_tab" data-panel="ghe-{{ forloop.parentloop.counter }}-panel-{{ forloop.counter }}">
+                  {{ action.name }}
+              </button>
+            </li>
+          {% endfor %}
+        </ul>
+        {% for action in repo.actions %}
+        {% autoescape off %}
+          <div id="ghe-{{ forloop.parentloop.counter }}-panel-{{ forloop.counter }}" class="tabs_panel">
+              <h5>{{ action.title }}</h5>
+              <p>{{ action.description }}</p>
+              {% if action.method == "POST" or action.form %}
+                <form action="action.action" method="action.method">
+                  {{ action.form }}
+                  <input type="submit" value="{{ action.cta }}" />
+                </form>
+              {% else %}
+                <a href="{{ action.action }}">{{ action.cta }}</a>
+              {% endif %}
+          </div>
+        {% endautoescape %}
+        {% endfor %}
+      </div>
     </div>
   </div>
 {% endfor %}

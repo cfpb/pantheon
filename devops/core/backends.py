@@ -9,3 +9,8 @@ class GitHubEnterprise(GithubOAuth2):
     def _user_data(self, access_token, path=None):
         url = self.setting('HOST') + '/api/v3/user{0}'.format(path or '')
         return self.get_json(url, params={'access_token': access_token})
+
+    def get_user_details(self, response):
+        out = super(GitHubEnterprise, self).get_user_details(response)
+        out['location'] = response.get('location')
+        return out

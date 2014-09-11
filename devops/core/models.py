@@ -6,6 +6,8 @@ class User(AbstractUser):
     gh_id = models.IntegerField(blank=True, null=True)
     ghe_id = models.IntegerField(blank=True, null=True)
 
+    contractor = models.BooleanField(default=True)
+
     def is_authenticated(self):
         """
         whether the user is authenticated AND has linked their

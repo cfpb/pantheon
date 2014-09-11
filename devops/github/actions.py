@@ -1,7 +1,6 @@
 from appring import apps
 
 def gen_service_context(request, context, action_names, service):
-
     pass
 
 def gen_repo_context(request, context, action_names, model_contexts):
