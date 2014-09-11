@@ -18,13 +18,13 @@ except:
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+se
 
 def get_secret(secret, default=None):
     """
     return the secret setting stored on the local machine,
     outside of version control. Currently, this is done in
-    a file called ./ses/ses/settings/settings_secret.py.
+    a file called ./devops/settings_secret.py.
     However, we can convert to env variables at any time.
 
     will return default if doesn't exist in secret_settings
@@ -41,7 +41,7 @@ def get_secret(secret, default=None):
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_secret('SECRET_KEY')
@@ -85,8 +85,8 @@ SOCIAL_AUTH_GITHUB_KEY = get_secret('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = get_secret('SOCIAL_AUTH_GITHUB_SECRET')
 SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'repo', 'admin:repo_hook', 'admin:org']
 GITHUB_ORG_IDS = get_secret('GITHUB_ORG_IDS', (1071563,))
-GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # from requests.auth import HTTPBasicAuth
-GHE_ADMIN_CREDENTIALS = get_secret('GHE_ADMIN_CREDENTIALS') # from requests.auth import HTTPBasicAuth
+GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
+GHE_ADMIN_CREDENTIALS = get_secret('GHE_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
 
 # Application definition
 
@@ -137,7 +137,7 @@ DATABASES = {
 }
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
+# https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
