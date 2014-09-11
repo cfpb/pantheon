@@ -12,41 +12,25 @@
         <ul class="tabs_list" role="tablist">
           {% for action in repo.actions %}
             <li class="tabs_list-item" role="presentation">
-              <button role="tab" tabindex="-1" 
-                data-panel="ghe-{{ forloop.parentloop.counter }}-panel-{{ forloop.counter }}" 
-                id="ghe-{{ forloop.parentloop.counter }}-tablist-panel-{{ forloop.counter }}" 
-                aria-controls="ghe-{{ forloop.parentloop.counter }}-panel-{{ forloop.counter }}"
-                {% if forloop.first %}
-                  class="tabs_tab is-active" aria-selected="true" aria-expanded="true"
-                {% else %}
-                  class="tabs_tab" aria-selected="false" aria-expanded="false"
-                {% endif %}
-              >
-                {{ action.name }}
+              <button class="tabs_tab" data-panel="ghe-{{ forloop.parentloop.counter }}-panel-{{ forloop.counter }}">
+                  {{ action.name }}
               </button>
             </li>
           {% endfor %}
         </ul>
         {% for action in repo.actions %}
         {% autoescape off %}
-          <div style="display: block;" role="tabpanel" 
-            id="ghe-{{ forloop.parentloop.counter }}-panel-{{ forloop.counter }}"
-            tabindex="0" aria-labelledby="tablist-panel-{{ forloop.counter }}"
-            {% if forloop.first %}
-              class="tabs_panel is-active" aria-hidden="false"
-            {% else %}
-              class="tabs_panel" aria-hidden="true"
-            {% endif %}>
-            <h5>{{ action.title }}</h5>
-            <p>{{ action.description }}</p>
-            {% if action.method == "POST" or action.form %}
-              <form action="action.action" method="action.method">
-                {{ action.form }}
-                <input type="submit" value="{{ action.cta }}" />
-              </form>
-            {% else %}
-              <a href="{{ action.action }}">{{ action.cta }}</a>
-            {% endif %}
+          <div id="ghe-{{ forloop.parentloop.counter }}-panel-{{ forloop.counter }}" class="tabs_panel">
+              <h5>{{ action.title }}</h5>
+              <p>{{ action.description }}</p>
+              {% if action.method == "POST" or action.form %}
+                <form action="action.action" method="action.method">
+                  {{ action.form }}
+                  <input type="submit" value="{{ action.cta }}" />
+                </form>
+              {% else %}
+                <a href="{{ action.action }}">{{ action.cta }}</a>
+              {% endif %}
           </div>
         {% endautoescape %}
         {% endfor %}
