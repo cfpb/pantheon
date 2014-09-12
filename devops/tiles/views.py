@@ -23,35 +23,25 @@ def _has_tiles(app):
     : returns bool: true if has tiles
     """
     try:
-        app.tiles.get_context
+        app.tiles
     except:
         return False
     return True
 
-def gen_context(request, app_labels=None, context=None):
+def gen_context(request, tile_names, context, tile_contexts):
     """
     :param request request: Djange request object
-    :param iterator app_labels: tuple of app labels for which to display tiles
+    :param iterator tile_names: tuple of "app.function" tile name
     :param context context: context
+    :param iterator tile_contexts: pointer into context to a list
+        where tile contexts will be inserted
     :returns str: returns rendered html
-
-    If app_labels is None, will look through all apps looking for tiles
-    If context is None, will create a RequestContext
     """
-    if app_labels is None:
-        app_labels = [app.label for app in djangoapps.get_app_configs()]
-
-    app_labels = filter_app_labels_with_tiles(app_labels)
-
-    if context is None:
-        context = RequestContext(request)
-
-    context['tiles'] = []
-
-    for app_label in app_labels:
+    for tile_name in tile_names:
+        app_label, tile_label = tile_name.split('.')
         app = getattr(apps, app_label)
-        tile_ctx = app.tiles.get_context(request, context)
-        context['tiles'].append(tile_ctx)
+        tile = getattr(app.tiles, tile_label)
+        tile_contexts.append(tile(request, context))
 
     return context
 

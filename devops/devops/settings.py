@@ -90,7 +90,6 @@ GITHUB_ORG_IDS = get_secret('GITHUB_ORG_IDS', (1071563,))
 GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
 GHE_ADMIN_CREDENTIALS = get_secret('GHE_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
 
-SYNC = ('github',)
 
 # Application definition
 
@@ -108,6 +107,9 @@ INSTALLED_APPS = (
     'osw',
     'jenkins',
 )
+
+HOME_TILES = ('github.ghe_repos', 'github.gh_repos',)
+SYNC = ('github',)
 
 GH_ACTIONS = tuple()
 GHE_ACTIONS = tuple()
