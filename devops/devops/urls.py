@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from tiles.urls import load_tile_urls
+from tiles.urls import load_namespaced_urls
 
 urlpatterns = patterns('',
     # Examples:
@@ -16,4 +16,4 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
-load_tile_urls(urlpatterns)
+load_namespaced_urls(urlpatterns, 'github', 'osw', 'jenkins')

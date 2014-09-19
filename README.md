@@ -7,6 +7,21 @@ and the actions they can perform on that code, all in one place.
 
 In order support this, DevDash is modular and pluggable.
 
+## urls.load_namespaced_urls(urlpatterns, 'app_name', 'app_name', ...)
+Any apps that have urls.py should be added to this function. 
+It will add the urls under `/app_name/`, and namespaces them to `app_name`.
+reverse a namespaced url by reverse('app_name:url_name')
+
+## settings.HOME_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
+(home page)
+
+Each app_name app must have a tiles.py file that contains a tile_name(request, context) function.
+The function must return a context dict with at minimum the following keys:
+
+    * name - unique name for this tile
+    * template - the template path used to render this context
+
+These tiles render the primary interfaces for each pluggable component in the dash board.
 
 ## settings.SYNC = tuple('app_name', 'app_name', ...)
 (core)
@@ -33,3 +48,16 @@ The function must return a dict with the following keys:
 GHE_REPO_ACTIONS actions will be displayed next to each Github Enterprise repo.
 GH_REPO_ACTIONS actions will be displayed next to each public github repo.
 If you do not want an action displayed for a particular repo, return an empty dict.
+
+## settings.GHE_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
+## settings.GH_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
+(github tile)
+
+Each app_name app must have a tiles.py file that contains a tile_name(request, context) function.
+The function must return a context dict with at minimum the following keys:
+
+    * name - unique name for this tile
+    * template - the template path used to render this context
+
+These tiles render actions and alerts at the top of the GitHub and GitHub enterprise repo lists.
+

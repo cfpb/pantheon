@@ -63,23 +63,20 @@
 
 <body>
   <header role="banner">
+      {% if user.is_authenticated %}
+        <a class="btn" href="/logout" style="float:right;">logout</a>
+        <form action="{% url "sync" %}" method="POST" style="float:right;">{% csrf_token %}
+          <input type="submit" class="btn" value="refresh" />
+        </form>
+      {% else %}
+        <a href="/login/github-enterprise" class="btn" style="float:right;">login</a>
+      {% endif %}
       <h1>
         {% if user.is_authenticated %}
-
-          <small style="float:right;">
-            <form action="{% url "sync" %}" method="POST">{% csrf_token %}
-              <input type="submit" value="refresh" />
-            </form>
-            (<a href="/logout">logout</a>)
-          </small>
-
           <span class="cf-icon cf-icon-user"></span>
           {{ user.username }}
           <small>({% if user.contractor %}contractor{% else %}employee{% endif %})</small>
         {% else %}
-          <small style="float:right;">
-            (<a href="/login/github-enterprise">login</a>)
-          </small>
           <span class="cf-icon cf-icon-lock"></span>
           DevDash
         {% endif %}

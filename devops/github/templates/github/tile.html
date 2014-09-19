@@ -1,9 +1,11 @@
+{% load tile_container %}
 <div class="gh-server">
     <h3>{{ tile.title }}</h3>
+    {% tile_container tile.tiles %}
 </div>
 {% for repo in tile.repos %}
   <div class="expandable">
-    <button class="expandable_header expandable_target" {% if repo.model.fork %}style="color:blue;"{% endif %}>
+    <button class="expandable_header expandable_target"{% if repo.model.fork %} style="color:blue;"{% endif %}>
         {{ repo.model.full_name }}
     </button>
     <div class="expandable_content">
@@ -28,7 +30,7 @@
                   <input type="submit" value="{{ action.cta }}" />
                 </form>
               {% else %}
-                <a href="{{ action.action }}">{{ action.cta }}</a>
+                <a href="{{ action.action }}" class="btn">{{ action.cta }}</a>
               {% endif %}
           </div>
         {% endautoescape %}

@@ -6,10 +6,11 @@
   <li class="breadcrumbs_item"><a href="{% url "home" %}" class="breadcrumbs_link">Home</a></li>
   <li class="breadcrumbs_item">Confirm Profile</li>
 {% endblock breadcrumbs %}
-{% block unauthed_content %}
-    <form action="{% url "github:enterprise_details" %}" method="post">
+{% block content %}
+    <form action="{% url "osw:github_details" %}" method="post">
         {% csrf_token %}
-        {{ form }}
+        {{ name_form }}
+        {{ publicize_form }}
         <input type="submit" class="btn" value="Continue" />
     </form>
-{% endblock unauthed_content %}
+{% endblock content %}

@@ -71,6 +71,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_user',
     'social.pipeline.user.get_username',
     'github.pipeline.enterprise_details',
+    'osw.pipeline.two_factor_audit',
+    'osw.pipeline.github_details',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
@@ -85,9 +87,21 @@ SOCIAL_AUTH_GITHUB_ENTERPRISE_HOST = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_H
 SOCIAL_AUTH_GITHUB_ENTERPRISE_USER_FIELDS = ('first_name', 'last_name', 'username', 'email', 'contractor',)
 SOCIAL_AUTH_GITHUB_KEY = get_secret('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = get_secret('SOCIAL_AUTH_GITHUB_SECRET')
-SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'repo', 'admin:repo_hook', 'admin:org']
-GITHUB_ORG_IDS = get_secret('GITHUB_ORG_IDS', (1071563,))
+SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'repo', 'admin:repo_hook', 'write:org']
+
+# ids of all orgs belonging to the entity
+GH_ORG_IDS = get_secret('GH_ORG_IDS', (1071563,))
+
+# org for auditing user's 2 factor auth prior to admission into primary org.
+GH_2FA_AUDIT_TEAM = get_secret('GH_2FA_AUDIT_TEAM')
+
+# credintials must have admin:org priviliges for the GH_2FA_AUDIT_ORG
+GH_2FA_ADMIN_CREDENTIALS = get_secret('GH_2FA_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
+
+# READ ONLY CREDENTIALS
 GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
+
+# READ ONLY CREDENTIALS
 GHE_ADMIN_CREDENTIALS = get_secret('GHE_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
 
 
@@ -111,8 +125,9 @@ INSTALLED_APPS = (
 HOME_TILES = ('github.ghe_repos', 'github.gh_repos',)
 SYNC = ('github',)
 
-GH_ACTIONS = tuple()
-GHE_ACTIONS = tuple()
+
+GH_TILES = ('osw.join_org',)
+GHE_TILES = tuple()
 GH_REPO_ACTIONS = tuple()
 GHE_REPO_ACTIONS = ('osw.openSource', 'jenkins.createJob')
 

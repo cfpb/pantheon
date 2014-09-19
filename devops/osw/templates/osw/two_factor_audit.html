@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+{% load tile_container %}
+{% block title %}Enable GitHub Two Factor Authentication{% endblock %}
+
+{% block breadcrumbs %}
+  <li class="breadcrumbs_item"><a href="{% url "home" %}" class="breadcrumbs_link">Home</a></li>
+  <li class="breadcrumbs_item">Enable GitHub Two Factor Authentication</li>
+{% endblock breadcrumbs %}
+{% block content %}
+    {% if is_member %}
+        <p>You must <a href="https://github.com/settings/security">enable two factor authentication</a> for GitHub before proceeding.
+        Full instruction can be found <a href="https://help.github.com/articles/about-two-factor-authentication">here</a>.</p>
+
+        <p>When Two Factor Auth is enabled, refresh or</p>
+    {% else %}
+        <p>GitHub has sent an email to your inbox inviting you to join the Two Factor Audit Org</p>
+
+        <p>You must:
+
+        <ol>
+            <li><a href="https://github.com/settings/security">enable two factor authentication</a> for GitHub (<a href="https://help.github.com/articles/about-two-factor-authentication">full instructions</a>), and</li>
+            <li>accept the org invite
+        </ol>
+        before proceeding.</p>
+
+        <p>When you have joined the org and Two Factor Auth is enabled, refresh or </p>
+    {% endif %}
+    <a href={% url "osw:two_factor_audit" %} class="btn">Click Here</a>
+
+{% endblock content %}
