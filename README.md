@@ -1,18 +1,27 @@
 open-source-wizard
-==================
+==================o
+Installation
+------------
+The easiest way to run the system is to use vagrant.
 
+You must install:
+  * [Vagrant](https://www.vagrantup.com/)
+  * [Virtualbox](https://www.vagrantup.com/)
+  * [Ansible](http://www.ansible.com/) (if using mac w/o root install with `brew install ansible`, otherwise use pip)
 
+Pluggable
+---------
 Developer Dashboard lets developers see the status of their code,
 and the actions they can perform on that code, all in one place.
 
 In order support this, DevDash is modular and pluggable.
 
-## urls.load_namespaced_urls(urlpatterns, 'app_name', 'app_name', ...)
+### urls.load_namespaced_urls(urlpatterns, 'app_name', 'app_name', ...)
 Any apps that have urls.py should be added to this function. 
 It will add the urls under `/app_name/`, and namespaces them to `app_name`.
 reverse a namespaced url by reverse('app_name:url_name')
 
-## settings.HOME_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
+### settings.HOME_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
 (home page)
 
 Each app_name app must have a tiles.py file that contains a tile_name(request, context) function.
@@ -23,15 +32,15 @@ The function must return a context dict with at minimum the following keys:
 
 These tiles render the primary interfaces for each pluggable component in the dash board.
 
-## settings.SYNC = tuple('app_name', 'app_name', ...)
+### settings.SYNC = tuple('app_name', 'app_name', ...)
 (core)
 
 Each app_name app must have a sync.py file that contains a sync(user=None) function. 
 If a user is passed, then all information for that user must be synced.
 If user is None, then all data in the database must be synced.
 
-## settings.GHE_REPO_ACTIONS = tuple('app_name.action_name', 'app_name.action_name', ...)
-## settings.GH_REPO_ACTIONS = tuple('app_name.action_name', 'app_name.action_name', ...)
+### settings.GHE_REPO_ACTIONS = tuple('app_name.action_name', 'app_name.action_name', ...)
+### settings.GH_REPO_ACTIONS = tuple('app_name.action_name', 'app_name.action_name', ...)
 (github tile)
 
 Each app_name app must have an actions.py file that contains an action_name(request, context, repo) function.
@@ -49,8 +58,8 @@ GHE_REPO_ACTIONS actions will be displayed next to each Github Enterprise repo.
 GH_REPO_ACTIONS actions will be displayed next to each public github repo.
 If you do not want an action displayed for a particular repo, return an empty dict.
 
-## settings.GHE_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
-## settings.GH_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
+### settings.GHE_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
+### settings.GH_TILES = tuple('app_name.tile_name', 'app_name.tile_name', ...)
 (github tile)
 
 Each app_name app must have a tiles.py file that contains a tile_name(request, context) function.
