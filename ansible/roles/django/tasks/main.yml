@@ -15,4 +15,4 @@
   easy_install: name=pip executable=easy_install-2.7
 
 - name: Install python packages
-  pip: requirements={{ root_dir }}/devops/requirements.txt
+  pip: requirements={{ root_dir }}/devops/requirements.txt executable=pip2.7

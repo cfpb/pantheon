@@ -1,11 +1,12 @@
 from django.db import models
 import django_fsm as fsm
-from django.db.models.signals import post_save
-from core.models import User
 # Create your models here.
 
 
 def can_approve():
+    """
+    Whether the user can approve a member for the org.
+    """
     return True
 
 class UserExtension(models.Model):
