@@ -34,6 +34,7 @@
   // Trying the figure out how to use jQuery plugins with Angular.
   // This doesn't seem like the most intuitive way but it's working for now.
   // https://amitgharat.wordpress.com/2013/02/03/an-approach-to-use-jquery-plugins-with-angularjs/
+  // I'm thinking I'll need to make a real expandable directive.
   angular.module('OSWizardApp').directive( 'expandable', function () {
     return {
       restrict: 'A',
@@ -43,7 +44,7 @@
     };
   });
 
-  /* Return an array of Dox-ray objects prepped for use in doxrayApp.
+  /* Add some properties to the repo group data before using it.
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepRepoGroupData', function () {
     return function( repoGroups ) {
