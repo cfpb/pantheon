@@ -109,45 +109,21 @@
                             </div> <!-- END .group-content -->
                             <div class="group-cols_col group-content">
                                 <h2 class="group-content_header">Users</h2>
-                                <ul ng-if="group.permissions.admin"
-                                    class="group-content_list">
-                                    <li>
-                                        <button ng-click="toggleUserType(group, 'admin')" class="btn btn__link">
-                                            Admin ({{ group.permissions.admin.length }})
-                                        </button>
-                                    </li>
-                                    <li ng-show="group.showAdmins"
-                                        ng-repeat="user in group.permissions.admin"
-                                        class="group-content_list-item">
-                                        {{ user.name }}
-                                    </li>
-                                </ul>
-                                <ul ng-if="group.permissions.write"
-                                    class="group-content_list">
-                                    <li>
-                                        <button ng-click="toggleUserType(group, 'write')" class="btn btn__link">
-                                            Write ({{ group.permissions.write.length }})
-                                        </button>
-                                    </li>
-                                    <li ng-show="group.showWriters"
-                                        ng-repeat="user in group.permissions.write"
-                                        class="group-content_list-item">
-                                        {{ user.name }}
-                                    </li>
-                                </ul>
-                                <ul ng-if="group.permissions.read"
-                                    class="group-content_list">
-                                    <li>
-                                        <button ng-click="toggleUserType(group, 'read')" class="btn btn__link">
-                                            Read ({{ group.permissions.read.length }})
-                                        </button>
-                                    </li>
-                                    <li ng-show="group.showReaders"
-                                        ng-repeat="user in group.permissions.read"
-                                        class="group-content_list-item">
-                                        {{ user.name }}
-                                    </li>
-                                </ul>
+                                <users role="Admin"
+                                       group="group"
+                                       toggle="toggleUserType()"
+                                       class="group-content_list">
+                                </users>
+                                <users role="Write"
+                                       group="group"
+                                       toggle="toggleUserType()"
+                                       class="group-content_list">
+                                </users>
+                                <users role="Read"
+                                       group="group"
+                                       toggle="toggleUserType()"
+                                       class="group-content_list">
+                                </users>
                             </div> <!-- END .group-content -->
                         </div> <!-- END .group-cols -->
                     </div> <!-- END .expandable_content -->
