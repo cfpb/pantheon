@@ -42,7 +42,7 @@
       template: '\
         <ul class="group-content_list">\
             <li>\
-                <button ng-click="toggle(group, role)"
+                <button ng-click="toggle(group, role)"\
                         class="btn btn__link">\
                     {{ role }} ({{ total }})\
                 </button>\
@@ -69,10 +69,6 @@
         } else if ( scope.role === 'Read' ) {
           scope.show = 'showReaders';
         }
-        // Events
-        // element.find('.btn').on( 'click', function() {
-        //   scope.toggle( scope.group, scope.role );
-        // });
       }
     };
   });
