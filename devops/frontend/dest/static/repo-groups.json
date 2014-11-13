@@ -1,0 +1,272 @@
+[
+  {
+    "name": "Capital Framework",
+    "users": [
+      { "name": "himedloff",   "type": "admin" },
+      { "name": "scotchester", "type": "admin" },
+      { "name": "ascott1", "type": "write" },
+      { "name": "contolini", "type": "read" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-core",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Owning a home",
+    "users": [
+      { "name": "himedloff",   "type": "read" },
+      { "name": "scotchester", "type": "write" },
+      { "name": "ascott1", "type": "admin" },
+      { "name": "contolini", "type": "admin" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Owning a home",
+    "users": [
+      { "name": "himedloff",   "type": "admin" },
+      { "name": "scotchester", "type": "admin" },
+      { "name": "ascott1", "type": "write" },
+      { "name": "contolini", "type": "read" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Owning a home",
+    "users": [
+      { "name": "himedloff",   "type": "admin" },
+      { "name": "scotchester", "type": "admin" },
+      { "name": "ascott1", "type": "write" },
+      { "name": "contolini", "type": "read" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Owning a home",
+    "users": [
+      { "name": "himedloff",   "type": "admin" },
+      { "name": "scotchester", "type": "admin" },
+      { "name": "ascott1", "type": "write" },
+      { "name": "contolini", "type": "read" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Owning a home",
+    "users": [
+      { "name": "himedloff",   "type": "admin" },
+      { "name": "scotchester", "type": "admin" },
+      { "name": "ascott1", "type": "write" },
+      { "name": "contolini", "type": "read" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Owning a home",
+    "users": [
+      { "name": "himedloff",   "type": "admin" },
+      { "name": "scotchester", "type": "admin" },
+      { "name": "ascott1", "type": "write" },
+      { "name": "contolini", "type": "read" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Owning a home",
+    "users": [
+      { "name": "himedloff",   "type": "admin" },
+      { "name": "scotchester", "type": "admin" },
+      { "name": "ascott1", "type": "write" },
+      { "name": "contolini", "type": "read" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Owning a home",
+    "users": [
+      { "name": "himedloff",   "type": "admin" },
+      { "name": "scotchester", "type": "admin" },
+      { "name": "ascott1", "type": "write" },
+      { "name": "contolini", "type": "read" }
+    ],
+    "repos": [
+      {
+        "name": "capital-framework",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      },
+      {
+        "name": "cf-buttons",
+        "users": [
+          { "name": "himedloff",   "type": "admin" },
+          { "name": "scotchester", "type": "admin" },
+          { "name": "ascott1", "type": "write" },
+          { "name": "contolini", "type": "read" }
+        ]
+      }
+    ]
+  }
+]

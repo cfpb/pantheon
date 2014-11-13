@@ -59,6 +59,7 @@ module.exports = function(grunt) {
           'vendor/jquery/jquery.js',
           'vendor/jquery.easing/jquery.easing.js',
           'vendor/cf-*/*.js',
+          'vendor/angular/angular.js',
           'src/static/js/app.js'
         ],
         dest: 'src/static/js/main.js'
@@ -108,7 +109,8 @@ module.exports = function(grunt) {
      */
     uglify: {
       options: {
-        preserveComments: 'some'
+        preserveComments: 'some',
+        mangle: false // Keep this off to play nice with Angular
       },
       bodyScripts: {
         src: ['src/static/js/main.js'],
