@@ -1,272 +1,307 @@
-[
-  {
-    "name": "Capital Framework",
-    "users": [
-      { "name": "himedloff",   "type": "admin" },
-      { "name": "scotchester", "type": "admin" },
-      { "name": "ascott1", "type": "write" },
-      { "name": "contolini", "type": "read" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+{
+  "groups": [
+    {
+      "name": "Capital Framework",
+      "permissions": {
+        "admin": [ "himedlooff", "scotchester" ],
+        "write": [ "ascott1" ],
+        "read":  [ "contolini" ]
       },
-      {
-        "name": "cf-core",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "capital-framework",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-core",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-buttons",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Owning a home",
+      "permissions": {
+        "admin": [ "ascott1", "contolini" ],
+        "write": [ "himedlooff" ],
+        "read":  [ "scotchester" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Owning a home",
-    "users": [
-      { "name": "himedloff",   "type": "read" },
-      { "name": "scotchester", "type": "write" },
-      { "name": "ascott1", "type": "admin" },
-      { "name": "contolini", "type": "admin" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "owning-a-home",
+          "permissions": {
+            "admin": [ "ascott1", "contolini" ],
+            "read":  [ "scotchester" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "SES",
+      "permissions": {
+        "admin": [ "dgreisen-cfpb" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Owning a home",
-    "users": [
-      { "name": "himedloff",   "type": "admin" },
-      { "name": "scotchester", "type": "admin" },
-      { "name": "ascott1", "type": "write" },
-      { "name": "contolini", "type": "read" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "ses-next",
+          "permissions": {
+            "admin": [ "dgreisen-cfpb" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Capital Framework",
+      "permissions": {
+        "admin": [ "himedlooff", "scotchester" ],
+        "write": [ "ascott1" ],
+        "read":  [ "contolini" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Owning a home",
-    "users": [
-      { "name": "himedloff",   "type": "admin" },
-      { "name": "scotchester", "type": "admin" },
-      { "name": "ascott1", "type": "write" },
-      { "name": "contolini", "type": "read" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "capital-framework",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-core",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-buttons",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Capital Framework",
+      "permissions": {
+        "admin": [ "himedlooff", "scotchester" ],
+        "write": [ "ascott1" ],
+        "read":  [ "contolini" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Owning a home",
-    "users": [
-      { "name": "himedloff",   "type": "admin" },
-      { "name": "scotchester", "type": "admin" },
-      { "name": "ascott1", "type": "write" },
-      { "name": "contolini", "type": "read" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "capital-framework",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-core",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-buttons",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Capital Framework",
+      "permissions": {
+        "admin": [ "himedlooff", "scotchester" ],
+        "write": [ "ascott1" ],
+        "read":  [ "contolini" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Owning a home",
-    "users": [
-      { "name": "himedloff",   "type": "admin" },
-      { "name": "scotchester", "type": "admin" },
-      { "name": "ascott1", "type": "write" },
-      { "name": "contolini", "type": "read" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "capital-framework",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-core",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-buttons",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Capital Framework",
+      "permissions": {
+        "admin": [ "himedlooff", "scotchester" ],
+        "write": [ "ascott1" ],
+        "read":  [ "contolini" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Owning a home",
-    "users": [
-      { "name": "himedloff",   "type": "admin" },
-      { "name": "scotchester", "type": "admin" },
-      { "name": "ascott1", "type": "write" },
-      { "name": "contolini", "type": "read" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "capital-framework",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-core",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-buttons",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Capital Framework",
+      "permissions": {
+        "admin": [ "himedlooff", "scotchester" ],
+        "write": [ "ascott1" ],
+        "read":  [ "contolini" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Owning a home",
-    "users": [
-      { "name": "himedloff",   "type": "admin" },
-      { "name": "scotchester", "type": "admin" },
-      { "name": "ascott1", "type": "write" },
-      { "name": "contolini", "type": "read" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "capital-framework",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-core",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-buttons",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Capital Framework",
+      "permissions": {
+        "admin": [ "himedlooff", "scotchester" ],
+        "write": [ "ascott1" ],
+        "read":  [ "contolini" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Owning a home",
-    "users": [
-      { "name": "himedloff",   "type": "admin" },
-      { "name": "scotchester", "type": "admin" },
-      { "name": "ascott1", "type": "write" },
-      { "name": "contolini", "type": "read" }
-    ],
-    "repos": [
-      {
-        "name": "capital-framework",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
+      "repos": [
+        {
+          "name": "capital-framework",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-core",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-buttons",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Capital Framework",
+      "permissions": {
+        "admin": [ "himedlooff", "scotchester" ],
+        "write": [ "ascott1" ],
+        "read":  [ "contolini" ]
       },
-      {
-        "name": "cf-buttons",
-        "users": [
-          { "name": "himedloff",   "type": "admin" },
-          { "name": "scotchester", "type": "admin" },
-          { "name": "ascott1", "type": "write" },
-          { "name": "contolini", "type": "read" }
-        ]
-      }
-    ]
-  }
-]
+      "repos": [
+        {
+          "name": "capital-framework",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-core",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        },
+        {
+          "name": "cf-buttons",
+          "permissions": {
+            "admin": [ "himedlooff", "scotchester" ],
+            "write": [ "ascott1" ],
+            "read":  [ "contolini" ]
+          }
+        }
+      ]
+    }
+  ]
+}

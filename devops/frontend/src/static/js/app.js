@@ -11,13 +11,14 @@
     // Properties
     $scope.repoGroups = [];
 
-    // Init
+    // Data
     $http.get( 'repo-groups.json' ).
       success( function( response, status, headers, config ) {
-        var preppedResponse = $filter('prepRepoGroupData')( response );
+        var preppedResponse = $filter('prepRepoGroupData')( response.groups );
         $scope.repoGroups = preppedResponse;
       });
 
+    // Functions
     $scope.toggleUserType = function ( group, type ) {
       var key = '';
       switch ( type ) {
