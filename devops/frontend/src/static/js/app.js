@@ -17,42 +17,40 @@
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
         $scope.repoGroups = preppedResponse;
       });
-
-    // Functions
-    $scope.toggleUserType = function( anything ) {
-      console.log('toggle', anything);
-      // var key = '';
-      // switch ( type ) {
-      //   case 'admin': key = 'showAdmins';  break;
-      //   case 'read':  key = 'showReaders'; break;
-      //   case 'write': key = 'showWriters'; break;
-      //   default:      key = 'showReaders';
-      // }
-      // group[ key ] = !group[ key ];
-    };
-
   });
 
   angular.module('OSWizardApp').directive( 'users', function() {
     return {
       restrict: 'E',
-      template: '{{ group }}',
+      controller: function( $scope ) {
+        // Functions
+        $scope.toggle = function( group, role ) {
+          var key = '';
+          switch ( role.toLowerCase() ) {
+            case 'admin': key = 'showAdmins';  break;
+            case 'read':  key = 'showReaders'; break;
+            case 'write': key = 'showWriters'; break;
+            default:      key = 'showReaders';
+          }
+          group[ key ] = !group[ key ];
+        };
+      },
       scope: {
-        group: '=',
-        toggle: '&'
+        group: '='
       },
       /*jshint multistr: true */
       template: '\
         <ul class="group-content_list">\
             <li>\
-                <button class="btn btn__link">\
+                <button ng-click="toggle(group, role)"
+                        class="btn btn__link">\
                     {{ role }} ({{ total }})\
                 </button>\
             </li>\
-            <li ng-show="group.showAdmins"\
+            <li ng-show="group[show]"\
                 ng-repeat="user in users"\
                 class="group-content_list-item">\
-                {{ user.name }}\
+                {{ user }}\
             </li>\
         </ul>',
       link: function( scope, element, attrs ) {
@@ -64,10 +62,17 @@
         } else {
           scope.total = scope.users.length;
         }
+        if ( scope.role === 'Admin' ) {
+          scope.show = 'showAdmins';
+        } else if ( scope.role === 'Write' ) {
+          scope.show = 'showWriters';
+        } else if ( scope.role === 'Read' ) {
+          scope.show = 'showReaders';
+        }
         // Events
-        element.find('.btn').on( 'click', function() {
-          scope.toggle( scope.group, scope.role );
-        });
+        // element.find('.btn').on( 'click', function() {
+        //   scope.toggle( scope.group, scope.role );
+        // });
       }
     };
   });
