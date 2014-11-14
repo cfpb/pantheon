@@ -1,11 +1,11 @@
 <ul class="group-content_list">
     <li>
-        <button ng-click="toggle(group, role)"
+        <button ng-click="group[visiblityKey] = !group[visiblityKey]"
                 class="btn btn__link">
             {{ role }} ({{ total }})
         </button>
     </li>
-    <li ng-show="group[show]"
+    <li ng-show="group[visiblityKey]"
         ng-repeat="user in users"
         class="group-content_list-item">
         {{ user }}

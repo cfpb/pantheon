@@ -258,7 +258,7 @@ module.exports = function(grunt) {
      */
     watch: {
       main: {
-        files: ['src/static/css/app.less', 'src/static/js/app.js'],
+        files: ['src/static/css/app.less', 'src/static/js/app.js', 'src/static/templates/*.html'],
         tasks: ['default']
       }
     }

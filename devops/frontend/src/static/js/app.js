@@ -7,10 +7,8 @@
   angular.module( 'OSWizardApp', [] );
 
   angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter ) {
-
     // Properties
     $scope.repoGroups = [];
-
     // Data
     $http.get( 'repo-groups.json' ).
       success( function( response, status, headers, config ) {
@@ -19,25 +17,26 @@
       });
   });
 
+/* ==========================================================================
+   users directive
+   Creates a toggleable list of users.
+
+   role:  The user role you wish to display.
+          Can be "Admin", "Write", or "Read", capitalization is important.
+   group: A reference to a group object.
+
+   Example:
+      <section ng-repeat="group in repoGroups">
+          <users role="Admin"
+                 group="group"
+                 class="group-content_list">
+          </users>
+      </section>
+   ========================================================================== */
   angular.module('OSWizardApp').directive( 'users', function() {
     return {
       restrict: 'E',
-      controller: function( $scope ) {
-        // Functions
-        $scope.toggle = function( group, role ) {
-          var key = '';
-          switch ( role.toLowerCase() ) {
-            case 'admin': key = 'showAdmins';  break;
-            case 'read':  key = 'showReaders'; break;
-            case 'write': key = 'showWriters'; break;
-            default:      key = 'showReaders';
-          }
-          group[ key ] = !group[ key ];
-        };
-      },
-      scope: {
-        group: '='
-      },
+      scope: { group: '=' },
       templateUrl: '/static/templates/users.html',
       link: function( scope, element, attrs ) {
         // Properties
@@ -48,13 +47,7 @@
         } else {
           scope.total = scope.users.length;
         }
-        if ( scope.role === 'Admin' ) {
-          scope.show = 'showAdmins';
-        } else if ( scope.role === 'Write' ) {
-          scope.show = 'showWriters';
-        } else if ( scope.role === 'Read' ) {
-          scope.show = 'showReaders';
-        }
+        scope.visiblityKey = 'show' + scope.role;
       }
     };
   });
@@ -78,9 +71,9 @@
     return function( repoGroups ) {
       var output = [];
       angular.forEach( repoGroups, function( group ) {
-        group.showAdmins = false;
-        group.showReaders = false;
-        group.showWriters = false;
+        group.showAdmin = false;
+        group.showWrite = false;
+        group.showRead = false;
         output.push( group );
       });
       return output;
