@@ -40,9 +40,12 @@
                   show="group.showRead">
         </userlist>
         <div ng-show="group.showRepo"
-             class="expandable-group">
-            <h2 class="expandable-group_header">Repos</h2>
-            <repo ng-repeat="repo in group.repos"
+             class="expandable-group filter">
+            <h2 class="expandable-group_header">
+                Repos
+            </h2>
+            <input ng-model="repofilter" type="text" class="filter_input">
+            <repo ng-repeat="repo in group.repos | filter:repofilter"
                   repo="repo">
             </repo>
         </div> <!-- END .expandable-group -->
