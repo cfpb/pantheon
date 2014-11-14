@@ -102,6 +102,15 @@
     }
 }
 
+.expandable-group_header {
+    .h5();
+    line-height: 1;
+    margin: 0;
+    padding: unit(16px / @font-size, em);
+    border: 1px solid @gray-20;
+    background: @gray-20;
+}
+
 .userbutton {
     margin: 0 unit(6px / @btn-font-size, em) 0 0;
     // Fixes weirdness with the right edge of the text getting cropped.
@@ -113,11 +122,13 @@
 }
 
 .userlist {
-    margin: 0;
-    padding: 0;
-    border: 1px solid @gray-20;
-    background: @white;
-    list-style-type: none;
+    &_list {
+        margin: 0;
+        padding: 0;
+        border: 1px solid @gray-20;
+        background: @white;
+        list-style-type: none;
+    }
 
     &_item {
         padding: 1em;

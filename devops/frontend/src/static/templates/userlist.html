@@ -1,11 +1,14 @@
-<ul ng-show="show"
-    class="userlist">
-    <li ng-repeat="user in users"
-        class="userlist_item">
-        <span class="userlist_name">{{ user }}</span>
-    </li>
-    <li ng-if="total === 0"
-        class="userlist_item">
-        <em class="userlist_name">No &ldquo;{{ role }}&rdquo; users</em>
-    </li>
-</ul>
+<section ng-show="show"
+         class="userlist">
+    <h2 class="expandable-group_header">{{ role }}</h2>
+    <ul class="userlist_list">
+        <li ng-repeat="user in users"
+            class="userlist_item">
+            <span class="userlist_name">{{ user }}</span>
+        </li>
+        <li ng-if="total === 0"
+            class="userlist_item">
+            <em class="userlist_name">No &ldquo;{{ role }}&rdquo; users</em>
+        </li>
+    </ul>
+</section>
