@@ -28,14 +28,34 @@
   angular.module('OSWizardApp').directive( 'group', function() {
     return {
       restrict: 'E',
-      scope: {},
-      // Priority forces this directive to run beofre ng-repeat:
+      scope: {
+        group: '='
+      },
+      // Priority forces this directive to run before ng-repeat:
       // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
       priority: 1001,
-      templateUrl: '/static/templates/group.html',
-      link: function( scope, element, attrs ) {
-        
-      }
+      templateUrl: '/static/templates/group.html'
+    };
+  });
+
+  /* ==========================================================================
+     repo directive
+     Displays a repo from a group.
+
+     Example:
+        ...
+     ========================================================================== */
+
+  angular.module('OSWizardApp').directive( 'repo', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        repo: '='
+      },
+      // Priority forces this directive to run before ng-repeat:
+      // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
+      priority: 1001,
+      templateUrl: '/static/templates/repo.html'
     };
   });
 

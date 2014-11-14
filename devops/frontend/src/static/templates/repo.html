@@ -1,11 +1,11 @@
 <section>
     <div class="expandable expandable__padded" expandable>
         <h1 class="u-visually-hidden">
-            {{ group.name }}
+            {{ repo.name }}
         </h1>
         <button class="expandable_header expandable_target">
             <span class="expandable_header-left expandable_label">
-                {{ group.name }}
+                {{ repo.name }}
             </span>
             <span class="expandable_header-right expandable_link">
                 <span class="expandable_cue-open">
@@ -21,27 +21,20 @@
         <div class="expandable_content">
             <div class="group-cols">
                 <div class="group-cols_col group-content">
-                    <h2 class="group-content_header">Repos</h2>
-                    <div ng-repeat="repo in group.repos"
-                         class="group-content_list-item">
-                        <repo repo="repo"></repo>
-                    </div>
-                </div> <!-- END .group-content -->
-                <div class="group-cols_col group-content">
                     <h2 class="group-content_header">Users</h2>
-                    <users group="group"
+                    <users group="repo"
                            role="Admin"
-                           show="group.showAdmin"
+                           show="repo.showAdmin"
                            class="group-content_list">
                     </users>
-                    <users group="group"
+                    <users group="repo"
                            role="Write"
-                           show="group.showWrite"
+                           show="repo.showWrite"
                            class="group-content_list">
                     </users>
-                    <users group="group"
+                    <users group="repo"
                            role="Read"
-                           show="group.showRead"
+                           show="repo.showRead"
                            class="group-content_list">
                     </users>
                 </div> <!-- END .group-content -->

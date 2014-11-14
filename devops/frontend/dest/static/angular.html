@@ -73,7 +73,10 @@
 
 <main id="main" role="main">
     <div class="demo-grid">
-        <group ng-repeat="group in repoGroups"></group>
+        <div ng-repeat="group in repoGroups"
+             class="demo-grid_col-1-3">
+            <group group="group"></group>
+        </div>
     </div>
 </main>
 

@@ -11,9 +11,7 @@
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "himedlooff", "scotchester", "ascott1", "contolini" ]
           }
         },
         {
