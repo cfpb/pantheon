@@ -51,12 +51,61 @@
     outline-offset: 1px;
 }
 
+.expandable__repogroup {
+    border: 1px solid @gray-20;
+
+    &.expandable__expanded,
+    &:hover {
+        background: @gray-10;
+    }
+
+    .expandable_header {
+        padding: 1em;
+    }
+
+    .expandable_label {
+        .h4();
+        margin: 0 0 unit(5px / @font-size, em);
+        line-height: 1;
+    }
+
+    .expandable_actions {
+        .u-clearfix();
+        line-height: 1;
+    }
+
+    .expandable_content {
+        margin-bottom: 1em;
+        &:before {
+            height: 0;
+            margin-bottom: unit(5px / @base-font-size-px, em);
+        }
+    }
+}
+
+.expandable-group .expandable__repogroup {
+    // Needed to kill margins from spilling outside of the exandable.
+    .u-clearfix();
+    border-bottom: 0;
+
+    &.expandable__expanded,
+    &:hover {
+        background: @white;
+    }
+}
+
 .userbutton {
-    margin-right: unit(6px / @btn-font-size, em);
+    margin: 0 unit(6px / @btn-font-size, em) 0 0;
+    // Fixes weirdness with the right edge of the text getting cropped.
+    padding-right: 1px;
+}
+
+.repobutton {
+    margin: 0;
 }
 
 .userlist {
-    margin: 0 0 unit(15px / @base-font-size-px, em);
+    margin: 0;
     padding: 0;
     list-style-type: none;
 
@@ -66,7 +115,6 @@
 }
 
 .repolist {
-    margin: 0 0 unit(15px / @base-font-size-px, em);
+    margin: 0;
     padding: 0;
-    border-top: 1px solid @gray-80;
 }
