@@ -17,22 +17,14 @@
       });
   });
 
-/* ==========================================================================
-   group directive
-   Creates a toggleable list of users.
+  /* ==========================================================================
+     group directive
+     Displays a repo group.
 
-   role:  The user role you wish to display.
-          Can be "Admin", "Write", or "Read", capitalization is important.
-   group: A reference to a group object.
+     Example:
+        <group ng-repeat="group in repoGroups"></group>
+     ========================================================================== */
 
-   Example:
-      <section ng-repeat="group in repoGroups">
-          <users role="Admin"
-                 group="group"
-                 class="group-content_list">
-          </users>
-      </section>
-   ========================================================================== */
   angular.module('OSWizardApp').directive( 'group', function() {
     return {
       restrict: 'E',
@@ -47,22 +39,23 @@
     };
   });
 
-/* ==========================================================================
-   users directive
-   Creates a toggleable list of users.
+  /* ==========================================================================
+     users directive
+     Creates a toggleable list of users.
 
-   role:  The user role you wish to display.
-          Can be "Admin", "Write", or "Read", capitalization is important.
-   group: A reference to a group object.
+     role:  The user role you wish to display.
+            Can be "Admin", "Write", or "Read", capitalization is important.
+     group: A reference to a group object.
 
-   Example:
-      <section ng-repeat="group in repoGroups">
-          <users role="Admin"
-                 group="group"
-                 class="group-content_list">
-          </users>
-      </section>
-   ========================================================================== */
+     Example:
+        <section ng-repeat="group in repoGroups">
+            <users role="Admin"
+                   group="group"
+                   class="group-content_list">
+            </users>
+        </section>
+     ========================================================================== */
+
   angular.module('OSWizardApp').directive( 'users', function() {
     return {
       restrict: 'E',
@@ -84,10 +77,13 @@
     };
   });
 
-  // Trying the figure out how to use jQuery plugins with Angular.
-  // This doesn't seem like the most intuitive way but it's working for now.
-  // https://amitgharat.wordpress.com/2013/02/03/an-approach-to-use-jquery-plugins-with-angularjs/
-  // I'm thinking I'll need to make a real expandable directive.
+  /* ==========================================================================
+     Trying the figure out how to use jQuery plugins with Angular.
+     This doesn't seem like the most intuitive way but it's working for now.
+     https://amitgharat.wordpress.com/2013/02/03/an-approach-to-use-jquery-plugins-with-angularjs/
+     I'm thinking I'll need to make a real expandable directive.
+     ========================================================================== */
+
   angular.module('OSWizardApp').directive( 'expandable', function() {
     return {
       restrict: 'A',
