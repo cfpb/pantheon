@@ -55,7 +55,7 @@ node_modules/
 ##################
 bower_components/
 /devops/frontend/vendor
-/devops/frontend/dest/vendor
+/devops/frontend/dest/static/vendor
 
 # Project stuff #
 #################
