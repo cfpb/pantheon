@@ -80,6 +80,15 @@
         group: '=',
         show: '='
       },
+      controller: function( $scope ) {
+        $scope.toggle = function( show ) {
+          var toggledShow = !show;
+          $scope.group.showAdmin = false;
+          $scope.group.showWrite = false;
+          $scope.group.showRead = false;
+          $scope.show = toggledShow;
+        };
+      },
       templateUrl: '/static/templates/userbutton.html',
       link: function( scope, element, attrs ) {
         // Properties
@@ -90,6 +99,14 @@
         } else {
           scope.total = scope.users.length;
         }
+        // Events
+        element.on( 'click', function() {
+          if ( scope.show ) {
+            element.parents('.expandable')[0].expand();
+          } else {
+            element.parents('.expandable')[0].collapse();
+          }
+        });
       }
     };
   });

@@ -3,11 +3,28 @@
         <h1 class="u-visually-hidden">
             {{ group.name }}
         </h1>
-        <button class="expandable_header expandable_target">
-            <span class="expandable_header-left expandable_label">
+        <div class="expandable_header">
+            <div class="expandable_label">
                 {{ group.name }}
-            </span>
-            <span class="expandable_header-right expandable_link">
+            </div>
+            <div class="expandable_header-left">
+                <userbutton group="group"
+                            role="Admin"
+                            show="group.showAdmin">
+                </userbutton>
+                <userbutton group="group"
+                            role="Write"
+                            show="group.showWrite">
+                </userbutton>
+                <userbutton group="group"
+                            role="Read"
+                            show="group.showRead">
+                </userbutton>
+            </div>
+            <div class="expandable_header-right">
+                Repos (x)
+            </div>
+            <!-- <span class="expandable_header-right expandable_link">
                 <span class="expandable_cue-open">
                     Show
                     <span class="cf-icon cf-icon-plus-round"></span>
@@ -16,8 +33,8 @@
                     Hide
                     <span class="cf-icon cf-icon-minus-round"></span>
                 </span>
-            </span>
-        </button>
+            </span> -->
+        </div>
         <div class="expandable_content">
             <div class="group-cols">
                 <div class="group-cols_col group-content">
@@ -29,28 +46,16 @@
                 </div> <!-- END .group-content -->
                 <div class="group-cols_col group-content">
                     <h2 class="group-content_header">Users</h2>
-                    <userbutton group="group"
-                                role="Admin"
-                                show="group.showAdmin">
-                    </userbutton>
                     <userlist group="group"
                               role="Admin"
                               show="group.showAdmin"
                               class="group-content_list">
                     </userlist>
-                    <userbutton group="group"
-                                role="Write"
-                                show="group.showWrite">
-                    </userbutton>
                     <userlist group="group"
                               role="Write"
                               show="group.showWrite"
                               class="group-content_list">
                     </userlist>
-                    <userbutton group="group"
-                                role="Read"
-                                show="group.showRead">
-                    </userbutton>
                     <userlist group="group"
                               role="Read"
                               show="group.showRead"
