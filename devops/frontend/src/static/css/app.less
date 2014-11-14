@@ -31,13 +31,13 @@
     }
 }
 
-.demo-grid {
+.grid {
     .respond-to-min(768px, {
         .grid_nested-col-group();
     });
 }
 
-.demo-grid_col-1-3 {
+.grid_col-1-3 {
     .respond-to-min(768px, {
         .grid_column(6);
     });
@@ -87,7 +87,8 @@
 .expandable-group .expandable__repogroup {
     // Needed to kill margins from spilling outside of the exandable.
     .u-clearfix();
-    border-bottom: 0;
+    border: 1px solid @gray-20;
+    border-top: 0;
 
     &.expandable__expanded,
     &:hover {
@@ -142,9 +143,4 @@
         .h4();
         line-height: 1;
     }
-}
-
-.repolist {
-    margin: 0;
-    padding: 0;
 }

@@ -52,9 +52,6 @@
       scope: {
         repo: '='
       },
-      // Priority forces this directive to run before ng-repeat:
-      // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
-      // priority: 1001,
       templateUrl: '/static/templates/repo.html'
     };
   });

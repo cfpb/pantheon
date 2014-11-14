@@ -1,40 +1,38 @@
-<section>
-    <div class="expandable expandable__padded expandable__repogroup" expandable>
-        <div class="expandable_header">
-            <h2 class="expandable_label">
-                {{ repo.name }}
-            </h2>
-            <div class="expandable_actions">
-                <userbutton group="repo"
-                            role="Admin"
-                            show="repo.showAdmin">
-                </userbutton>
-                <userbutton group="repo"
-                            role="Write"
-                            show="repo.showWrite">
-                </userbutton>
-                <userbutton group="repo"
-                            role="Read"
-                            show="repo.showRead">
-                </userbutton>
-            </div>
+<section expandable class="expandable expandable__padded expandable__repogroup">
+    <div class="expandable_header">
+        <h1 class="expandable_label">
+            {{ repo.name }}
+        </h1>
+        <div class="expandable_actions">
+            <userbutton group="repo"
+                        role="Admin"
+                        show="repo.showAdmin">
+            </userbutton>
+            <userbutton group="repo"
+                        role="Write"
+                        show="repo.showWrite">
+            </userbutton>
+            <userbutton group="repo"
+                        role="Read"
+                        show="repo.showRead">
+            </userbutton>
         </div>
-        <div class="expandable_content">
-            <userlist role="Admin"
-                      group="repo"
-                      show="repo.showAdmin"
-                      class="group-content_list">
-            </userlist>
-            <userlist role="Write"
-                      group="repo"
-                      show="repo.showWrite"
-                      class="group-content_list">
-            </userlist>
-            <userlist role="Read"
-                      group="repo"
-                      show="repo.showRead"
-                      class="group-content_list">
-            </userlist>
-        </div> <!-- END .expandable_content -->
-    </div> <!-- END .expandable -->
-</section>
+    </div> <!-- END .expandable_header -->
+    <div class="expandable_content">
+        <userlist role="Admin"
+                  group="repo"
+                  show="repo.showAdmin"
+                  class="group-content_list">
+        </userlist>
+        <userlist role="Write"
+                  group="repo"
+                  show="repo.showWrite"
+                  class="group-content_list">
+        </userlist>
+        <userlist role="Read"
+                  group="repo"
+                  show="repo.showRead"
+                  class="group-content_list">
+        </userlist>
+    </div> <!-- END .expandable_content -->
+</section> <!-- END .expandable -->
