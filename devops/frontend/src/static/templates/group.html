@@ -36,33 +36,25 @@
             </span> -->
         </div>
         <div class="expandable_content">
-            <div class="group-cols">
-                <div class="group-cols_col group-content">
-                    <h2 class="group-content_header">Repos</h2>
-                    <div ng-repeat="repo in group.repos"
-                         class="group-content_list-item">
-                        <repo repo="repo"></repo>
-                    </div>
-                </div> <!-- END .group-content -->
-                <div class="group-cols_col group-content">
-                    <h2 class="group-content_header">Users</h2>
-                    <userlist group="group"
-                              role="Admin"
-                              show="group.showAdmin"
-                              class="group-content_list">
-                    </userlist>
-                    <userlist group="group"
-                              role="Write"
-                              show="group.showWrite"
-                              class="group-content_list">
-                    </userlist>
-                    <userlist group="group"
-                              role="Read"
-                              show="group.showRead"
-                              class="group-content_list">
-                    </userlist>
-                </div> <!-- END .group-content -->
-            </div> <!-- END .group-cols -->
+            <userlist group="group"
+                      role="Admin"
+                      show="group.showAdmin">
+            </userlist>
+            <userlist group="group"
+                      role="Write"
+                      show="group.showWrite">
+            </userlist>
+            <userlist group="group"
+                      role="Read"
+                      show="group.showRead">
+            </userlist>
+            <!-- <div class="group-cols_col group-content">
+                <h2 class="group-content_header">Repos</h2>
+                <div ng-repeat="repo in group.repos"
+                     class="group-content_list-item">
+                    <repo repo="repo"></repo>
+                </div>
+            </div> --> <!-- END .group-content -->
         </div> <!-- END .expandable_content -->
     </div> <!-- END .expandable -->
 </section>
