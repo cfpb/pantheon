@@ -22,7 +22,9 @@
                 </userbutton>
             </div>
             <div class="expandable_header-right">
-                Repos (x)
+                <repobutton group="group"
+                            show="group.showRepo">
+                </repobutton>
             </div>
             <!-- <span class="expandable_header-right expandable_link">
                 <span class="expandable_cue-open">
@@ -48,13 +50,13 @@
                       role="Read"
                       show="group.showRead">
             </userlist>
-            <!-- <div class="group-cols_col group-content">
-                <h2 class="group-content_header">Repos</h2>
-                <div ng-repeat="repo in group.repos"
-                     class="group-content_list-item">
+            <div ng-show="group.showRepo"
+                 class="expandable-group repolist"
+                 data-accordion="true">
+                <div ng-repeat="repo in group.repos">
                     <repo repo="repo"></repo>
                 </div>
-            </div> --> <!-- END .group-content -->
+            </div> <!-- END .expandable-group -->
         </div> <!-- END .expandable_content -->
     </div> <!-- END .expandable -->
 </section>

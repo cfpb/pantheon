@@ -54,8 +54,59 @@
       },
       // Priority forces this directive to run before ng-repeat:
       // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
-      priority: 1001,
+      // priority: 1001,
       templateUrl: '/static/templates/repo.html'
+    };
+  });
+
+  /* ==========================================================================
+     repobutton directive
+     Creates a button to toggle the repo view
+
+     group: A reference to a group object.
+     show: The state variable that the button should toggle.
+
+     Example:
+        <userbutton role="Admin"
+                    group="group">
+        </userbutton>
+     ========================================================================== */
+
+  angular.module('OSWizardApp').directive( 'repobutton', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        group: '=',
+        show: '='
+      },
+      controller: function( $scope ) {
+        $scope.toggle = function( show ) {
+          var toggledShow = !show;
+          $scope.group.showAdmin = false;
+          $scope.group.showWrite = false;
+          $scope.group.showRead = false;
+          $scope.group.showRepo = false;
+          $scope.show = toggledShow;
+        };
+      },
+      templateUrl: '/static/templates/repobutton.html',
+      link: function( scope, element, attrs ) {
+        // Properties
+        scope.repos = scope.group.repos;
+        if ( typeof scope.repos === 'undefined' ) {
+          scope.total = 0;
+        } else {
+          scope.total = scope.repos.length;
+        }
+        // Events
+        element.on( 'click', function() {
+          if ( scope.show ) {
+            element.parents('.expandable')[0].expand();
+          } else {
+            element.parents('.expandable')[0].collapse();
+          }
+        });
+      }
     };
   });
 
@@ -63,13 +114,14 @@
      userbutton directive
      Creates a button of a certain type of user
 
+     group: A reference to a group object.
      role:  The user role you wish to display.
             Can be "Admin", "Write", or "Read", capitalization is important.
-     group: A reference to a group object.
+     show: The state variable that the button should toggle.
 
      Example:
         <userbutton role="Admin"
-                     group="group">
+                    group="group">
         </userbutton>
      ========================================================================== */
 
@@ -86,6 +138,7 @@
           $scope.group.showAdmin = false;
           $scope.group.showWrite = false;
           $scope.group.showRead = false;
+          $scope.group.showRepo = false;
           $scope.show = toggledShow;
         };
       },
@@ -174,6 +227,7 @@
         group.showAdmin = false;
         group.showWrite = false;
         group.showRead = false;
+        group.showRepo = false;
         angular.forEach( group.repos, function( repo ) {
           repo.showAdmin = false;
           repo.showWrite = false;

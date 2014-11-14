@@ -1,7 +1,11 @@
-<ul class="userlist">
-    <li ng-show="show"
-        ng-repeat="user in users"
+<ul ng-show="show"
+    class="userlist">
+    <li ng-repeat="user in users"
         class="userlist_item">
         {{ user }}
+    </li>
+    <li ng-if="total === 0"
+        class="userlist_item">
+        <em>No &ldquo;{{ role }}&rdquo; users</em>
     </li>
 </ul>
