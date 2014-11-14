@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from osw import forms
 from osw import models
-from github.client import GitHub, GitHubEnterprise, GitHubAdmin, get_org_name, is_org_member, is_team_member, is_2fa_enabled
+from github.client import GitHub, GitHubEnterprise, GitHubAdmin, get_org_name, is_org_member, is_2fa_enabled
 from django.conf import settings
 from django.contrib import messages
 
@@ -50,9 +50,14 @@ def two_factor_audit(request):
 
 def github_details(request):
     context = RequestContext(request)
+
+    pipeline_kwargs = request.session.get('partial_pipeline', {}).get('kwargs')
+    if not pipeline_kwargs:
+        return redirect('home')
+
     github_details = request.session['github_details']
     org_name = github_details['org_name']
-    pipeline_kwargs = request.session['partial_pipeline']['kwargs']
+
     details = pipeline_kwargs['details']
     username = details['username']
 
@@ -73,6 +78,7 @@ def github_details(request):
         return name_form
 
     def build_publicize_form(data=None):
+        # only check if the member has publicized their membership if they have a member to publicize
         is_public_member = github_details['is_public_member'] = github_details['is_member'] and is_org_member(gh, username, org_name, public=True)
         if not is_public_member:
             return forms.PublicizeForm(data=data)
@@ -82,9 +88,9 @@ def github_details(request):
     def build_pub_key_form(data=None):
         gh_pub_keys = set([key['key'] for key in github_details['gh_pub_keys']])
         ghe_pub_keys = set([key['key'] for key in github_details['ghe_pub_keys']])
-        if gh_pub_keys | ghe_pub_keys:
+        if gh_pub_keys.intersection(ghe_pub_keys):
             return None
-        pub_key_form = forms.PubKeyForm(initial={'key_name': 'cfpb mac'}, data=data)
+        pub_key_form = forms.PubKeyForm(initial={'key_name': 'cfpb laptop'}, data=data)
         pub_key_form.fields['key_to_add'].choices = [(key['title'], key['title']) for key in github_details['ghe_pub_keys']]
         return pub_key_form
 
@@ -132,7 +138,6 @@ def github_details(request):
         if publicize_form and not publicize_form.is_valid() or \
            name_form and not name_form.is_valid() or \
            pub_key_form and not pub_key_form.is_valid():
-#            raise Exception(publicize_form.is_valid(), publicize_form.cleaned_data, name_form.is_valid(), name_form.cleaned_data, pub_key_form.is_valid(), pub_key_form.cleaned_data, pub_key_form.errors)
             context.update({
                 'gh_pub_keys': [key['title'] for key in github_details['gh_pub_keys']],
                 'publicize_form': publicize_form,
@@ -157,13 +162,14 @@ def github_details(request):
                 else:
                     user_extension_data['publicize_membership'] = True
 
-
         # copy GHE public key to GH
         if pub_key_form:
             pub_key_data = pub_key_form.cleaned_data
-            pub_key = [key for key in github_details['ghe_pub_keys'] if key['title'] == pub_key_data['key_to_add']][0]
-            pub_key_req = {'title': pub_key_data['key_name'], 'key': pub_key['key']}
-            gh.user.keys.POST(data=pub_key_req)
+            if pub_key_data['add_public_key']:
+                pub_key = [key for key in github_details['ghe_pub_keys'] if key['title'] == pub_key_data['key_to_add']][0]
+                pub_key_req = {'title': pub_key_data['key_name'], 'key': pub_key['key']}
+                gh.user.keys.POST(data=pub_key_req)
+                messages.success(request, "Enterprise public key added as '{}'".format(pub_key_data['key_name']))
 
         process_membership_request(user_extension_data)
         request.session.pop('github_details', None)
