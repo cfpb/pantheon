@@ -8,11 +8,13 @@
 
   angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter ) {
     // Properties
+    $scope.permission = '';
     $scope.repoGroups = [];
     // Data
     $http.get( 'repo-groups.json' ).
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
+        $scope.permission = response.permission;
         $scope.repoGroups = preppedResponse;
       });
   });

@@ -1,4 +1,5 @@
 {
+  "permission": "admin",
   "groups": [
     {
       "name": "Capital Framework",
