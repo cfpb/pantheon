@@ -182,6 +182,7 @@
     return {
       restrict: 'E',
       scope: {
+        filter: '=',
         group: '=',
         show: '='
       },

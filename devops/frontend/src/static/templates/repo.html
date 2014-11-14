@@ -19,17 +19,20 @@
         </div>
     </div> <!-- END .expandable_header -->
     <div class="expandable_content">
-        <userlist role="Admin"
+        <userlist filter="adminfilter"
+                  role="Admin"
                   group="repo"
                   show="repo.showAdmin"
                   class="group-content_list">
         </userlist>
-        <userlist role="Write"
+        <userlist filter="writefilter"
+                  role="Write"
                   group="repo"
                   show="repo.showWrite"
                   class="group-content_list">
         </userlist>
-        <userlist role="Read"
+        <userlist filter="readfilter"
+                  role="Read"
                   group="repo"
                   show="repo.showRead"
                   class="group-content_list">

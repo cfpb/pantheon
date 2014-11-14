@@ -18,7 +18,7 @@
           "name": "cf-core",
           "permissions": {
             "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
+            "write": [ "ascott1", "himedlooff", "dgreisen-cfpb", "mike" ],
             "read":  [ "contolini" ]
           }
         },
