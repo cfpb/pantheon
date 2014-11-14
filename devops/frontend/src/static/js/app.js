@@ -18,6 +18,36 @@
   });
 
 /* ==========================================================================
+   group directive
+   Creates a toggleable list of users.
+
+   role:  The user role you wish to display.
+          Can be "Admin", "Write", or "Read", capitalization is important.
+   group: A reference to a group object.
+
+   Example:
+      <section ng-repeat="group in repoGroups">
+          <users role="Admin"
+                 group="group"
+                 class="group-content_list">
+          </users>
+      </section>
+   ========================================================================== */
+  angular.module('OSWizardApp').directive( 'group', function() {
+    return {
+      restrict: 'E',
+      scope: {},
+      // Priority forces this directive to run beofre ng-repeat:
+      // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
+      priority: 1001,
+      templateUrl: '/static/templates/group.html',
+      link: function( scope, element, attrs ) {
+        
+      }
+    };
+  });
+
+/* ==========================================================================
    users directive
    Creates a toggleable list of users.
 

@@ -1,0 +1,53 @@
+<section class="demo-grid_col-1-3">
+    <div class="expandable expandable__padded" expandable>
+        <h1 class="u-visually-hidden">
+            {{ group.name }}
+        </h1>
+        <button class="expandable_header expandable_target">
+            <span class="expandable_header-left expandable_label">
+                {{ group.name }}
+            </span>
+            <span class="expandable_header-right expandable_link">
+                <span class="expandable_cue-open">
+                    Show
+                    <span class="cf-icon cf-icon-plus-round"></span>
+                </span>
+                <span class="expandable_cue-close">
+                    Hide
+                    <span class="cf-icon cf-icon-minus-round"></span>
+                </span>
+            </span>
+        </button>
+        <div class="expandable_content">
+            <div class="group-cols">
+                <div class="group-cols_col group-content">
+                    <h2 class="group-content_header">Repos</h2>
+                    <ul class="group-content_list">
+                        <li ng-repeat="repo in group.repos"
+                            class="group-content_list-item">
+                            {{ repo.name }}
+                        </li>
+                    </ul>
+                </div> <!-- END .group-content -->
+                <div class="group-cols_col group-content">
+                    <h2 class="group-content_header">Users</h2>
+                    <users group="group"
+                           role="Admin"
+                           show="group.showAdmin"
+                           class="group-content_list">
+                    </users>
+                    <users group="group"
+                           role="Write"
+                           show="group.showWrite"
+                           class="group-content_list">
+                    </users>
+                    <users group="group"
+                           role="Read"
+                           show="group.showRead"
+                           class="group-content_list">
+                    </users>
+                </div> <!-- END .group-content -->
+            </div> <!-- END .group-cols -->
+        </div> <!-- END .expandable_content -->
+    </div> <!-- END .expandable -->
+</section>
