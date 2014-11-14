@@ -38,21 +38,7 @@
       scope: {
         group: '='
       },
-      /*jshint multistr: true */
-      template: '\
-        <ul class="group-content_list">\
-            <li>\
-                <button ng-click="toggle(group, role)"\
-                        class="btn btn__link">\
-                    {{ role }} ({{ total }})\
-                </button>\
-            </li>\
-            <li ng-show="group[show]"\
-                ng-repeat="user in users"\
-                class="group-content_list-item">\
-                {{ user }}\
-            </li>\
-        </ul>',
+      templateUrl: '/static/templates/users.html',
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;

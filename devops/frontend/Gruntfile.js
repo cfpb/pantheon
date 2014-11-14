@@ -202,6 +202,14 @@ module.exports = function(grunt) {
             dest: 'dest/static'
           }
         ]
+      },
+      templates: {
+        files: [{
+          expand: true,
+          cwd: 'src/static/templates',
+          src: '**',
+          dest: 'dest/static/templates'
+        }]
       }
     },
 
@@ -278,7 +286,7 @@ module.exports = function(grunt) {
   grunt.registerTask('vendor', ['bower:install', 'concat:cf-less']);
   grunt.registerTask('vendor-to-static', ['copy:vendor']);
   grunt.registerTask('cssdev', ['less', 'autoprefixer', 'cssmin', 'usebanner:css']);
-  grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js']);
+  grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates']);
   grunt.registerTask('default', ['cssdev', 'jsdev']);
   grunt.registerTask('test', ['jshint']);
 
