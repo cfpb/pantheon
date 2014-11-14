@@ -22,21 +22,33 @@
             <div class="group-cols">
                 <div class="group-cols_col group-content">
                     <h2 class="group-content_header">Users</h2>
-                    <users group="repo"
-                           role="Admin"
-                           show="repo.showAdmin"
-                           class="group-content_list">
-                    </users>
-                    <users group="repo"
-                           role="Write"
-                           show="repo.showWrite"
-                           class="group-content_list">
-                    </users>
-                    <users group="repo"
-                           role="Read"
-                           show="repo.showRead"
-                           class="group-content_list">
-                    </users>
+                    <userbutton group="repo"
+                                role="Admin"
+                                show="repo.showAdmin">
+                    </userbutton>
+                    <userlist group="repo"
+                              role="Admin"
+                              show="repo.showAdmin"
+                              class="group-content_list">
+                    </userlist>
+                    <userbutton group="repo"
+                                role="Write"
+                                show="repo.showWrite">
+                    </userbutton>
+                    <userlist group="repo"
+                              role="Write"
+                              show="repo.showWrite"
+                              class="group-content_list">
+                    </userlist>
+                    <userbutton group="repo"
+                                role="Read"
+                                show="repo.showRead">
+                    </userbutton>
+                    <userlist group="repo"
+                              role="Read"
+                              show="repo.showRead"
+                              class="group-content_list">
+                    </userlist>
                 </div> <!-- END .group-content -->
             </div> <!-- END .group-cols -->
         </div> <!-- END .expandable_content -->

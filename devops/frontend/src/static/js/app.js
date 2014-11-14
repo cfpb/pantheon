@@ -60,7 +60,42 @@
   });
 
   /* ==========================================================================
-     users directive
+     userbutton directive
+     Creates a button of a certain type of user
+
+     role:  The user role you wish to display.
+            Can be "Admin", "Write", or "Read", capitalization is important.
+     group: A reference to a group object.
+
+     Example:
+        <userbutton role="Admin"
+                     group="group">
+        </userbutton>
+     ========================================================================== */
+
+  angular.module('OSWizardApp').directive( 'userbutton', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        group: '=',
+        show: '='
+      },
+      templateUrl: '/static/templates/userbutton.html',
+      link: function( scope, element, attrs ) {
+        // Properties
+        scope.role = attrs.role;
+        scope.users = scope.group.permissions[scope.role.toLowerCase()];
+        if ( typeof scope.users === 'undefined' ) {
+          scope.total = 0;
+        } else {
+          scope.total = scope.users.length;
+        }
+      }
+    };
+  });
+
+  /* ==========================================================================
+     userlist directive
      Creates a toggleable list of users.
 
      role:  The user role you wish to display.
@@ -69,21 +104,21 @@
 
      Example:
         <section ng-repeat="group in repoGroups">
-            <users role="Admin"
-                   group="group"
-                   class="group-content_list">
-            </users>
+            <userlist role="Admin"
+                      group="group"
+                      class="group-content_list">
+            </userlist>
         </section>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'users', function() {
+  angular.module('OSWizardApp').directive( 'userlist', function() {
     return {
       restrict: 'E',
       scope: {
         group: '=',
         show: '='
       },
-      templateUrl: '/static/templates/users.html',
+      templateUrl: '/static/templates/userlist.html',
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
@@ -122,6 +157,11 @@
         group.showAdmin = false;
         group.showWrite = false;
         group.showRead = false;
+        angular.forEach( group.repos, function( repo ) {
+          repo.showAdmin = false;
+          repo.showWrite = false;
+          repo.showRead = false;
+        });
         output.push( group );
       });
       return output;
