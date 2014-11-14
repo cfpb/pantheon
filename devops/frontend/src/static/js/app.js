@@ -36,7 +36,10 @@
   angular.module('OSWizardApp').directive( 'users', function() {
     return {
       restrict: 'E',
-      scope: { group: '=' },
+      scope: {
+        group: '=',
+        show: '='
+      },
       templateUrl: '/static/templates/users.html',
       link: function( scope, element, attrs ) {
         // Properties
@@ -47,7 +50,6 @@
         } else {
           scope.total = scope.users.length;
         }
-        scope.visiblityKey = 'show' + scope.role;
       }
     };
   });
