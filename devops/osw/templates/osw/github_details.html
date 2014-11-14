@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+{% load tile_container %}
+{% block title %}Confirm Enterprise Github Profile{% endblock %}
+
+{% block breadcrumbs %}
+  <li class="breadcrumbs_item"><a href="{% url "home" %}" class="breadcrumbs_link">Home</a></li>
+  <li class="breadcrumbs_item">Confirm Profile</li>
+{% endblock breadcrumbs %}
+{% block content %}
+    <form action="{% url "osw:github_details" %}" method="post">
+        {% csrf_token %}
+        {% if name_form %}{{ name_form }}{% endif %}
+        {% if publicize_form %}{{ publicize_form }}{% endif %}
+        {% if pub_key_form %}
+            {{ pub_key_form }}
+            <p>Existing github.com public keys:
+                <ul>
+                    {% for key in gh_pub_keys %}
+                        <li>{{ key }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+        {% endif %}
+        <input type="submit" class="btn" value="Continue" />
+    </form>
+{% endblock content %}

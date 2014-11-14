@@ -40,8 +40,36 @@ def GitHub(user_model=None, access_token=None):
     session = rauth.OAuth2Session(gh_client_key, gh_client_secret, access_token)
     return Client(gh_host, oauth=session, dataFilter=jsonFilter)
 
-def GitHubEnterpriseAdmin():
-    return Client(ghe_host, auth=ghe_admin_auth, dataFilter=jsonFilter)
+def GitHubEnterpriseAdmin(credentials=None):
+    credentials = credentials or ghe_admin_auth
+    return Client(ghe_host, auth=credentials, dataFilter=jsonFilter)
 
-def GitHubAdmin():
-    return Client(gh_host, auth=gh_admin_auth, dataFilter=jsonFilter)
+def GitHubAdmin(credentials=None):
+    credentials = credentials or gh_admin_auth
+    return Client(gh_host, auth=credentials, dataFilter=jsonFilter)
+
+
+def get_org_name(client, org_id):
+    """
+    given a client for a user that is a member of the org, return the org_name for the given org_id
+    """
+    orgs = {org['id']: org['login'] for org in client.user.orgs.get().json()}
+    return orgs[org_id]
+
+def is_org_member(client, username, org_name, public=False):
+    """
+    client must either be a client for the given username or a client with admin privileges for the org.
+    public - whether the user is a public org member
+    """
+    members = 'public_members' if public else 'members'
+    return client.orgs._(org_name)._(members)._(username).get().status_code == 204
+
+def is_team_member(client, username, team_id):
+    return client.teams._(str(team_id)).members._(username).get().status_code
+
+def is_2fa_enabled(client, username, org_name):
+    no_2fa_members = client.orgs._(org_name).members \
+                        .headers(accept='application/vnd.github.the-wasp-preview+json') \
+                        .get(params={'filter':'2fa_disabled'}).json()
+    no_2fa_usernames = [u['login'] for u in no_2fa_members]
+    return username not in no_2fa_usernames

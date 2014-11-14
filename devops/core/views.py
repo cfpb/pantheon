@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.http import HttpResponseNotAllowed, HttpResponseRedirect
 import core.sync
+from django.conf import settings
 
 # Create your views here.
 def sync(request):
@@ -19,10 +20,11 @@ def sync(request):
 
 
 def home(request):
+    context = RequestContext(request)
+
     if request.user.is_authenticated():
-        context = gen_context(request)
-    else:
-        context = RequestContext(request)
+        context['tiles'] = []
+        context = gen_context(request, settings.HOME_TILES, context, context['tiles'])
 
     return render_to_response('core/home.html', context)
 

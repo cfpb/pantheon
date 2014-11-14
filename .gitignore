@@ -58,3 +58,6 @@ bower_components/
 /devops/db.sqlite3
 /devops/corec
 
+# Vagrant #
+###########
+.vagrant
