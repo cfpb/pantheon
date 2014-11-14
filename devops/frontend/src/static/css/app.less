@@ -64,8 +64,9 @@
     }
 
     .expandable_label {
-        .h4();
-        margin: 0 0 unit(5px / @font-size, em);
+        .h3();
+        // Eyeballed to 15px.
+        margin-bottom: unit(9px / @font-size, em);
         line-height: 1;
     }
 
@@ -92,6 +93,13 @@
     &:hover {
         background: @white;
     }
+
+    .expandable_label {
+        .h4();
+        // Eyeballed to 12px.
+        margin-bottom: unit(7px / @font-size, em);
+        line-height: 1;
+    }
 }
 
 .userbutton {
@@ -107,10 +115,21 @@
 .userlist {
     margin: 0;
     padding: 0;
+    border: 1px solid @gray-20;
+    background: @white;
     list-style-type: none;
 
     &_item {
-        .webfont-regular();
+        padding: 1em;
+        line-height: 1;
+        & + & {
+            border-top: 1px dotted @gray-20;
+        }
+    }
+
+    &_name {
+        .h4();
+        line-height: 1;
     }
 }
 
