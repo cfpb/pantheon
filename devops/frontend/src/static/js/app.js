@@ -25,14 +25,21 @@
 
      Example:
         <group ng-repeat="group in repoGroups"></group>
+
+     group: This property is required. In this example it is getting accessed
+            through `group in repoGroups`.
+
+     Note: This directive uses the following directives:
+           - repo
+           - repobutton
+           - userbutton
+           - userlist
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'group', function() {
     return {
       restrict: 'E',
-      scope: {
-        group: '='
-      },
+      scope: {},
       // Priority forces this directive to run before ng-repeat:
       // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
       priority: 1001,
@@ -45,7 +52,7 @@
      Displays a repo from a group.
 
      Example:
-        ...
+        <repo ng-repeat="repo in group.repos repo="repo"></repo>
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'repo', function() {
