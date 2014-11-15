@@ -1,5 +1,5 @@
 /* ==========================================================================
-   os-wizard
+   dev-dash
    ========================================================================== */
 
 (function(){
@@ -24,10 +24,12 @@
      Displays a repo group.
 
      Example:
-        <group ng-repeat="group in repoGroups"></group>
+        <group ng-repeat="group in repoGroups">
+        </group>
 
      group: This property is required. In this example it is getting accessed
-            through `group in repoGroups`.
+            through `group in repoGroups`. It should point to a group object
+            with name, permissions, and repos properties.
 
      Note: This directive uses the following directives:
            - repo
@@ -49,10 +51,15 @@
 
   /* ==========================================================================
      repo directive
-     Displays a repo from a group.
+     Displays a repo from a repo group.
+
+     repo: This property is required. It should point to a repo object that has
+           name and permissions properties.
 
      Example:
-        <repo ng-repeat="repo in group.repos repo="repo"></repo>
+        <repo ng-repeat="repo in group.repos
+              repo="repo">
+        </repo>
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'repo', function() {
@@ -67,15 +74,20 @@
 
   /* ==========================================================================
      repobutton directive
-     Creates a button to toggle the repo view
+     Creates a button to toggle a list of repos on and off.
 
-     group: A reference to a group object.
+     group: A reference to a repo group object.
+     role:  The permission role you wish to display.
+            Can be "Admin", "Write", or "Read", capitalization is important.
      show: The state variable that the button should toggle.
 
      Example:
-        <userbutton role="Admin"
-                    group="group">
+        <userbutton group="group"
+                    role="Admin"
+                    show="group.showRead">
         </userbutton>
+
+     TODO: Merge with userbutton since they do almost the exact same thing.
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'repobutton', function() {
@@ -120,8 +132,8 @@
      userbutton directive
      Creates a button of a certain type of user
 
-     group: A reference to a group object.
-     role:  The user role you wish to display.
+     group: A reference to a repo group object.
+     role:  The permission role you wish to display.
             Can be "Admin", "Write", or "Read", capitalization is important.
      show: The state variable that the button should toggle.
 
@@ -129,6 +141,8 @@
         <userbutton role="Admin"
                     group="group">
         </userbutton>
+
+     TODO: Merge with userbutton since they do almost the exact same thing.
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'userbutton', function() {
@@ -174,17 +188,14 @@
      userlist directive
      Creates a toggleable list of users.
 
-     role:  The user role you wish to display.
+     group: A reference to a repo group object.
+     role:  The permission role you wish to display.
             Can be "Admin", "Write", or "Read", capitalization is important.
-     group: A reference to a group object.
 
      Example:
-        <section ng-repeat="group in repoGroups">
-            <userlist role="Admin"
-                      group="group"
-                      class="group-content_list">
-            </userlist>
-        </section>
+        <userlist group="group"
+                  role="Admin">
+        </userlist>
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'userlist', function() {
@@ -210,6 +221,8 @@
   });
 
   /* ==========================================================================
+     expandable directive
+
      Trying the figure out how to use jQuery plugins with Angular.
      This doesn't seem like the most intuitive way but it's working for now.
      https://amitgharat.wordpress.com/2013/02/03/an-approach-to-use-jquery-plugins-with-angularjs/
@@ -225,7 +238,9 @@
     };
   });
 
-  /* Add some properties to the repo group data before using it.
+  /* ==========================================================================
+     prepRepoGroupData filter
+     Adds some properties to the repo group data before using it.
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepRepoGroupData', function() {
     return function( repoGroups ) {
@@ -247,4 +262,3 @@
   });
 
 })();
-
