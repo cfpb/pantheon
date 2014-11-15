@@ -1,10 +1,25 @@
 /* ==========================================================================
    dev-dash
+
+   1. RepoGroupsCtrl controller
+   2. group directive
+   3. repo directive
+   4. repobutton directive
+   5. userbutton directive
+   6. userlist directive
+   7. expandable directive
+   8. prepRepoGroupData filter
    ========================================================================== */
 
 (function(){
 
   angular.module( 'OSWizardApp', [] );
+
+  /* ==========================================================================
+     1. RepoGroupsCtrl controller
+     The main controller. All it really does is grabs a JSON file, filters it
+     and sets two main properties used throughout the app.
+     ========================================================================== */
 
   angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter ) {
     // Properties
@@ -20,7 +35,7 @@
   });
 
   /* ==========================================================================
-     group directive
+     2. group directive
      Displays a repo group.
 
      Example:
@@ -50,7 +65,7 @@
   });
 
   /* ==========================================================================
-     repo directive
+     3. repo directive
      Displays a repo from a repo group.
 
      repo: This property is required. It should point to a repo object that has
@@ -73,7 +88,7 @@
   });
 
   /* ==========================================================================
-     repobutton directive
+     4. repobutton directive
      Creates a button to toggle a list of repos on and off.
 
      group: A reference to a repo group object.
@@ -129,7 +144,7 @@
   });
 
   /* ==========================================================================
-     userbutton directive
+     5. userbutton directive
      Creates a button of a certain type of user
 
      group: A reference to a repo group object.
@@ -185,7 +200,7 @@
   });
 
   /* ==========================================================================
-     userlist directive
+     6. userlist directive
      Creates a toggleable list of users.
 
      group: A reference to a repo group object.
@@ -221,7 +236,7 @@
   });
 
   /* ==========================================================================
-     expandable directive
+     7. expandable directive
 
      Trying the figure out how to use jQuery plugins with Angular.
      This doesn't seem like the most intuitive way but it's working for now.
@@ -239,7 +254,7 @@
   });
 
   /* ==========================================================================
-     prepRepoGroupData filter
+     8. prepRepoGroupData filter
      Adds some properties to the repo group data before using it.
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepRepoGroupData', function() {
