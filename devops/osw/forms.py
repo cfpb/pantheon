@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.safestring import mark_safe
 
 class NameForm(forms.Form):
     update_public_name = forms.BooleanField(required=False)
@@ -21,3 +22,6 @@ class PubKeyForm(forms.Form):
         data = self.cleaned_data
         if data.get('add_public_key') and (not data.get('key_to_add') or not data.get('key_name')):
             raise forms.ValidationError("'Key To Add' and 'Key Name' are required if you want to add a public key.")
+
+class TwoFactorAuthForm(forms.Form):
+    two_factor = forms.BooleanField(label='I certify I have enabled two factor authentication', help_text=mark_safe('You MUST <a href="https://help.github.com/articles/about-two-factor-authentication/">enable two factor authentication</a> before requesting membership.'))

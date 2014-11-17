@@ -21,6 +21,7 @@
                 </ul>
             </p>
         {% endif %}
+        {% if two_fa_form %}{{ two_fa_form }}{% endif %}
         <input type="submit" class="btn" value="Continue" />
     </form>
 {% endblock content %}

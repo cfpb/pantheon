@@ -94,6 +94,13 @@ def github_details(request):
         pub_key_form.fields['key_to_add'].choices = [(key['title'], key['title']) for key in github_details['ghe_pub_keys']]
         return pub_key_form
 
+    def build_two_fa_form(data=None):
+        is_member = github_details['is_member']
+        if is_member:
+            return None
+        else:
+            return forms.TwoFactorAuthForm(data=data)
+
     def process_membership_request(user_extension_data):
         user_extension = models.UserExtension.objects.create(**user_extension_data)
 
@@ -117,7 +124,8 @@ def github_details(request):
             'name_form': build_name_form(),
             'publicize_form': build_publicize_form(),
             'pub_key_form': build_pub_key_form(),
-            'gh_pub_keys': [key['title'] for key in github_details['gh_pub_keys']]
+            'gh_pub_keys': [key['title'] for key in github_details['gh_pub_keys']],
+            'two_fa_form': build_two_fa_form(),
         })
         if context['publicize_form'] is None and context['name_form'] is None and context['pub_key_form'] is None:
             request.session.pop('github_details', None)
@@ -134,15 +142,18 @@ def github_details(request):
         name_form = build_name_form(data=request.POST)
         publicize_form = build_publicize_form(data=request.POST)
         pub_key_form = build_pub_key_form(data=request.POST)
+        two_fa_form = build_two_fa_form(data=request.POST)
 
         if publicize_form and not publicize_form.is_valid() or \
            name_form and not name_form.is_valid() or \
-           pub_key_form and not pub_key_form.is_valid():
+           pub_key_form and not pub_key_form.is_valid() or\
+           two_fa_form and not two_fa_form.is_valid():
             context.update({
                 'gh_pub_keys': [key['title'] for key in github_details['gh_pub_keys']],
                 'publicize_form': publicize_form,
                 'name_form': name_form,
                 'pub_key_form': pub_key_form,
+                'two_fa_form': two_fa_form,
             })
             return render_to_response('osw/github_details.html', context)
 
@@ -170,6 +181,9 @@ def github_details(request):
                 pub_key_req = {'title': pub_key_data['key_name'], 'key': pub_key['key']}
                 gh.user.keys.POST(data=pub_key_req)
                 messages.success(request, "Enterprise public key added as '{}'".format(pub_key_data['key_name']))
+
+        # as long as two factor form is checked, we don't have to do anything.
+
 
         process_membership_request(user_extension_data)
         request.session.pop('github_details', None)
