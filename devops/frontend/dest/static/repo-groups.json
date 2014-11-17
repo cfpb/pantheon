@@ -4,31 +4,31 @@
     {
       "name": "Capital Framework",
       "permissions": {
-        "admin": [ "himedlooff", "scotchester" ],
-        "write": [ "ascott1" ],
-        "read":  [ "contolini" ]
+        "admin": [ "mimesaloof", "upstatescotch" ],
+        "write": [ "ascrumptious" ],
+        "read":  [ "cantaloupy" ]
       },
       "repos": [
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester", "ascott1", "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch", "ascrumptious", "cantaloupy" ]
           }
         },
         {
           "name": "cf-core",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1", "himedlooff", "dgreisen-cfpb", "mike" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious", "mimesaloof", "dagreaseman", "mike" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-buttons",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         }
       ]
@@ -36,30 +36,16 @@
     {
       "name": "Owning a home",
       "permissions": {
-        "admin": [ "ascott1", "contolini" ],
-        "write": [ "himedlooff" ],
-        "read":  [ "scotchester" ]
+        "admin": [ "ascrumptious", "cantaloupy" ],
+        "write": [ "mimesaloof" ],
+        "read":  [ "upstatescotch" ]
       },
       "repos": [
         {
           "name": "owning-a-home",
           "permissions": {
-            "admin": [ "ascott1", "contolini" ],
-            "read":  [ "scotchester" ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "SES",
-      "permissions": {
-        "admin": [ "dgreisen-cfpb" ]
-      },
-      "repos": [
-        {
-          "name": "ses-next",
-          "permissions": {
-            "admin": [ "dgreisen-cfpb" ]
+            "admin": [ "ascrumptious", "cantaloupy" ],
+            "read":  [ "upstatescotch" ]
           }
         }
       ]
@@ -67,33 +53,33 @@
     {
       "name": "Capital Framework",
       "permissions": {
-        "admin": [ "himedlooff", "scotchester" ],
-        "write": [ "ascott1" ],
-        "read":  [ "contolini" ]
+        "admin": [ "mimesaloof", "upstatescotch" ],
+        "write": [ "ascrumptious" ],
+        "read":  [ "cantaloupy" ]
       },
       "repos": [
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-core",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-buttons",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         }
       ]
@@ -101,33 +87,33 @@
     {
       "name": "Capital Framework",
       "permissions": {
-        "admin": [ "himedlooff", "scotchester" ],
-        "write": [ "ascott1" ],
-        "read":  [ "contolini" ]
+        "admin": [ "mimesaloof", "upstatescotch" ],
+        "write": [ "ascrumptious" ],
+        "read":  [ "cantaloupy" ]
       },
       "repos": [
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-core",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-buttons",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         }
       ]
@@ -135,33 +121,33 @@
     {
       "name": "Capital Framework",
       "permissions": {
-        "admin": [ "himedlooff", "scotchester" ],
-        "write": [ "ascott1" ],
-        "read":  [ "contolini" ]
+        "admin": [ "mimesaloof", "upstatescotch" ],
+        "write": [ "ascrumptious" ],
+        "read":  [ "cantaloupy" ]
       },
       "repos": [
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-core",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-buttons",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         }
       ]
@@ -169,33 +155,33 @@
     {
       "name": "Capital Framework",
       "permissions": {
-        "admin": [ "himedlooff", "scotchester" ],
-        "write": [ "ascott1" ],
-        "read":  [ "contolini" ]
+        "admin": [ "mimesaloof", "upstatescotch" ],
+        "write": [ "ascrumptious" ],
+        "read":  [ "cantaloupy" ]
       },
       "repos": [
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-core",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-buttons",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         }
       ]
@@ -203,33 +189,33 @@
     {
       "name": "Capital Framework",
       "permissions": {
-        "admin": [ "himedlooff", "scotchester" ],
-        "write": [ "ascott1" ],
-        "read":  [ "contolini" ]
+        "admin": [ "mimesaloof", "upstatescotch" ],
+        "write": [ "ascrumptious" ],
+        "read":  [ "cantaloupy" ]
       },
       "repos": [
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-core",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-buttons",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         }
       ]
@@ -237,33 +223,33 @@
     {
       "name": "Capital Framework",
       "permissions": {
-        "admin": [ "himedlooff", "scotchester" ],
-        "write": [ "ascott1" ],
-        "read":  [ "contolini" ]
+        "admin": [ "mimesaloof", "upstatescotch" ],
+        "write": [ "ascrumptious" ],
+        "read":  [ "cantaloupy" ]
       },
       "repos": [
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-core",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-buttons",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         }
       ]
@@ -271,33 +257,33 @@
     {
       "name": "Capital Framework",
       "permissions": {
-        "admin": [ "himedlooff", "scotchester" ],
-        "write": [ "ascott1" ],
-        "read":  [ "contolini" ]
+        "admin": [ "mimesaloof", "upstatescotch" ],
+        "write": [ "ascrumptious" ],
+        "read":  [ "cantaloupy" ]
       },
       "repos": [
         {
           "name": "capital-framework",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-core",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         },
         {
           "name": "cf-buttons",
           "permissions": {
-            "admin": [ "himedlooff", "scotchester" ],
-            "write": [ "ascott1" ],
-            "read":  [ "contolini" ]
+            "admin": [ "mimesaloof", "upstatescotch" ],
+            "write": [ "ascrumptious" ],
+            "read":  [ "cantaloupy" ]
           }
         }
       ]
