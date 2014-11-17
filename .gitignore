@@ -55,6 +55,13 @@ node_modules/
 ##################
 bower_components/
 /devops/frontend/vendor
+/devops/frontend/dest/static/vendor
+
+# Project stuff #
+#################
+/devops/frontend/dest/static/css
+/devops/frontend/dest/static/fonts
+/devops/frontend/dest/static/js
 /devops/frontend/dest/static/templates
 /devops/db.sqlite3
 /devops/corec

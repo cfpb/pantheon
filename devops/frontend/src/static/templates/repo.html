@@ -1,12 +1,9 @@
-<section>
-    <div class="expandable" expandable>
-        <h1 class="u-visually-hidden">
+<section expandable class="expandable expandable__padded expandable__repogroup">
+    <div class="expandable_header">
+        <h1 class="expandable_label">
             {{ repo.name }}
         </h1>
-        <div class="expandable_header">
-            <div class="expandable_label">
-                {{ repo.name }}
-            </div>
+        <div class="expandable_actions">
             <userbutton group="repo"
                         role="Admin"
                         show="repo.showAdmin">
@@ -19,37 +16,26 @@
                         role="Read"
                         show="repo.showRead">
             </userbutton>
-            <!-- <span class="expandable_header-right expandable_link">
-                <span class="expandable_cue-open">
-                    Show
-                    <span class="cf-icon cf-icon-plus-round"></span>
-                </span>
-                <span class="expandable_cue-close">
-                    Hide
-                    <span class="cf-icon cf-icon-minus-round"></span>
-                </span>
-            </span> -->
         </div>
-        <div class="expandable_content">
-            <div class="group-cols">
-                <div class="group-cols_col group-content">
-                    <userlist role="Admin"
-                              group="repo"
-                              show="repo.showAdmin"
-                              class="group-content_list">
-                    </userlist>
-                    <userlist role="Write"
-                              group="repo"
-                              show="repo.showWrite"
-                              class="group-content_list">
-                    </userlist>
-                    <userlist role="Read"
-                              group="repo"
-                              show="repo.showRead"
-                              class="group-content_list">
-                    </userlist>
-                </div> <!-- END .group-content -->
-            </div> <!-- END .group-cols -->
-        </div> <!-- END .expandable_content -->
-    </div> <!-- END .expandable -->
-</section>
+    </div> <!-- END .expandable_header -->
+    <div class="expandable_content">
+        <userlist filter="adminfilter"
+                  role="Admin"
+                  group="repo"
+                  show="repo.showAdmin"
+                  class="group-content_list">
+        </userlist>
+        <userlist filter="writefilter"
+                  role="Write"
+                  group="repo"
+                  show="repo.showWrite"
+                  class="group-content_list">
+        </userlist>
+        <userlist filter="readfilter"
+                  role="Read"
+                  group="repo"
+                  show="repo.showRead"
+                  class="group-content_list">
+        </userlist>
+    </div> <!-- END .expandable_content -->
+</section> <!-- END .expandable -->
