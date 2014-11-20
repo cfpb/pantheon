@@ -8,10 +8,9 @@ def two_factor_audit(request, response, backend, details, user, **kwargs):
         return
     if not user:
         return HttpResponse('Unauthorized', status=401)
-
-    if not request.session.get('github_details', {}).get('2fa_enabled'):
+    github_details = request.session.get('github_details', {})
+    if not github_details or (github_details['is_member'] and not github_details['2fa_enabled']):
         return redirect('osw:two_factor_audit')
-
 
 @partial
 def github_details(request, response, backend, details, **kwargs):
