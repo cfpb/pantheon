@@ -26,7 +26,7 @@
     $scope.permission = '';
     $scope.repoGroups = [];
     // Data
-    $http.get( 'repo-groups.json' ).
+    $http.get( 'test-data.json' ).
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
         $scope.permission = response.permission;
