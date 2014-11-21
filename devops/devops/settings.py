@@ -53,14 +53,14 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'kratos.User'
 
 LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'core.backends.GitHubEnterprise',
-    'social.backends.github.GithubOAuth2',
+    'core.backends.GitHub',
 
 )
 
@@ -104,6 +104,8 @@ GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # A requests.auth.HTTP
 # READ ONLY CREDENTIALS
 GHE_ADMIN_CREDENTIALS = get_secret('GHE_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
 
+KRATOS_ENFORCE_GH_ORGS = GH_ORG_IDS
+KRATOS_ENFORCE_GHE = True
 
 # Application definition
 
@@ -118,6 +120,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
     'github',
+    'kratos',
     'osw',
     'jenkins',
 )

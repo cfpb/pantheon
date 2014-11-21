@@ -73,3 +73,17 @@ def is_2fa_enabled(client, username, org_name):
                         .get(params={'filter':'2fa_disabled'}).json()
     no_2fa_usernames = [u['login'] for u in no_2fa_members]
     return username not in no_2fa_usernames
+
+
+def iter_get(client):
+    """
+    return an iterator over all results from GETing the client and any subsequent pages.
+    """
+    items = []
+    while items or client:
+        if not items:
+            resp = client.get()
+            items = resp.json()
+            next = resp.links.get('next', {}).get('url')
+            client = client._path([next]) if next else None
+        yield(items.pop(0))

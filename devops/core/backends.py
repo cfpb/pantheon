@@ -1,6 +1,13 @@
 from social.backends.github import GithubOAuth2
 from django.conf import settings
 
+class GitHub(GithubOAuth2):
+    def get_user_details(self, response):
+        out = super(GitHub, self).get_user_details(response)
+        out['gh_id'] = response.get('id')
+        return out
+
+
 class GitHubEnterprise(GithubOAuth2):
     name = 'github-enterprise'
     AUTHORIZATION_URL = settings.SOCIAL_AUTH_GITHUB_ENTERPRISE_HOST + '/login/oauth/authorize'
@@ -13,4 +20,5 @@ class GitHubEnterprise(GithubOAuth2):
     def get_user_details(self, response):
         out = super(GitHubEnterprise, self).get_user_details(response)
         out['location'] = response.get('location')
+        out['ghe_id'] = response.get('id')
         return out

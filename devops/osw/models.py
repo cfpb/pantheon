@@ -1,6 +1,8 @@
 from django.db import models
 import django_fsm as fsm
 # Create your models here.
+from django.conf import settings
+User = settings.AUTH_USER_MODEL
 
 
 def can_approve():
@@ -18,7 +20,7 @@ class UserExtension(models.Model):
         ('github account linked', ''),
     )
 
-    user = models.OneToOneField('core.User', related_name='osw_extension')
+    user = models.OneToOneField(User, related_name='osw_extension')
     state = fsm.FSMField(default='pending', protected=True)
     publicize_membership = models.BooleanField(default=False)
 
