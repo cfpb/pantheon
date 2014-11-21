@@ -48,23 +48,23 @@ Thumbs.db
 
 # Grunt.js #
 ############
-node_modules/
 .grunt/
+node_modules/
 
 # Bower packages #
 ##################
 bower_components/
 /devops/frontend/vendor
-/devops/frontend/dest/static/vendor
 
 # Project stuff #
 #################
-/devops/frontend/dest/static/css
-/devops/frontend/dest/static/fonts
-/devops/frontend/dest/static/js
-/devops/frontend/dest/static/templates
-/devops/db.sqlite3
 /devops/corec
+/devops/db.sqlite3
+# /devops/frontend/dest/static/css
+# /devops/frontend/dest/static/fonts
+# /devops/frontend/dest/static/js
+# /devops/frontend/dest/static/templates
+# /devops/frontend/dest/static/vendor
 
 # Vagrant #
 ###########

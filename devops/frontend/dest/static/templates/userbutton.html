@@ -1,0 +1,7 @@
+<button ng-click="toggle(show)"
+        ng-class="{btn__secondary: show===false}"
+        class="btn btn__link userbutton">
+    {{ role }} ({{ total }})
+    <span ng-show="show"
+          class="cf-icon cf-icon-up userbutton_icon"></span>
+</button>
