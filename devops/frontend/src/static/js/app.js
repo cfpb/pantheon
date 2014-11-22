@@ -114,12 +114,10 @@
       },
       controller: function( $scope ) {
         $scope.toggle = function( show ) {
-          var toggledShow = !show;
           $scope.group.showAdmin = false;
           $scope.group.showWrite = false;
           $scope.group.showRead = false;
-          $scope.group.showRepo = false;
-          $scope.show = toggledShow;
+          $scope.show = !show;
         };
       },
       templateUrl: '/static/templates/repobutton.html',
