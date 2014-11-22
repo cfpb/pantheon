@@ -15,13 +15,8 @@
    ========================================================================== */
 
 [role="banner"] {
-    .grid_wrapper();
     margin-top: unit(45px / @base-font-size-px, em);
     margin-bottom: unit(30px / @base-font-size-px, em);
-}
-
-[role="main"] {
-    .grid_wrapper();
 }
 
 [role="contentinfo"] {
@@ -80,15 +75,19 @@
 
 .masthead {
     .u-clearfix();
-    &_logo {
-        display: inline-block;
-        margin: 0;
-    }
     &_role {
-        float: right;
-        display: inline-block;
         .webfont-regular;
     }
+    .respond-to-min(480px, {
+        &_logo {
+            margin: 0;
+            display: inline-block;
+        }
+        &_role {
+            float: right;
+            display: inline-block;
+        }
+    });
 }
 
 
