@@ -4,9 +4,11 @@
 
    # Base
    # Code demo
-   # Grid
+   # Masthead
    # Expandables
    # Directives
+   ## group
+   ## userbutton, repobutton
    ========================================================================== */
 
 
@@ -40,32 +42,6 @@
     &_caption {
         margin: 1em 0;
     }
-}
-
-
-/* ==========================================================================
-   # Grid
-   ========================================================================== */
-
-.grid {
-    .respond-to-min(768px, {
-        .grid_nested-col-group();
-    });
-}
-
-.grid_col-1-3 {
-    .respond-to-min(768px, {
-        .grid_column(6);
-        group& {
-            margin-right: 0;
-        }
-    });
-    .respond-to-min(1024px, {
-        .grid_column(4);
-        group& {
-            margin-right: 0;
-        }
-    });
 }
 
 
@@ -179,6 +155,33 @@
 
 /* ==========================================================================
    # Directives
+   ========================================================================== */
+
+
+/* ## Group
+   ========================================================================== */
+
+.group-container {
+    .respond-to-min(768px, {
+        .grid_nested-col-group();
+    });
+}
+
+.group {
+    .respond-to-min(768px, {
+        .grid_column(6);
+        group& {
+            margin-right: 0;
+        }
+    });
+    .respond-to-min(1024px, {
+        .grid_column(4);
+        margin-right: 0;
+    });
+}
+
+
+/* ## userbutton, repobutton
    ========================================================================== */
 
 // .btn overrides.
