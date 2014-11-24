@@ -37,6 +37,7 @@ def teams(req=None):
     out = {
         "permission": "admin",
         "groups": out.values(),
+        "ungrouped": [{'name': repo.full_name.split('/')[1]} for repo in Repo.objects.filter(kratos_extension=None)]
     }
 
     with open('repo-groups.json', 'w') as f:
