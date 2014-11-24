@@ -22,8 +22,7 @@ def teams(req=None):
         repo_name = repo_perm.repo.full_name.split('/')[1]
         perm_name = repo_perm.perm.name.split('_')[1]
         user_name = repo_perm.user.username.split('_')[0]
-        repos.setdefault(repo_perm, {'name': repo_name, 'permissions': {}})['permissions'].setdefault(perm_name, []).append(user_name)
-
+        repos.setdefault(repo_name, {'name': repo_name, 'permissions': {}})['permissions'].setdefault(perm_name, []).append(user_name)
 
     all_repos = models.RepoExtension.objects.all()
     for repo in all_repos:
@@ -34,8 +33,6 @@ def teams(req=None):
 
     for team, team_data in out.items():
         team_data['repos'] = team_data['repos'].values()
-        for repo_data in team_data['repos']:
-            repo_data['permissions'] = repo_data['permissions'].values()
 
     out = {
         "permission": "admin",
