@@ -251,7 +251,6 @@
         } else {
           scope.total = scope.users.length;
         }
-        // console.log( scope.getUsername );
       }
     };
   });
@@ -280,19 +279,18 @@
         // Properties
         var permissions = scope.group.permissions;
         scope.role = 'read';
-        // console.log(attrs.username);
         if ( permissions.read ) {
-          if ( permissions.read.indexOf( attrs.username ) > -1 ) {
+          if ( permissions.read.indexOf( attrs.username * 1 ) > -1 ) {
             scope.role = 'read';
           }
         }
         if ( permissions.write ) {
-          if ( permissions.write.indexOf( attrs.username ) > -1 ) {
+          if ( permissions.write.indexOf( attrs.username * 1 ) > -1 ) {
             scope.role = 'write';
           }
         }
         if ( permissions.admin ) {
-          if ( permissions.admin.indexOf( attrs.username ) > -1 ) {
+          if ( permissions.admin.indexOf( attrs.username * 1 ) > -1 ) {
             scope.role = 'admin';
           }
         }
