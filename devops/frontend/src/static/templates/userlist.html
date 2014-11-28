@@ -11,9 +11,13 @@
                       class="userlist_name-stub">stub</span>
             </span>
         </li>
+        <li ng-if="(users|filter:filter).length === 0"
+            class="userlist_item">
+            <span class="userlist_name">No user named &ldquo;{{ filter }}&rdquo;</span>
+        </li>
         <li ng-if="total === 0"
             class="userlist_item">
-            <em class="userlist_name">No &ldquo;{{ role }}&rdquo; users</em>
+            <span class="userlist_name">No &ldquo;{{ role }}&rdquo; users</span>
         </li>
     </ul>
 </section>
