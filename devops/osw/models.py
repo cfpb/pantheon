@@ -5,11 +5,6 @@ from django.conf import settings
 User = settings.AUTH_USER_MODEL
 
 
-def can_approve():
-    """
-    Whether the user can approve a member for the org.
-    """
-    return True
 
 class UserExtension(models.Model):
     CHOICES = (
@@ -21,22 +16,4 @@ class UserExtension(models.Model):
     )
 
     user = models.OneToOneField(User, related_name='osw_extension')
-    state = fsm.FSMField(default='pending', protected=True)
-    publicize_membership = models.BooleanField(default=False)
 
-    @fsm.transition(
-        field=state,
-        source='pending',
-        target='approved',
-    )
-    def existing_approval(self):
-        pass
-
-    @fsm.transition(
-        field=state,
-        source='pending',
-        target='approved',
-        conditions=[can_approve],
-    )
-    def approve(self):
-        pass

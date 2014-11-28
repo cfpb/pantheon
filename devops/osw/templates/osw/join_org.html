@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+{% load tile_container %}
+{% block title %}Enable GitHub Two Factor Authentication{% endblock %}
+
+{% block breadcrumbs %}
+  <li class="breadcrumbs_item"><a href="{% url "home" %}" class="breadcrumbs_link">Home</a></li>
+  <li class="breadcrumbs_item">Accept Org Invite</li>
+{% endblock breadcrumbs %}
+{% block content %}
+    <p>GitHub has sent an invitation to our organization to your inbox.</p>
+
+    <p>When you have accepted the invitation</p>
+    <a href="/complete/github" class="btn">Click Here</a>
+
+{% endblock content %}
