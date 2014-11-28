@@ -25,19 +25,23 @@
   angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter ) {
     // Properties
     $scope.users = {};
-    $scope.username = '';
+    $scope.user = {};
     $scope.permission = '';
     $scope.repoGroups = [];
     // Functions
     $scope.getUsername = function( id ) {
-      return $scope.users[id].username;
+      if ( $scope.users[id] ) {
+        return $scope.users[id].username;
+      } else {
+        return '';
+      }
     };
     // Data
     $http.get( 'test-data.json' ).
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
         $scope.users = response.users;
-        $scope.username = $scope.getUsername( response.username );
+        $scope.user = response.user;
         $scope.permission = response.permission;
         $scope.repoGroups = preppedResponse;
       });
@@ -263,6 +267,7 @@
         // Properties
         var permissions = scope.group.permissions;
         scope.role = 'read';
+        console.log(attrs.username);
         if ( permissions.read ) {
           if ( permissions.read.indexOf( attrs.username ) > -1 ) {
             scope.role = 'read';
