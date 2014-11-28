@@ -82,9 +82,6 @@
   angular.module('OSWizardApp').directive( 'repo', function() {
     return {
       restrict: 'E',
-      scope: {
-        repo: '='
-      },
       templateUrl: '/static/templates/repo.html'
     };
   });
@@ -276,6 +273,7 @@
         }
         element.addClass('role-icon');
         element.addClass( 'role-icon__' + scope.role );
+        console.log(attrs.username);
       }
     };
   });

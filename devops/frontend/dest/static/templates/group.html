@@ -51,8 +51,7 @@
                 Repos
             </h2>
             <input ng-model="repofilter" type="text" class="filter_input">
-            <repo ng-repeat="repo in group.repos | filter:repofilter"
-                  repo="repo">
+            <repo ng-repeat="repo in group.repos | filter:repofilter">
             </repo>
         </div> <!-- END .expandable-group -->
     </div> <!-- END .expandable_content -->
