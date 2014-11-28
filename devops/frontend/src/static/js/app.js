@@ -24,22 +24,23 @@
 
   angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter ) {
     // Properties
+    $scope.users = {};
     $scope.username = '';
     $scope.permission = '';
-    $scope.users = {};
     $scope.repoGroups = [];
+    // Functions
+    $scope.getUsername = function( id ) {
+      return $scope.users[id].username;
+    };
     // Data
     $http.get( 'test-data.json' ).
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
-        $scope.username = response.username;
-        $scope.permission = response.permission;
         $scope.users = response.users;
+        $scope.username = $scope.getUsername( response.username );
+        $scope.permission = response.permission;
         $scope.repoGroups = preppedResponse;
       });
-    $scope.getUsername = function( id ) {
-      return $scope.users[id].username;
-    };
   });
 
   /* ==========================================================================
@@ -233,6 +234,7 @@
         } else {
           scope.total = scope.users.length;
         }
+        // console.log( scope.getUsername );
       }
     };
   });
