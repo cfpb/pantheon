@@ -17,32 +17,45 @@
   angular.module( 'OSWizardApp', [] );
 
   /* ==========================================================================
+     # UserService service
+     A single source for getting user data.
+     ========================================================================== */
+
+  angular.module('OSWizardApp').factory( 'UserService', function() {
+    var user = { id: '', name: '', permission: 'read' };
+    var users = {};
+    return {
+      user: user,
+      users: users,
+      getName: function( id ) {
+        if ( this.users[id] ) {
+          return this.users[id].username;
+        } else {
+          return '';
+        }
+      }
+    };
+  });
+
+  /* ==========================================================================
      # RepoGroupsCtrl controller
      The main controller. All it really does is grabs a JSON file, filters it
      and sets two main properties used throughout the app.
      ========================================================================== */
 
-  angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter ) {
+  angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter, UserService ) {
     // Properties
-    $scope.users = {};
-    $scope.user = {};
-    $scope.permission = '';
+    $scope.user = UserService.user;
+    $scope.users = UserService.users;
     $scope.repoGroups = [];
-    // Functions
-    $scope.getUsername = function( id ) {
-      if ( $scope.users[id] ) {
-        return $scope.users[id].username;
-      } else {
-        return '';
-      }
-    };
     // Data
     $http.get( 'test-data.json' ).
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
-        $scope.users = response.users;
-        $scope.user = response.user;
-        $scope.permission = response.permission;
+        UserService.users = response.users;
+        UserService.user.id = response.user;
+        UserService.user.name = UserService.getName( response.user );
+        UserService.user.permission = response.permission;
         $scope.repoGroups = preppedResponse;
       });
   });
@@ -267,7 +280,7 @@
         // Properties
         var permissions = scope.group.permissions;
         scope.role = 'read';
-        console.log(attrs.username);
+        // console.log(attrs.username);
         if ( permissions.read ) {
           if ( permissions.read.indexOf( attrs.username ) > -1 ) {
             scope.role = 'read';
