@@ -11,7 +11,6 @@
    # role directive
    # expandable directive
    # username filter
-   # isStub filter
    # prepRepoGroupData filter
    ========================================================================== */
 
@@ -236,7 +235,7 @@
         </userlist>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'userlist', function() {
+  angular.module('OSWizardApp').directive( 'userlist', function( UserService ) {
     return {
       restrict: 'E',
       scope: {
@@ -248,7 +247,10 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.users = scope.group.permissions[scope.role.toLowerCase()];
+        scope.users = [];
+        angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
+          scope.users.push( UserService.users[value] );
+        });
         if ( typeof scope.users === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -328,16 +330,6 @@
   angular.module('OSWizardApp').filter( 'username', function(UserService) {
     return function( id ) {
       return UserService.getName( id );
-    };
-  });
-
-  /* ==========================================================================
-     # isStub filter
-     Tests wether or not a user is a stub user.
-     ========================================================================== */
-  angular.module('OSWizardApp').filter( 'stub', function(UserService) {
-    return function( id ) {
-      return UserService.users[id].stub;
     };
   });
 

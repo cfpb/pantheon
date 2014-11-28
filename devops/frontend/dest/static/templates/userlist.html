@@ -6,8 +6,8 @@
         <li ng-repeat="user in users | filter:filter"
             class="userlist_item">
             <span class="userlist_name">
-                {{ user|username }}
-                <span ng-if="user|stub"
+                {{ user.username }}
+                <span ng-if="user.stub"
                       class="userlist_name-stub">stub</span>
             </span>
         </li>
