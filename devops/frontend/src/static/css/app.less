@@ -78,6 +78,7 @@
 }
 
 .expandable__repogroup {
+    position: relative;
     border: 1px solid @gray-20;
 
     &.expandable__expanded,
@@ -94,6 +95,12 @@
         // Eyeballed to 15px.
         margin-bottom: unit(9px / @font-size, em);
         line-height: 1;
+    }
+
+    .expandable_role {
+        position: absolute;
+        top: -1px;
+        right: -1px;
     }
 
     .expandable_actions {
@@ -161,33 +168,42 @@
 .role-icon {
     display: inline-block;
     padding: 4px 6px;
-    border-radius: 4px;
+    border-bottom-left-radius: 4px;
     background: @gray-20;
     color: @black;
     font-size: unit(12px / @base-font-size-px, em);
     line-height: 1;
 
-    &_icon {
-        .cf-icon();
-        &:before {
-            content: "\e600";
-        }
-    }
+    // &_icon {
+    //     .cf-icon();
+    //     &:before {
+    //         content: "\e600";
+    //     }
+    // }
 
     &_label:after {
         content: "";
-        .webfont-medium();
+        .webfont-regular();
         padding-left: 2px;
     }
 
+    &__read {
+        background-color: @gray-20;
+    }
     &__read &_label:after {
         content: "read";
     }
 
+    &__write {
+        background-color: @gray-20;
+    }
     &__write &_label:after {
         content: "write";
     }
 
+    &__admin {
+        background-color: @green-midtone;
+    }
     &__admin &_label:after {
         content: "admin";
     }
