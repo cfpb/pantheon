@@ -99,8 +99,8 @@
 
     .expandable_role {
         position: absolute;
-        top: -1px;
-        right: -1px;
+        top: 0;
+        right: 0;
     }
 
     .expandable_actions {
@@ -171,41 +171,30 @@
     border-bottom-left-radius: 4px;
     background: @gray-20;
     color: @black;
+    .webfont-regular();
     font-size: unit(12px / @base-font-size-px, em);
     line-height: 1;
 
-    // &_icon {
-    //     .cf-icon();
-    //     &:before {
-    //         content: "\e600";
-    //     }
-    // }
-
-    &_label:after {
+    &:after {
         content: "";
-        .webfont-regular();
-        padding-left: 2px;
     }
 
     &__read {
-        background-color: @gray-20;
-    }
-    &__read &_label:after {
-        content: "read";
+        display: none;
     }
 
     &__write {
         background-color: @gray-20;
-    }
-    &__write &_label:after {
-        content: "write";
+        &:after {
+            content: "write";
+        }
     }
 
     &__admin {
         background-color: @green-midtone;
-    }
-    &__admin &_label:after {
-        content: "admin";
+        &:after {
+            content: "admin";
+        }
     }
 }
 
