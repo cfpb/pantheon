@@ -5,7 +5,11 @@
     <ul class="userlist_list">
         <li ng-repeat="user in users | filter:filter"
             class="userlist_item">
-            <span class="userlist_name">{{ user|username }}</span>
+            <span class="userlist_name">
+                {{ user|username }}
+                <span ng-if="user|stub"
+                      class="userlist_name-stub">stub</span>
+            </span>
         </li>
         <li ng-if="total === 0"
             class="userlist_item">

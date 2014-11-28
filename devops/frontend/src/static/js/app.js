@@ -329,6 +329,16 @@
   });
 
   /* ==========================================================================
+     # isStub filter
+     Tests wether or not a user is a stub user.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'stub', function(UserService) {
+    return function( id ) {
+      return UserService.users[id].stub;
+    };
+  });
+
+  /* ==========================================================================
      # prepRepoGroupData filter
      Adds some properties to the repo group data before using it.
      ========================================================================== */
