@@ -273,7 +273,6 @@
         }
         element.addClass('role-icon');
         element.addClass( 'role-icon__' + scope.role );
-        console.log(attrs.username);
       }
     };
   });

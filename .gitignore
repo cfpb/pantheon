@@ -65,5 +65,6 @@ bower_components/
 # /devops/frontend/dest/static/js
 # /devops/frontend/dest/static/templates
 /devops/frontend/dest/static/test-data.json
+/devops/frontend/dest/static/test-data.old.json
 # /devops/frontend/dest/static/vendor
 
