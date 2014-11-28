@@ -6,6 +6,7 @@
    # Code demo
    # Masthead
    # Expandables
+   # .role-icon
    # Directives
    ## group
    ## userbutton, repobutton
@@ -149,6 +150,46 @@
         top: .5em;
         right: .5em;
         width: 60%;
+    }
+}
+
+
+/* ==========================================================================
+   # .role-icon
+   ========================================================================== */
+
+.role-icon {
+    display: inline-block;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: @gray-20;
+    color: @black;
+    font-size: unit(12px / @base-font-size-px, em);
+    line-height: 1;
+
+    &_icon {
+        .cf-icon();
+        &:before {
+            content: "\e600";
+        }
+    }
+
+    &_label:after {
+        content: "";
+        .webfont-medium();
+        padding-left: 2px;
+    }
+
+    &__read &_label:after {
+        content: "read";
+    }
+
+    &__write &_label:after {
+        content: "write";
+    }
+
+    &__admin &_label:after {
+        content: "admin";
     }
 }
 
