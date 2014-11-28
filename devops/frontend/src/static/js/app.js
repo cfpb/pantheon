@@ -1,6 +1,7 @@
 /* ==========================================================================
    dev-dash
 
+   # UserService service
    # RepoGroupsCtrl controller
    # group directive
    # repo directive
@@ -9,6 +10,8 @@
    # userlist directive
    # role directive
    # expandable directive
+   # username filter
+   # isStub filter
    # prepRepoGroupData filter
    ========================================================================== */
 
