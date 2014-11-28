@@ -5,7 +5,7 @@
     <ul class="userlist_list">
         <li ng-repeat="user in users | filter:filter"
             class="userlist_item">
-            <span class="userlist_name">{{ user }}</span>
+            <span class="userlist_name">{{ user|username }}</span>
         </li>
         <li ng-if="total === 0"
             class="userlist_item">

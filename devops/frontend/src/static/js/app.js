@@ -319,6 +319,16 @@
   });
 
   /* ==========================================================================
+     # username filter
+     Get the username from a user id.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'username', function(UserService) {
+    return function( id ) {
+      return UserService.getName( id );
+    };
+  });
+
+  /* ==========================================================================
      # prepRepoGroupData filter
      Adds some properties to the repo group data before using it.
      ========================================================================== */
