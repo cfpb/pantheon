@@ -1,14 +1,15 @@
 /* ==========================================================================
    dev-dash
 
-   1. RepoGroupsCtrl controller
-   2. group directive
-   3. repo directive
-   4. repobutton directive
-   5. userbutton directive
-   6. userlist directive
-   7. expandable directive
-   8. prepRepoGroupData filter
+   # RepoGroupsCtrl controller
+   # group directive
+   # repo directive
+   # repobutton directive
+   # userbutton directive
+   # userlist directive
+   # role directive
+   # expandable directive
+   # prepRepoGroupData filter
    ========================================================================== */
 
 (function(){
@@ -16,26 +17,28 @@
   angular.module( 'OSWizardApp', [] );
 
   /* ==========================================================================
-     1. RepoGroupsCtrl controller
+     # RepoGroupsCtrl controller
      The main controller. All it really does is grabs a JSON file, filters it
      and sets two main properties used throughout the app.
      ========================================================================== */
 
   angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter ) {
     // Properties
+    $scope.username = '';
     $scope.permission = '';
     $scope.repoGroups = [];
     // Data
     $http.get( 'test-data.json' ).
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
+        $scope.username = response.username;
         $scope.permission = response.permission;
         $scope.repoGroups = preppedResponse;
       });
   });
 
   /* ==========================================================================
-     2. group directive
+     # group directive
      Displays a repo group.
 
      Example:
@@ -56,7 +59,6 @@
   angular.module('OSWizardApp').directive( 'group', function() {
     return {
       restrict: 'E',
-      scope: {},
       // Priority forces this directive to run before ng-repeat:
       // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
       priority: 1001,
@@ -65,7 +67,7 @@
   });
 
   /* ==========================================================================
-     3. repo directive
+     # repo directive
      Displays a repo from a repo group.
 
      repo: This property is required. It should point to a repo object that has
@@ -88,7 +90,7 @@
   });
 
   /* ==========================================================================
-     4. repobutton directive
+     # repobutton directive
      Creates a button to toggle a list of repos on and off.
 
      group: A reference to a repo group object.
@@ -142,7 +144,7 @@
   });
 
   /* ==========================================================================
-     5. userbutton directive
+     # userbutton directive
      Creates a button of a certain type of user
 
      group: A reference to a repo group object.
@@ -198,7 +200,7 @@
   });
 
   /* ==========================================================================
-     6. userlist directive
+     # userlist directive
      Creates a toggleable list of users.
 
      group: A reference to a repo group object.
@@ -234,7 +236,50 @@
   });
 
   /* ==========================================================================
-     7. expandable directive
+     # role directive
+     A simple role label.
+
+     group: A reference to a repo group object.
+     user:  The username you want to use to figure out the role.
+
+     Example:
+        <role group="group"
+              user="a_username">
+        </userlist>
+     ========================================================================== */
+
+  angular.module('OSWizardApp').directive( 'role', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        group: '='
+      },
+      templateUrl: '/static/templates/role.html',
+      link: function( scope, element, attrs ) {
+        // Properties
+        var permissions = scope.group.permissions;
+        scope.role = 'read';
+        if ( permissions.read ) {
+          if ( permissions.read.indexOf( attrs.username ) > -1 ) {
+            scope.role = 'read';
+          }
+        }
+        if ( permissions.write ) {
+          if ( permissions.write.indexOf( attrs.username ) > -1 ) {
+            scope.role = 'write';
+          }
+        }
+        if ( permissions.admin ) {
+          if ( permissions.admin.indexOf( attrs.username ) > -1 ) {
+            scope.role = 'admin';
+          }
+        }
+      }
+    };
+  });
+
+  /* ==========================================================================
+     # expandable directive
 
      Trying the figure out how to use jQuery plugins with Angular.
      This doesn't seem like the most intuitive way but it's working for now.
@@ -252,7 +297,7 @@
   });
 
   /* ==========================================================================
-     8. prepRepoGroupData filter
+     # prepRepoGroupData filter
      Adds some properties to the repo group data before using it.
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepRepoGroupData', function() {
