@@ -26,6 +26,7 @@
     // Properties
     $scope.username = '';
     $scope.permission = '';
+    $scope.users = {};
     $scope.repoGroups = [];
     // Data
     $http.get( 'test-data.json' ).
