@@ -33,8 +33,12 @@
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
         $scope.username = response.username;
         $scope.permission = response.permission;
+        $scope.users = response.users;
         $scope.repoGroups = preppedResponse;
       });
+    $scope.getUsername = function( id ) {
+      return $scope.users[id].username;
+    };
   });
 
   /* ==========================================================================
