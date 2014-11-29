@@ -21,9 +21,9 @@
                 <h2 class="expandable-group_header expandable-group_header__add">
                     Add a new {{ role }}
                 </h2>
-                <form ng-show="showAllUsers"
-                      name="add-user">
-                    <ul class="userlist_list">
+                <form name="add-user">
+                    <ul ng-show="showAllUsers"
+                        class="userlist_list">
                         <li ng-repeat="user in allUsers"
                             class="userlist_item">
                             <button class="userlist_add">
@@ -36,14 +36,13 @@
                             </span>
                         </li>
                     </ul>
-                    <button ng-click="showAllUsers = !showAllUsers"
+                    <button ng-show="showAllUsers"
+                            ng-click="showAllUsers = !showAllUsers"
                             class="userlist_show-hide">
                         Hide all GitHub users
                     </button>
-                </form>
-                <form ng-show="!showAllUsers"
-                      name="add-user">
-                    <ul class="userlist_list">
+                    <ul ng-show="!showAllUsers"
+                        class="userlist_list">
                         <li ng-if="(allUsers|filter:filter).length === 0"
                             class="userlist_item">
                             <span class="userlist_name">
@@ -62,7 +61,8 @@
                             </span>
                         </li>
                     </ul>
-                    <button ng-click="showAllUsers = !showAllUsers"
+                    <button ng-show="!showAllUsers"
+                            ng-click="showAllUsers = !showAllUsers"
                             class="userlist_show-hide">
                         Show all GitHub users
                     </button>
