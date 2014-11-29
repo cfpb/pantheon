@@ -259,6 +259,7 @@
         } else {
           scope.total = scope.users.length;
         }
+        scope.showAllUsers = false;
       }
     };
   });

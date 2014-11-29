@@ -147,6 +147,12 @@
     padding: unit(16px / @font-size, em);
     border: 1px solid @gray-20;
     background: @gray-20;
+
+    &__add {
+        border-color: @green-midtone;
+        background: @green-midtone;
+        color: @black;
+    }
 }
 
 .filter {
@@ -253,7 +259,7 @@
     }
 
     &_item {
-        padding: 1em;
+        padding: unit(16px / @base-font-size-px, em);
         line-height: 1;
         & + & {
             border-top: 1px dotted @gray-20;
@@ -268,5 +274,20 @@
             font-size: unit(12px / @font-size, em);
         }
     }
+
+    &_add {
+        .btn();
+        .btn__link();
+        margin: 0 unit(12px / @btn-font-size, em) 0 0;
+    }
+
+    &_show-hide {
+        .btn();
+        .btn__secondary();
+        display: block;
+        width: 100%; // Needed for the button element.
+        margin-top: unit(16px / @btn-font-size, em);
+    }
+
 }
 
