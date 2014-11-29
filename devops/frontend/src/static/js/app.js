@@ -27,9 +27,11 @@
   angular.module('OSWizardApp').factory( 'UserService', function() {
     var user = { id: '', name: '', permission: 'read' };
     var users = {};
+    var usersArray = [];
     return {
       user: user,
       users: users,
+      usersArray: usersArray,
       getName: function( id ) {
         if ( this.users[id] ) {
           return this.users[id].username;
@@ -56,6 +58,7 @@
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
         UserService.users = response.users;
+        UserService.usersArray = $filter('toArray')( UserService.users );
         UserService.user.id = response.user;
         UserService.user.name = UserService.getName( response.user );
         UserService.user.permission = response.permission;
@@ -253,7 +256,7 @@
         angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
           scope.users.push( UserService.users[value] );
         });
-        scope.allUsers = $filter('toArray')( UserService.users );
+        scope.allUsers = UserService.usersArray;
         if ( typeof scope.users === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -342,12 +345,12 @@
      A very simple object to array filter.
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'toArray', function() {
-    return function( users ) {
-      var usersArray = [];
-      angular.forEach( users, function( user ) {
-        usersArray.push( user );
+    return function( obj ) {
+      var array = [];
+      angular.forEach( obj, function( obj_prop ) {
+        array.push( obj_prop );
       });
-      return usersArray;
+      return array;
     };
   });
 
