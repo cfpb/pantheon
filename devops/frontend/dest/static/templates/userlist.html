@@ -6,6 +6,10 @@
            class="filter_input"
            placeholder="Filter or add users">
     <ul class="userlist_list">
+        <li ng-if="total === 0"
+            class="userlist_item">
+            <span class="userlist_name">No &ldquo;{{ role }}&rdquo; users</span>
+        </li>
         <li ng-repeat="user in users | filter:filter"
             class="userlist_item">
             <span class="userlist_name">
@@ -70,10 +74,6 @@
                     Show all GitHub users
                 </button>
             </form>
-        </li>
-        <li ng-if="total === 0"
-            class="userlist_item">
-            <span class="userlist_name">No &ldquo;{{ role }}&rdquo; users</span>
         </li>
     </ul>
 </section>
