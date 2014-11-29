@@ -14,6 +14,16 @@
         <li ng-if="(users|filter:filter).length === 0"
             class="userlist_item">
             <span class="userlist_name">No user named &ldquo;{{ filter }}&rdquo;</span>
+            <ul>
+                <li ng-repeat="user in allUsers | filter:filter">
+                    {{ user.username }}
+                    <span ng-if="user.stub"
+                          class="userlist_name-stub">stub</span>
+                </li>
+            </ul>
+            <form action="">
+                <button ng-if="editable" class="btn">Add user</button>
+            </form>
         </li>
         <li ng-if="total === 0"
             class="userlist_item">

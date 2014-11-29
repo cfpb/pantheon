@@ -11,6 +11,7 @@
    # role directive
    # expandable directive
    # username filter
+   # toArray filter
    # prepRepoGroupData filter
    ========================================================================== */
 
@@ -235,7 +236,7 @@
         </userlist>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'userlist', function( UserService ) {
+  angular.module('OSWizardApp').directive( 'userlist', function( $filter, UserService ) {
     return {
       restrict: 'E',
       scope: {
@@ -246,11 +247,13 @@
       templateUrl: '/static/templates/userlist.html',
       link: function( scope, element, attrs ) {
         // Properties
+        scope.editable = UserService.user.permission === 'admin';
         scope.role = attrs.role;
         scope.users = [];
         angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
           scope.users.push( UserService.users[value] );
         });
+        scope.allUsers = $filter('toArray')( UserService.users );
         if ( typeof scope.users === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -330,6 +333,20 @@
   angular.module('OSWizardApp').filter( 'username', function(UserService) {
     return function( id ) {
       return UserService.getName( id );
+    };
+  });
+
+  /* ==========================================================================
+     # toArray filter
+     A very simple object to array filter.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'toArray', function() {
+    return function( users ) {
+      var usersArray = [];
+      angular.forEach( users, function( user ) {
+        usersArray.push( user );
+      });
+      return usersArray;
     };
   });
 
