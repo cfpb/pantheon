@@ -1,0 +1,18 @@
+- name: Create the PUIAS_6_computational Repository
+  copy: src=puias-computational.repo dest=/etc/yum.repos.d/puias-computational.repo
+
+- name: Create the GPG key for PUIAS_6_computational
+  copy: src=RPM-GPG-KEY-puias dest=/etc/pki/rpm-gpg
+
+- name: Install python
+  yum: name={{ item }}
+  with_items:
+    - python27
+    - python27-tools
+    - python27-setuptools
+
+- name: Install pip
+  easy_install: name=pip executable=easy_install-2.7
+
+- name: Install python packages
+  pip: requirements={{ root_dir }}/devops/requirements.txt executable=pip2.7

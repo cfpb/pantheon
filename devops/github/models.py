@@ -30,7 +30,7 @@ class RepoManager(models.Manager):
 
         if gh:
             teams_data = gh.user.teams.get().json()
-            teams_data = [td for td in teams_data if td['organization']['id'] in settings.GITHUB_ORG_IDS]
+            teams_data = [td for td in teams_data if td['organization']['id'] in settings.GH_ORG_IDS]
             Team.objects.sync_teams(teams_data, gh)
 
     def sync_repos(self, repos_data, owner=None):
@@ -63,7 +63,7 @@ class Repo(models.Model):
     html_url = models.URLField()
     gh_updated_at = models.DateTimeField()
     teams = models.ManyToManyField('Team', related_name='repos')
-    owner = models.ForeignKey('core.User', blank=True, null=True)
+    owner = models.ForeignKey('core.User', blank=True, null=True, related_name='repos')
 
     objects = RepoManager()
 

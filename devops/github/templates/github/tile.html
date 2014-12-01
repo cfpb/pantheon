@@ -1,17 +1,18 @@
-<h3>Git Repos</h3> 
+{% load tile_container %}
 <div class="gh-server">
-    <h4>GitHub Enterprise</h4>
+    <h3>{{ tile.title }}</h3>
+    {% tile_container tile.tiles %}
 </div>
-{% for repo in tile.enterprise %}
-  <div class="expandable expandable__padded">
-    <button class="expandable_header expandable_target" {% if repo.model.fork %}style="color:blue;"{% endif %}>
+{% for repo in tile.repos %}
+  <div class="expandable">
+    <button class="expandable_header expandable_target"{% if repo.model.fork %} style="color:blue;"{% endif %}>
         {{ repo.model.full_name }}
     </button>
     <div class="expandable_content">
       <div class="tabs">
-        <ul class="tabs_list" role="tablist">
+        <ul class="tabs_list">
           {% for action in repo.actions %}
-            <li class="tabs_list-item" role="presentation">
+            <li class="tabs_list-item">
               <button class="tabs_tab" data-panel="ghe-{{ forloop.parentloop.counter }}-panel-{{ forloop.counter }}">
                   {{ action.name }}
               </button>
@@ -29,7 +30,7 @@
                   <input type="submit" value="{{ action.cta }}" />
                 </form>
               {% else %}
-                <a href="{{ action.action }}">{{ action.cta }}</a>
+                <a href="{{ action.action }}" class="btn">{{ action.cta }}</a>
               {% endif %}
           </div>
         {% endautoescape %}
@@ -37,12 +38,4 @@
       </div>
     </div>
   </div>
-{% endfor %}
-<div class="gh-server">
-    <h4>GitHub.com</h4>
-</div>
-{% for repo in tile.github %}
-    <div class="gh-repo" {% if repo.model.fork %}style="color:ccc;"{% endif %}>
-        {{ repo.model.full_name }}
-    </div>
 {% endfor %}

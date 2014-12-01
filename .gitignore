@@ -68,3 +68,6 @@ bower_components/
 /devops/frontend/dest/static/test-data.old.json
 # /devops/frontend/dest/static/vendor
 
+# Vagrant #
+###########
+.vagrant
