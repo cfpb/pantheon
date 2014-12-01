@@ -240,7 +240,7 @@
         </userlist>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'userlist', function( $filter, UserService ) {
+  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
     return {
       restrict: 'E',
       scope: {
@@ -268,6 +268,11 @@
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
         };
+        // Events
+        element.find('.userlist_show-hide').on('click', function() {
+          scope.showAllUsers = !scope.showAllUsers;
+          console.log( scope.showAllUsers );
+        });
       }
     };
   });
