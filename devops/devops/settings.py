@@ -53,14 +53,14 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'kratos.User'
 
 LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'core.backends.GitHubEnterprise',
-    'social.backends.github.GithubOAuth2',
+    'core.backends.GitHub',
 
 )
 
@@ -71,7 +71,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_user',
     'social.pipeline.user.get_username',
     'github.pipeline.enterprise_details',
-    'osw.pipeline.two_factor_audit',
+    'osw.pipeline.join_org',
+    'osw.pipeline.enable_2fa',
     'osw.pipeline.github_details',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
@@ -92,11 +93,8 @@ SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'repo', 'admin:repo_hook', 'write:org', 'wri
 # ids of all orgs belonging to the entity
 GH_ORG_IDS = get_secret('GH_ORG_IDS', (1071563,))
 
-# org for auditing user's 2 factor auth prior to admission into primary org.
-GH_2FA_AUDIT_TEAM = get_secret('GH_2FA_AUDIT_TEAM')
-
-# credintials must have admin:org priviliges for the GH_2FA_AUDIT_ORG
-GH_2FA_ADMIN_CREDENTIALS = get_secret('GH_2FA_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
+# Team to invite users to when joining the org (must invite to a team, not to an org)
+GH_WELCOME_TEAM = get_secret('GH_WELCOME_TEAM')
 
 # READ ONLY CREDENTIALS
 GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
@@ -104,6 +102,8 @@ GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # A requests.auth.HTTP
 # READ ONLY CREDENTIALS
 GHE_ADMIN_CREDENTIALS = get_secret('GHE_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
 
+KRATOS_ENFORCE_GH_ORGS = GH_ORG_IDS
+KRATOS_ENFORCE_GHE = True
 
 # Application definition
 
@@ -118,6 +118,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
     'github',
+    'kratos',
     'osw',
     'jenkins',
 )

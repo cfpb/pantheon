@@ -6,12 +6,8 @@ def join_org(request, context):
         'name': 'join_org',
     }
     try:
-        ue = models.UserExtension.objects.get(user=request.user)
+        models.UserExtension.objects.get(user=request.user)
     except:
         return out
-
-    if ue.state == 'approved':
-        return {}
     else:
-        out['state'] = ue.state
-        return out
+        return {}
