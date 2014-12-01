@@ -10,7 +10,7 @@
             class="userlist_item">
             <span class="userlist_name">No {{ ::role |lowercase }} users</span>
         </li>
-        <li ng-repeat="user in ::users | filter:filter"
+        <li ng-repeat="user in users | filter:filter"
             class="userlist_item">
             <span class="userlist_name">
                 {{ ::user.username }}
@@ -20,10 +20,12 @@
         </li>
         <li ng-if="(users|filter:filter).length === 0"
             class="userlist_item">
-            <span ng-if="editable === false"
-                  class="userlist_name">
+            <span class="userlist_name">
                 No {{ ::role | lowercase }} user named &ldquo;{{ filter }}&rdquo;
             </span>
+        </li>
+        <li ng-if="(users|filter:filter).length === 0"
+            class="userlist_item">
             <form ng-if="editable"
                   name="add-user">
                 <h2 class="expandable-group_header expandable-group_header__add">
