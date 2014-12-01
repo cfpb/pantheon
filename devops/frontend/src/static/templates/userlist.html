@@ -12,6 +12,10 @@
         </li>
         <li ng-repeat="user in users | filter:filter"
             class="userlist_item">
+            <button ng-if="editable"
+                    class="userlist_remove">
+                <span class="cf-icon cf-icon-minus-round"></span>
+            </button>
             <span class="userlist_name">
                 {{ ::user.username }}
                 <span ng-if="user.stub"
@@ -24,43 +28,45 @@
                 No {{ ::role | lowercase }} user named &ldquo;{{ filter }}&rdquo;
             </span>
         </li>
-        <li ng-if="(users|filter:filter).length === 0"
+        <li ng-if="(users|filter:filter).length === 0 && editable"
             class="userlist_item">
-            <form ng-if="editable"
-                  name="add-user">
-                <h2 class="expandable-group_header expandable-group_header__add">
-                    Add a new {{ ::role }} user
-                </h2>
-                <ul class="userlist_list">
-                    <li ng-if="allUsers.length === 0"
-                        class="userlist_item">
-                        <span class="userlist_name">
-                            Sorry, there's no user named &ldquo;{{ filter }}&rdquo;
-                        </span>
-                    </li>
-                    <li ng-repeat="user in ::allUsers"
-                        class="userlist_item">
-                        <button class="userlist_add">
-                            Add
-                        </button>
-                        <span class="userlist_name">
-                            {{ ::user.username }}
-                            <span ng-if="user.stub"
-                                  class="userlist_name-stub">stub</span>
-                        </span>
-                    </li>
-                </ul>
-                <!-- <button ng-show="showAllUsers"
-                        ng-click=""
-                        class="userlist_show-hide">
-                    Hide all GitHub users
-                </button>
-                <button ng-show="!showAllUsers"
-                        ng-click="filter = ''"
-                        class="userlist_show-hide">
-                    Show all GitHub users
-                </button> -->
-            </form>
+            <h2 class="expandable-group_header expandable-group_header__add">
+                Add new {{ ::role }} users
+            </h2>
+            <ul class="userlist_list">
+                <li ng-if="allUsers.length === 0"
+                    class="userlist_item">
+                    <span class="userlist_name">
+                        Sorry, there's no user named &ldquo;{{ filter }}&rdquo;
+                    </span>
+                </li>
+                <li ng-repeat="user in ::allUsers"
+                    class="userlist_item">
+                    <button ng-if="!inUserList(user)"
+                            class="userlist_add">
+                        <span class="cf-icon cf-icon-plus-round"></span>
+                    </button>
+                    <button ng-if="inUserList(user)"
+                            class="userlist_remove">
+                        <span class="cf-icon cf-icon-minus-round"></span>
+                    </button>
+                    <span class="userlist_name">
+                        {{ ::user.username }}
+                        <span ng-if="user.stub"
+                              class="userlist_name-stub">stub</span>
+                    </span>
+                </li>
+            </ul>
+            <!-- <button ng-show="showAllUsers"
+                    ng-click=""
+                    class="userlist_show-hide">
+                Hide all GitHub users
+            </button>
+            <button ng-show="!showAllUsers"
+                    ng-click="filter = ''"
+                    class="userlist_show-hide">
+                Show all GitHub users
+            </button> -->
         </li>
     </ul>
 </section>

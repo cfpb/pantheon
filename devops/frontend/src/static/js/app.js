@@ -264,6 +264,10 @@
           scope.total = scope.users.length;
         }
         scope.showAllUsers = false;
+        // Functions
+        scope.inUserList = function( user ) {
+          return scope.users.indexOf( user ) > -1;
+        };
       }
     };
   });

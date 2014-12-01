@@ -267,18 +267,54 @@
     }
 
     &_name {
-        .h4();
+        .webfont-medium();
+        font-size: unit(18px / @base-font-size-px, em);
         line-height: 1;
         &-stub {
             .webfont-regular();
-            font-size: unit(12px / @font-size, em);
+            font-size: unit(12px / 18px, em);
+        }
+    }
+
+    &_add,
+    &_remove {
+        @font-size: 14px;
+        display: inline-block;
+        margin: unit(-6px / @font-size, em)
+                unit(12px / @font-size, em)
+                unit(-6px / @font-size, em)
+                unit(-6px / @font-size, em);
+        padding: unit(6px / @font-size, em);
+        border: 0;
+        background: transparent;
+        color: @black;
+        font-size: unit(@font-size / @base-font-size-px, em);
+        line-height: 1;
+
+        &:hover,
+        &:focus {
+            outline: 1px dotted @black;
+        }
+
+        .cf-icon {
+            padding: 1px;
         }
     }
 
     &_add {
-        .btn();
-        .btn__link();
-        margin: 0 unit(12px / @btn-font-size, em) 0 0;
+        color: @green;
+        &:hover,
+        &:focus {
+            outline: 1px dotted @green-midtone;
+        }
+    }
+
+    &_remove {
+        color: @redorange;
+        &:hover,
+        &:focus {
+            outline: 1px dotted @redorange-50;
+        }
     }
 
     &_show-hide {
