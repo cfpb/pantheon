@@ -56,6 +56,14 @@ def get_org_name(client, org_id):
     orgs = {org['id']: org['login'] for org in client.user.orgs.get().json()}
     return orgs[org_id]
 
+def get_team_id(client, org_id, team_name):
+    org_name = get_org_name(client, org_id)
+    teams_client = client.orgs._(org_name).teams
+    for team_data in iter_get(teams_client):
+        if team_data['name'] = team_name:
+            return team_data['id']
+    return False
+
 def is_org_member(client, username, org_name, public=False):
     """
     client must either be a client for the given username or a client with admin privileges for the org.

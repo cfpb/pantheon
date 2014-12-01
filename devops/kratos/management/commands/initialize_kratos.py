@@ -65,10 +65,10 @@ def sync_gh_teams(gha, org_name):
     req = gha.orgs._(org_name).teams
     for team_data in client.iter_get(req):
         full_name = team_data['name']
-        if full_name == 'Owners':
+        if full_name == 'Owners' or team_data['id'] == getattr(settings, 'GH_WELCOME_TEAM', None):
             continue
         name, typ, perm_name = full_name.split()
-        perm, created = models.Perm.objects.get_or_create(name='git_' + perm_name)
+        perm, created = models.Perm.objects.get_or_create(name=perm_name)
         if typ == 'team':
             team, created = models.Team.objects.get_or_create(name=name)
             for user in get_users_for_team(gha, team_data['id']):

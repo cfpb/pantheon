@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+from django.utils.encoding import python_2_unicode_compatible
+
 from django.db import models
 from github.client import GitHubEnterprise, GitHub
 from django.conf import settings
@@ -45,6 +48,7 @@ class RepoManager(models.Manager):
         return repo_model
 
 # Create your models here.
+@python_2_unicode_compatible
 class Repo(models.Model):
     gh_id = models.IntegerField()
     full_name = models.CharField(max_length=256)
@@ -59,6 +63,9 @@ class Repo(models.Model):
 
     class Meta:
         ordering = ['fork']
+
+    def __str__(self):
+        return '<Repo: {} ({})>'.format(self.full_name, 'enterprise' if self.is_enterprise else 'public')
 
 
 class Org(models.Model):
