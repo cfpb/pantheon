@@ -155,17 +155,6 @@
     }
 }
 
-.filter {
-    position: relative;
-
-    &_input {
-        position: absolute;
-        top: .5em;
-        right: .5em;
-        width: 60%;
-    }
-}
-
 
 /* ==========================================================================
    # .role-icon
@@ -281,7 +270,7 @@
         @font-size: 14px;
         display: inline-block;
         margin: unit(-6px / @font-size, em)
-                unit(12px / @font-size, em)
+                unit(6px / @font-size, em)
                 unit(-6px / @font-size, em)
                 unit(-6px / @font-size, em);
         padding: unit(6px / @font-size, em);
@@ -323,6 +312,23 @@
         display: block;
         width: 100%; // Needed for the button element.
         margin-top: unit(16px / @btn-font-size, em);
+    }
+
+    &_admin {
+        margin-top: 1em;
+    }
+
+    &_filter {
+        &,
+        &[type="text"] {
+            box-sizing: border-box;
+            width: 100%;
+            margin-bottom: -1px;
+            padding: 1em;
+            .webfont-regular();
+            font-size: 1em;
+            border-color: @gray-20;
+        }
     }
 
 }

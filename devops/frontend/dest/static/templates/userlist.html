@@ -19,16 +19,27 @@
             </span>
         </li>
     </ul>
-    <div ng-if="editable">
+    <div ng-if="editable"
+         class="">
+        <button ng-show="showAllUsers"
+                ng-click="showAllUsers = !showAllUsers"
+                class="userlist_show-hide">
+            <span ng-show="!showAllUsers">
+                Add new {{ ::role | lowercase }} users
+            </span>
+            <span ng-show="showAllUsers">
+                Close list of all users
+            </span>
+        </button>
         <div ng-show="showAllUsers"
-             class="filter">
+             class="userlist_admin">
             <h2 class="expandable-group_header expandable-group_header__add">
                 Add new {{ ::role }} users
             </h2>
             <input ng-model="filter"
                    type="text"
-                   class="filter_input"
-                   placeholder="Filter or add users">
+                   class="userlist_filter"
+                   placeholder="Type to filter by username">
             <ul class="userlist_list">
                 <li ng-if="(allUsers | filter:filter).length === 0"
                     class="userlist_item">
@@ -54,15 +65,14 @@
                 </li>
             </ul>
         </div>
-        <button ng-show="!showAllUsers"
-                ng-click="showAllUsers = !showAllUsers"
+        <button ng-click="showAllUsers = !showAllUsers"
                 class="userlist_show-hide">
-            Add new {{ ::role | lowercase }} users
-        </button>
-        <button ng-show="showAllUsers"
-                ng-click="showAllUsers = !showAllUsers"
-                class="userlist_show-hide">
-            Close list of all users
+            <span ng-show="!showAllUsers">
+                Add new {{ ::role | lowercase }} users
+            </span>
+            <span ng-show="showAllUsers">
+                Close list of all users
+            </span>
         </button>
     </div>
 </section>
