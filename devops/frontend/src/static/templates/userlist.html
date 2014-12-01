@@ -18,7 +18,7 @@
                       class="userlist_name-stub">stub</span>
             </span>
         </li>
-        <li ng-if="(::users|filter:filter).length === 0"
+        <li ng-if="(users|filter:filter).length === 0"
             class="userlist_item">
             <span ng-if="editable === false"
                   class="userlist_name">
@@ -50,7 +50,7 @@
                 </button>
                 <ul ng-show="!showAllUsers"
                     class="userlist_list">
-                    <li ng-if="(::allUsers|filter:filter).length === 0"
+                    <li ng-if="allUsers.length === 0"
                         class="userlist_item">
                         <span class="userlist_name">
                             Sorry, there's no user named &ldquo;{{ filter }}&rdquo;
