@@ -11,6 +11,7 @@
    # role directive
    # expandable directive
    # username filter
+   # inUser filter
    # toArray filter
    # prepRepoGroupData filter
    ========================================================================== */
@@ -256,7 +257,7 @@
         angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
           scope.users.push( UserService.users[value] );
         });
-        scope.allUsers = UserService.usersArray;
+        scope.allUsers = $filter('inUser')( scope.users );
         if ( typeof scope.users === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -334,9 +335,25 @@
      # username filter
      Get the username from a user id.
      ========================================================================== */
-  angular.module('OSWizardApp').filter( 'username', function(UserService) {
+  angular.module('OSWizardApp').filter( 'username', function( UserService ) {
     return function( id ) {
       return UserService.getName( id );
+    };
+  });
+
+  /* ==========================================================================
+     # inUser filter
+     Filter a user list with another user list.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'inUser', function( UserService ) {
+    return function( users ) {
+      var filteredUsers = [];
+      angular.forEach( UserService.usersArray, function( user ) {
+        if( users.indexOf( user ) === -1 ) {
+          filteredUsers.push( user );
+        }
+      });
+      return filteredUsers;
     };
   });
 
