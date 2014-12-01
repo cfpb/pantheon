@@ -349,7 +349,7 @@
     return function( users ) {
       var filteredUsers = [];
       angular.forEach( UserService.usersArray, function( user ) {
-        if( users.indexOf( user ) === -1 ) {
+        if ( users.indexOf( user ) === -1 ) {
           filteredUsers.push( user );
         }
       });
