@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
             name='RepoExtension',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('repo', models.OneToOneField(related_name=b'auth_extension', to='github.Repo')),
+                ('repo', models.OneToOneField(related_name='kratos_extension', to='github.Repo')),
             ],
             options={
             },
@@ -77,9 +77,9 @@ class Migration(migrations.Migration):
             name='UserPermRepo',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('perm', models.ForeignKey(related_name=b'user_repos', to='kratos.Perm')),
-                ('repo', models.ForeignKey(related_name=b'user_perms', to='github.Repo')),
-                ('user', models.ForeignKey(related_name=b'perm_repos', to=settings.AUTH_USER_MODEL)),
+                ('perm', models.ForeignKey(related_name='user_repos', to='kratos.Perm')),
+                ('repo', models.ForeignKey(related_name='user_perms', to='github.Repo')),
+                ('user', models.ForeignKey(related_name='perm_repos', to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
@@ -89,9 +89,9 @@ class Migration(migrations.Migration):
             name='UserPermTeam',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('perm', models.ForeignKey(related_name=b'user_teams', to='kratos.Perm')),
-                ('team', models.ForeignKey(related_name=b'user_perms', to='kratos.Team')),
-                ('user', models.ForeignKey(related_name=b'perm_teams', to=settings.AUTH_USER_MODEL)),
+                ('perm', models.ForeignKey(related_name='user_teams', to='kratos.Perm')),
+                ('team', models.ForeignKey(related_name='user_perms', to='kratos.Team')),
+                ('user', models.ForeignKey(related_name='perm_teams', to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
@@ -100,7 +100,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='repoextension',
             name='team',
-            field=models.ForeignKey(related_name=b'repos', to='kratos.Team'),
+            field=models.ForeignKey(related_name='repos', to='kratos.Team'),
             preserve_default=True,
         ),
     ]

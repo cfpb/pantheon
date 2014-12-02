@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('gh_id', models.IntegerField()),
                 ('full_name', models.CharField(max_length=256)),
-                ('description', models.CharField(default=b'', max_length=512, blank=True)),
+                ('description', models.CharField(default='', max_length=512, blank=True)),
                 ('fork', models.BooleanField(default=False)),
                 ('is_enterprise', models.BooleanField(default=True)),
                 ('html_url', models.URLField()),
