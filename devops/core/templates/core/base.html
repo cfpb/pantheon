@@ -1,4 +1,3 @@
-<html lang="en">
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -62,16 +61,19 @@
 </head>
 
 <body>
-  <header role="banner">
-      {% if user.is_authenticated %}
-        <a class="btn" href="/logout" style="float:right;">logout</a>
-        <form action="{% url "sync" %}" method="POST" style="float:right;">{% csrf_token %}
-          <input type="submit" class="btn" value="refresh" />
-        </form>
-      {% else %}
-        <a href="/login/github-enterprise" class="btn" style="float:right;">login</a>
-      {% endif %}
-      <h1>
+
+  <header class="masthead wrapper wrapper__match-content" role="banner">
+      <div class="masthead_role">
+        {% if user.is_authenticated %}
+          <a class="btn" href="/logout">logout</a>
+          <form action="{% url "sync" %}" method="POST">{% csrf_token %}
+            <input type="submit" class="btn" value="refresh" />
+          </form>
+        {% else %}
+          <a href="/login/github-enterprise" class="btn">login</a>
+        {% endif %}
+      </div>
+      <h1 class="masthead_logo">
         {% if user.is_authenticated %}
           <span class="cf-icon cf-icon-user"></span>
           {{ user.username }}
@@ -81,11 +83,13 @@
           DevDash
         {% endif %}
       </h1>
-      <ul class="breadcrumbs">
-        {% block breadcrumbs %}
-          <li class="breadcrumbs_item">Home</li>
-        {% endblock breadcrumbs %}
-      </ul>
+      <div class="masthead_breadcrumbs">
+        <ul class="breadcrumbs">
+          {% block breadcrumbs %}
+            <li class="breadcrumbs_item">Home</li>
+          {% endblock breadcrumbs %}
+        </ul>
+      </div>
       {% if messages %}
         {% for message in messages %}
         <div class="alert{% if message.tags %} alert__{{ message.tags }}"{% endif %}>{{ message }}</div>
@@ -93,17 +97,18 @@
       {% endif %}
   </header>
 
-
-
-  <main id="main" role="main">
-    <div class="grid">
-      {% if user.is_authenticated %}
-        {% block content %}{% endblock content %}
-      {% else %}
-      {% block unauthed_content %}
-      <h2>Tools for starting, building, testing, deploying and maintaining code</h2>
-      {% endblock unauthed_content %}
-      {% endif %}
+  <main class="content" id="main" role="main">
+    <div class="content_bar"></div>
+    <div class="content_wrapper">
+      <div class="content_main">
+        {% if user.is_authenticated %}
+          {% block content %}{% endblock content %}
+        {% else %}
+        {% block unauthed_content %}
+        <h2>Tools for starting, building, testing, deploying and maintaining code</h2>
+        {% endblock unauthed_content %}
+        {% endif %}
+      </div>
     </div>
   </main>
 
