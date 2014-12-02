@@ -60,7 +60,7 @@ def get_team_id(client, org_id, team_name):
     org_name = get_org_name(client, org_id)
     teams_client = client.orgs._(org_name).teams
     for team_data in iter_get(teams_client):
-        if team_data['name'] = team_name:
+        if team_data['name'] == team_name:
             return team_data['id']
     return False
 
