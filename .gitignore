@@ -34,6 +34,7 @@ devops/frontend/src/static/js/main.js
 *.log
 *.sql
 *.sqlite
+*.sqlite3.bak
 
 # OS generated files #
 ######################
