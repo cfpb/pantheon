@@ -7,7 +7,7 @@
   <li class="breadcrumbs_item">Confirm Profile</li>
 {% endblock breadcrumbs %}
 {% block content %}
-    <form action="{% url "osw:github_details" %}" method="post">
+    <form action="{% url "osw:gh_details" %}" method="post">
         {% csrf_token %}
         {% if name_form %}{{ name_form }}{% endif %}
         {% if publicize_form %}{{ publicize_form }}{% endif %}
