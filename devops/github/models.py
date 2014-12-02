@@ -5,7 +5,6 @@ from django.db import models
 from github.client import GitHubEnterprise, GitHub
 from django.conf import settings
 
-from django.conf import settings
 User = settings.AUTH_USER_MODEL
 
 class RepoManager(models.Manager):
