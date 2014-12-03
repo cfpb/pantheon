@@ -72,8 +72,14 @@
         <span class="cf-icon cf-icon-web-round"></span>
         DevDash
     </h1>
-    <div class="masthead_role">
-        <b>{{ user.name }}</b> ({{ user.permission }})
+    <div class="masthead_user user-meta">
+        <span class="user-meta_name">
+          <span class="cf-icon cf-icon-user"></span>
+          {{ user.name }}
+        </span>
+        <span class="user-meta_employee">
+          (employee) ({{ user.permission }})
+        </span>
     </div>
 </header>
 
