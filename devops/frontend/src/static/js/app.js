@@ -290,6 +290,9 @@
           })
           .error(function( msg ) {
             console.log( 'Error:', msg );
+          })
+          .complete(function( msg ) {
+            console.log( 'Complete:', msg );
           });
         };
       }
