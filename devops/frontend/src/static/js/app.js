@@ -260,6 +260,8 @@
         angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
           scope.users.push( UserService.users[value] );
         });
+        scope.requestURL = '/kratos/teams/' + scope.group.name +
+                           '/members/' + scope.role.toLowerCase() + '/';
         // Functions
         scope.updateUsers = function() {
           scope.allUsers = $filter('inUser')( scope.users );
@@ -272,20 +274,11 @@
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
         };
-        scope.editUser = function( action, user ) {
-          var group = scope.group.name,
-              role = scope.role.toLowerCase(),
-              user_id = getObjKeyByVal( UserService.users, user ),
-              requestURL = '/kratos/' + 'teams/' + group + '/members/' + role + '/' + user_id + '/',
-              requestType = '';
-          if ( action === 'add' ) {
-            requestType = 'PUT';
-          } else if ( action === 'remove' ) {
-            requestType = 'DELETE';
-          }
+        scope.add = function( user ) {
+          var user_id = getObjKeyByVal( UserService.users, user );
           $.ajax({
-            type: requestType,
-            url: requestURL
+            type: 'PUT',
+            url: scope.requestURL + user_id
           })
           .done(function( msg ) {
             console.log( 'Data Saved: ' + msg );
@@ -296,12 +289,28 @@
           .complete(function( msg ) {
             // Needs to be moved to done()
             scope.$apply(function () {
-              if ( action === 'add' ) {
-                scope.users.push( UserService.users[ user_id ] );
-              } else if ( action === 'remove' ) {
-                var index = scope.users.indexOf( UserService.users[ user_id ] );
-                scope.users.splice( index, 1 );
-              }
+              scope.users.push( UserService.users[ user_id ] );
+              scope.updateUsers();
+            });
+          });
+        };
+        scope.remove = function( user ) {
+          var user_id = getObjKeyByVal( UserService.users, user );
+          $.ajax({
+            type: 'DELETE',
+            url: scope.requestURL + user_id
+          })
+          .done(function( msg ) {
+            console.log( 'Data Saved: ' + msg );
+          })
+          .error(function( msg ) {
+            console.log( 'Error:', msg );
+          })
+          .complete(function( msg ) {
+            // Needs to be moved to done()
+            scope.$apply(function () {
+              var index = scope.users.indexOf( UserService.users[ user_id ] );
+              scope.users.splice( index, 1 );
               scope.updateUsers();
             });
           });

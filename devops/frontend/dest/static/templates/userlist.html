@@ -9,7 +9,7 @@
         <li ng-repeat="user in users | orderBy:'username'"
             class="userlist_item">
             <button ng-if="editable"
-                    ng-click="editUser('remove',user)"
+                    ng-click="remove(user)"
                     class="userlist_remove">
                 <span class="cf-icon cf-icon-minus-round"></span>
             </button>
@@ -51,12 +51,12 @@
                 <li ng-repeat="user in allUsers | filter:filter"
                     class="userlist_item">
                     <button ng-if="!inUserList(user)"
-                            ng-click="editUser('add',user)"
+                            ng-click="add(user)"
                             class="userlist_add">
                         <span class="cf-icon cf-icon-plus-round"></span>
                     </button>
                     <button ng-if="inUserList(user)"
-                            ng-click="editUser('remove',user)"
+                            ng-click="remove(user)"
                             class="userlist_remove">
                         <span class="cf-icon cf-icon-minus-round"></span>
                     </button>
