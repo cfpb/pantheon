@@ -4,7 +4,9 @@
 
    # Base
    # Code demo
-   # Masthead
+   # .masthead
+   # .meta
+   # .intro
    # Expandables
    # .role-icon
    # Directives
@@ -47,12 +49,12 @@
 
 
 /* ==========================================================================
-   # Masthead
+   # .masthead
    ========================================================================== */
 
 .masthead {
     .u-clearfix();
-    &_role {
+    &_user {
         .webfont-regular;
     }
     .respond-to-min(480px, {
@@ -60,14 +62,86 @@
             margin: 0;
             display: inline-block;
         }
-        &_role {
+        &_user {
             float: right;
             display: inline-block;
         }
-        &_breadcrumbs {
+    });
+}
+
+
+/* ==========================================================================
+   # .meta
+   ========================================================================== */
+
+.meta {
+    .u-clearfix();
+    padding: unit(30px / @base-font-size-px, em) 0;
+    background: @gray-10;
+    border-bottom: 1px solid @gray-20;
+
+    &_breadcrumbs {
+        margin-top: 0;
+    }
+
+    .respond-to-max(479px, {
+        &_refresh .btn {
             display: block;
+            width: 100%;
         }
     });
+
+    .respond-to-min(480px, {
+        &_breadcrumbs {
+            float: left;
+            margin: 0;
+        }
+        &_refresh {
+            float: right;
+            // Aligns .btn baseline to .breadcrumbs baseline.
+            margin-top: unit(-7px / @base-font-size-px, em);
+        }
+    });
+}
+
+
+/* ==========================================================================
+   # .user-meta
+   ========================================================================== */
+
+.user-meta {
+    &_name {
+        .h4();
+        margin: 0;
+        .cf-icon {
+            margin-right: unit(4px / @font-size, em);
+        }
+    }
+    &_employee {
+        .webfont-regular();
+        font-size: unit(12px / @base-font-size-px, em);
+    }
+    &_item {
+        display: inline-block;
+    }
+    &_item + &_item {
+        margin-left: unit(12px / @base-font-size-px, em);
+        padding-left: unit(16px / @base-font-size-px, em);
+        border-left: 1px solid @gray-20;
+    }
+}
+
+
+/* ==========================================================================
+   # .intro
+   ========================================================================== */
+
+.intro {
+    &_text {
+        .h1();
+        max-width: 20em;
+        margin-bottom: unit(40px / @font-size, em);
+    }
 }
 
 
