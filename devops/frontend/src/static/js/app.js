@@ -11,7 +11,7 @@
    # role directive
    # expandable directive
    # username filter
-   # inUser filter
+   # userListArray filter
    # toArray filter
    # prepRepoGroupData filter
    # Cross Site Request Forgery protection
@@ -264,7 +264,7 @@
                            '/members/' + scope.role.toLowerCase() + '/';
         // Functions
         scope.updateUsers = function() {
-          scope.allUsers = $filter('inUser')( scope.users );
+          scope.allUsers = $filter('userListArray')( scope.users );
           if ( typeof scope.users === 'undefined' ) {
             scope.total = 0;
           } else {
@@ -395,14 +395,14 @@
   });
 
   /* ==========================================================================
-     # inUser filter
-     Filter a user list with another user list.
+     # userListArray filter
+     Filter a user list for use in a userlist.
      ========================================================================== */
-  angular.module('OSWizardApp').filter( 'inUser', function( UserService ) {
+  angular.module('OSWizardApp').filter( 'userListArray', function( UserService ) {
     return function( users ) {
       var filteredUsers = [];
       angular.forEach( UserService.usersArray, function( user ) {
-        if ( users.indexOf( user ) === -1 ) {
+        if ( users.indexOf( user ) === -1 && user.stub === false ) {
           filteredUsers.push( user );
         }
       });
