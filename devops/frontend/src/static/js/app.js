@@ -14,6 +14,8 @@
    # inUser filter
    # toArray filter
    # prepRepoGroupData filter
+   # Cross Site Request Forgery protection
+   # getObjKeyByVal
    ========================================================================== */
 
 (function(){
@@ -55,7 +57,7 @@
     $scope.users = UserService.users;
     $scope.repoGroups = [];
     // Data
-    $http.get( 'test-data.json' ).
+    $http.get( '/kratos/teams/' ).
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
         UserService.users = response.users;
@@ -268,11 +270,28 @@
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
         };
-        // Events
-        element.find('.userlist_show-hide').on('click', function() {
-          scope.showAllUsers = !scope.showAllUsers;
-          console.log( scope.showAllUsers );
-        });
+        scope.editUser = function( action, user ) {
+          var requestURL = '/kratos/' +
+                'teams/' + scope.group.name + '/' +
+                'members/' +  scope.role.toLowerCase() + '/' +
+                getObjKeyByVal( UserService.users, user ) + '/',
+              requestType = '';
+          if ( action === 'add' ) {
+            requestType = 'PUT';
+          } else if ( action === 'remove' ) {
+            requestType = 'DELETE';
+          }
+          $.ajax({
+            type: requestType,
+            url: requestURL
+          })
+          .done(function( msg ) {
+            console.log( 'Data Saved: ' + msg );
+          })
+          .error(function( msg ) {
+            console.log( 'Error:', msg );
+          });
+        };
       }
     };
   });
@@ -402,5 +421,68 @@
       return output;
     };
   });
+
+  /* ==========================================================================
+     # Cross Site Request Forgery protection
+     https://docs.djangoproject.com/en/1.7/ref/contrib/csrf/#ajax
+     ========================================================================== */
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  function sameOrigin(url) {
+    // test that a given url is a same-origin URL
+    // url could be relative or scheme relative or absolute
+    var host = document.location.host; // host + port
+    var protocol = document.location.protocol;
+    var sr_origin = '//' + host;
+    var origin = protocol + sr_origin;
+    // Allow absolute or scheme relative URLs to same origin
+    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+        // or any other URL that isn't scheme relative or absolute i.e relative.
+        !(/^(\/\/|http:|https:).*/.test(url));
+  }
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+        // Send the token to same-origin, relative URLs only.
+        // Send the token only if the method warrants CSRF protection
+        // Using the CSRFToken value acquired earlier
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
+
+  /* ==========================================================================
+     # getObjKeyByVal
+     http://stackoverflow.com/questions/9907419/javascript-object-get-key-by-value
+     ========================================================================== */
+  getObjKeyByVal = function( obj, value ) {
+    for( var prop in obj ) {
+      if( obj.hasOwnProperty( prop ) ) {
+         if( obj[ prop ] === value ) {
+           return prop;
+         }
+      }
+    }
+  };
 
 })();
