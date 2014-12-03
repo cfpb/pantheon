@@ -294,6 +294,7 @@
             console.log( 'Error:', msg );
           })
           .complete(function( msg ) {
+            // Needs to be moved to done()
             scope.$apply(function () {
               if ( action === 'add' ) {
                 scope.users.push( UserService.users[ user_id ] );
