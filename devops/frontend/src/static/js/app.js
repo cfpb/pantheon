@@ -271,10 +271,10 @@
           return scope.users.indexOf( user ) > -1;
         };
         scope.editUser = function( action, user ) {
-          var requestURL = '/kratos/' +
-                'teams/' + scope.group.name + '/' +
-                'members/' +  scope.role.toLowerCase() + '/' +
-                getObjKeyByVal( UserService.users, user ) + '/',
+          var group = scope.group.name,
+              role = scope.role.toLowerCase(),
+              user_id = getObjKeyByVal( UserService.users, user ),
+              requestURL = '/kratos/' + 'teams/' + group + '/members/' + role + '/' + user_id + '/',
               requestType = '';
           if ( action === 'add' ) {
             requestType = 'PUT';
