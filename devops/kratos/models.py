@@ -90,6 +90,7 @@ class Perm(models.Model):
     def __str__(self):
         return '<Perm: {}>'.format(self.name)
 
+
 @python_2_unicode_compatible
 class UserPermTeam(models.Model):
     user = models.ForeignKey(UserModel, related_name='perm_teams')

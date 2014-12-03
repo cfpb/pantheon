@@ -66,6 +66,10 @@ class Repo(models.Model):
     def __str__(self):
         return '<Repo: {} ({})>'.format(self.full_name, 'enterprise' if self.is_enterprise else 'public')
 
+    def save(self, *args, **kwargs):
+        if self.description is None:
+            self.description = ''
+        super(Repo, self).save(*args, **kwargs)
 
 class Org(models.Model):
     gh_id = models.IntegerField()

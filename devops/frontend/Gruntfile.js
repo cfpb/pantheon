@@ -59,6 +59,7 @@ module.exports = function(grunt) {
           'vendor/jquery/jquery.js',
           'vendor/jquery.easing/jquery.easing.js',
           'vendor/cf-*/*.js',
+          'vendor/angular/angular.js',
           'src/static/js/app.js'
         ],
         dest: 'src/static/js/main.js'
@@ -108,7 +109,8 @@ module.exports = function(grunt) {
      */
     uglify: {
       options: {
-        preserveComments: 'some'
+        preserveComments: 'some',
+        mangle: false // Keep this off to play nice with Angular
       },
       bodyScripts: {
         src: ['src/static/js/main.js'],
@@ -200,6 +202,14 @@ module.exports = function(grunt) {
             dest: 'dest/static'
           }
         ]
+      },
+      templates: {
+        files: [{
+          expand: true,
+          cwd: 'src/static/templates',
+          src: '**',
+          dest: 'dest/static/templates'
+        }]
       }
     },
 
@@ -248,7 +258,7 @@ module.exports = function(grunt) {
      */
     watch: {
       main: {
-        files: ['src/static/css/app.less', 'src/static/js/app.js'],
+        files: ['src/static/css/app.less', 'src/static/js/app.js', 'src/static/templates/*.html'],
         tasks: ['default']
       }
     }
@@ -276,7 +286,7 @@ module.exports = function(grunt) {
   grunt.registerTask('vendor', ['bower:install', 'concat:cf-less']);
   grunt.registerTask('vendor-to-static', ['copy:vendor']);
   grunt.registerTask('cssdev', ['less', 'autoprefixer', 'cssmin', 'usebanner:css']);
-  grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js']);
+  grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates']);
   grunt.registerTask('default', ['cssdev', 'jsdev']);
   grunt.registerTask('test', ['jshint']);
 
