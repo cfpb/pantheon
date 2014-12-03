@@ -5,7 +5,6 @@ from django.db import models
 from github.client import GitHubEnterprise, GitHub
 from django.conf import settings
 
-from django.conf import settings
 User = settings.AUTH_USER_MODEL
 
 class RepoManager(models.Manager):
@@ -71,7 +70,6 @@ class Repo(models.Model):
         if self.description is None:
             self.description = ''
         super(Repo, self).save(*args, **kwargs)
-
 
 class Org(models.Model):
     gh_id = models.IntegerField()
