@@ -41,6 +41,13 @@
         } else {
           return '';
         }
+      },
+      isGroupAdmin: function( permissions ) {
+        if ( typeof permissions !== 'undefined' ) {
+          return permissions.indexOf( this.user.id ) > -1;
+        } else {
+          return false;
+        }
       }
     };
   });
@@ -254,10 +261,13 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.editable = UserService.user.permission === 'admin' && scope.role !== 'Admin';
+        scope.listPermissions = scope.group.permissions[ scope.role.toLowerCase() ];
+        scope.isAdmin = UserService.user.permission === 'admin';
+        scope.isGroupAdmin = UserService.isGroupAdmin( scope.group.permissions.admin );
+        scope.editable = scope.isAdmin && scope.isGroupAdmin && scope.role !== 'Admin';
         scope.users = [];
         scope.showAllUsers = false;
-        angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
+        angular.forEach( scope.listPermissions, function( value, key ) {
           scope.users.push( UserService.users[value] );
         });
         scope.requestURL = '/kratos/teams/' + scope.group.name +
