@@ -281,17 +281,14 @@
             url: scope.requestURL + user_id
           })
           .done(function( msg ) {
-            console.log( 'Data Saved: ' + msg );
-          })
-          .error(function( msg ) {
-            console.log( 'Error:', msg );
-          })
-          .complete(function( msg ) {
-            // Needs to be moved to done()
+            console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               scope.users.push( UserService.users[ user_id ] );
               scope.updateUsers();
             });
+          })
+          .error(function( msg ) {
+            console.log( 'Error:', msg );
           });
         };
         scope.remove = function( user ) {
@@ -301,18 +298,15 @@
             url: scope.requestURL + user_id
           })
           .done(function( msg ) {
-            console.log( 'Data Saved: ' + msg );
-          })
-          .error(function( msg ) {
-            console.log( 'Error:', msg );
-          })
-          .complete(function( msg ) {
-            // Needs to be moved to done()
+            console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               var index = scope.users.indexOf( UserService.users[ user_id ] );
               scope.users.splice( index, 1 );
               scope.updateUsers();
             });
+          })
+          .error(function( msg ) {
+            console.log( 'Error:', msg );
           });
         };
         // Init
