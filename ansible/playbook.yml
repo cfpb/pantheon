@@ -1,5 +1,11 @@
 - hosts:
+    - production
+  roles:
+    - role: load_repos
+      sudo: yes
+- hosts:
     - vagrant
+    - production
   roles:
     - role: django
       sudo: yes

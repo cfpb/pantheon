@@ -7,6 +7,7 @@
 - name: Install python
   yum: name={{ item }}
   with_items:
+    - tcl
     - python27
     - python27-tools
     - python27-setuptools

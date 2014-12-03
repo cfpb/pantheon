@@ -56,15 +56,18 @@ class User(AbstractUser):
 def remove_stubs(sender, instance, **kwargs):
     if instance.stub:
         return
-    try:
-        User.objects.get(stub=True, gh_id=instance.gh_id).delete()
-    except:
-        pass
+    remove_stub(instance, gh_id=instance.gh_id)
+    remove_stub(instance, ghe_id=instance.ghe_id)
 
+def remove_stub(user, **stub_query):
+    """ switch all relations from old user to new user """
     try:
-        User.objects.get(stub=True, ghe_id=instance.gh_id).delete()
+        stub = User.objects.get(stub=True, **stub_query)
     except:
-        pass
+        return
+    stub.perm_teams.all().update(user=user)
+    stub.perm_repos.all().update(user=user)
+    stub.delete()
 
 post_save.connect(remove_stubs, User)
 

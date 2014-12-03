@@ -4,6 +4,11 @@
 env-devops
 /devops/devops/settings_secret.py
 
+# Ansible #
+###########
+/ansible/production_inventory
+/ansible/group_vars/production.yml
+
 # Compiled source #
 ###################
 *.com

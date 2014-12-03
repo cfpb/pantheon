@@ -1,0 +1,7 @@
+- name: ensure git is on the machine
+  yum: name=git
+
+- name: ensure the repo is up-to-date
+  git: repo=https://github.com/cfpb/open-source-wizard.git dest={{ root_dir }}
+
+# todo handle migrations
