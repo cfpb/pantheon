@@ -253,8 +253,8 @@
       templateUrl: '/static/templates/userlist.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.editable = UserService.user.permission === 'admin';
         scope.role = attrs.role;
+        scope.editable = UserService.user.permission === 'admin' && scope.role !== 'Admin';
         scope.users = [];
         scope.showAllUsers = false;
         angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
