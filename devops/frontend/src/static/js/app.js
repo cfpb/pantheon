@@ -256,17 +256,19 @@
         scope.editable = UserService.user.permission === 'admin';
         scope.role = attrs.role;
         scope.users = [];
+        scope.showAllUsers = false;
         angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
           scope.users.push( UserService.users[value] );
         });
-        scope.allUsers = $filter('inUser')( scope.users );
-        if ( typeof scope.users === 'undefined' ) {
-          scope.total = 0;
-        } else {
-          scope.total = scope.users.length;
-        }
-        scope.showAllUsers = false;
         // Functions
+        scope.updateUsers = function() {
+          scope.allUsers = $filter('inUser')( scope.users );
+          if ( typeof scope.users === 'undefined' ) {
+            scope.total = 0;
+          } else {
+            scope.total = scope.users.length;
+          }
+        };
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
         };
@@ -292,9 +294,19 @@
             console.log( 'Error:', msg );
           })
           .complete(function( msg ) {
-            console.log( 'Complete:', msg );
+            scope.$apply(function () {
+              if ( action === 'add' ) {
+                scope.users.push( UserService.users[ user_id ] );
+              } else if ( action === 'remove' ) {
+                var index = scope.users.indexOf( UserService.users[ user_id ] );
+                scope.users.splice( index, 1 );
+              }
+              scope.updateUsers();
+            });
           });
         };
+        // Init
+        scope.updateUsers();
       }
     };
   });

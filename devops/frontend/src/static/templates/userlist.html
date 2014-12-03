@@ -6,7 +6,7 @@
             class="userlist_item">
             <span class="userlist_name">No {{ ::role | lowercase }} users</span>
         </li>
-        <li ng-repeat="user in users"
+        <li ng-repeat="user in users | orderBy:'username'"
             class="userlist_item">
             <button ng-if="editable"
                     ng-click="editUser('remove',user)"
@@ -14,7 +14,7 @@
                 <span class="cf-icon cf-icon-minus-round"></span>
             </button>
             <span class="userlist_name">
-                {{ ::user.username }}
+                {{ user.username }}
                 <span ng-if="user.stub"
                       class="userlist_name-stub">stub</span>
             </span>
@@ -61,7 +61,7 @@
                         <span class="cf-icon cf-icon-minus-round"></span>
                     </button>
                     <span class="userlist_name">
-                        {{ ::user.username }}
+                        {{ user.username }}
                         <span ng-if="user.stub"
                               class="userlist_name-stub">stub</span>
                     </span>
