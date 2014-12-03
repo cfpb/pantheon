@@ -67,15 +67,32 @@
     =================
 -->
 
-<header role="banner">
-    <h1><span class="cf-icon cf-icon-web-round"></span> DevDash</h1>
+<header class="masthead wrapper wrapper__match-content" role="banner">
+    <h1 class="masthead_logo">
+        <span class="cf-icon cf-icon-web-round"></span>
+        DevDash
+    </h1>
+    <div class="masthead_user user-meta">
+        <span class="user-meta_name">
+          <span class="cf-icon cf-icon-user"></span>
+          {{ user.name }}
+        </span>
+        <span class="user-meta_employee">
+          (employee) ({{ user.permission }})
+        </span>
+    </div>
 </header>
 
-<main id="main" role="main">
-    <div class="grid">
-        <group ng-repeat="group in repoGroups"
-               class="grid_col-1-3">
-        </group>
+<main class="content" id="main" role="main">
+    <div class="content_bar"></div>
+    <div class="content_wrapper">
+        <div class="content_main">
+            <div class="group-container">
+                <group ng-repeat="group in repoGroups"
+                       class="group">
+                </group>
+            </div>
+        </div>
     </div>
 </main>
 

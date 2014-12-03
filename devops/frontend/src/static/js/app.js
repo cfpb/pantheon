@@ -1,14 +1,21 @@
 /* ==========================================================================
    dev-dash
 
-   1. RepoGroupsCtrl controller
-   2. group directive
-   3. repo directive
-   4. repobutton directive
-   5. userbutton directive
-   6. userlist directive
-   7. expandable directive
-   8. prepRepoGroupData filter
+   # UserService service
+   # RepoGroupsCtrl controller
+   # group directive
+   # repo directive
+   # repobutton directive
+   # userbutton directive
+   # userlist directive
+   # role directive
+   # expandable directive
+   # username filter
+   # userListArray filter
+   # toArray filter
+   # prepRepoGroupData filter
+   # Cross Site Request Forgery protection
+   # getObjKeyByVal
    ========================================================================== */
 
 (function(){
@@ -16,26 +23,54 @@
   angular.module( 'OSWizardApp', [] );
 
   /* ==========================================================================
-     1. RepoGroupsCtrl controller
+     # UserService service
+     A single source for getting user data.
+     ========================================================================== */
+
+  angular.module('OSWizardApp').factory( 'UserService', function() {
+    var user = { id: '', name: '', permission: 'read' };
+    var users = {};
+    var usersArray = [];
+    return {
+      user: user,
+      users: users,
+      usersArray: usersArray,
+      getName: function( id ) {
+        if ( this.users[id] ) {
+          return this.users[id].username;
+        } else {
+          return '';
+        }
+      }
+    };
+  });
+
+  /* ==========================================================================
+     # RepoGroupsCtrl controller
      The main controller. All it really does is grabs a JSON file, filters it
      and sets two main properties used throughout the app.
      ========================================================================== */
 
-  angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter ) {
+  angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter, UserService ) {
     // Properties
-    $scope.permission = '';
+    $scope.user = UserService.user;
+    $scope.users = UserService.users;
     $scope.repoGroups = [];
     // Data
-    $http.get( 'repo-groups.json' ).
+    $http.get( '/kratos/teams/' ).
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepRepoGroupData')( response.groups );
-        $scope.permission = response.permission;
+        UserService.users = response.users;
+        UserService.usersArray = $filter('toArray')( UserService.users );
+        UserService.user.id = response.user;
+        UserService.user.name = UserService.getName( response.user );
+        UserService.user.permission = response.permission;
         $scope.repoGroups = preppedResponse;
       });
   });
 
   /* ==========================================================================
-     2. group directive
+     # group directive
      Displays a repo group.
 
      Example:
@@ -56,7 +91,6 @@
   angular.module('OSWizardApp').directive( 'group', function() {
     return {
       restrict: 'E',
-      scope: {},
       // Priority forces this directive to run before ng-repeat:
       // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
       priority: 1001,
@@ -65,7 +99,7 @@
   });
 
   /* ==========================================================================
-     3. repo directive
+     # repo directive
      Displays a repo from a repo group.
 
      repo: This property is required. It should point to a repo object that has
@@ -80,15 +114,12 @@
   angular.module('OSWizardApp').directive( 'repo', function() {
     return {
       restrict: 'E',
-      scope: {
-        repo: '='
-      },
       templateUrl: '/static/templates/repo.html'
     };
   });
 
   /* ==========================================================================
-     4. repobutton directive
+     # repobutton directive
      Creates a button to toggle a list of repos on and off.
 
      group: A reference to a repo group object.
@@ -114,12 +145,10 @@
       },
       controller: function( $scope ) {
         $scope.toggle = function( show ) {
-          var toggledShow = !show;
           $scope.group.showAdmin = false;
           $scope.group.showWrite = false;
           $scope.group.showRead = false;
-          $scope.group.showRepo = false;
-          $scope.show = toggledShow;
+          $scope.show = !show;
         };
       },
       templateUrl: '/static/templates/repobutton.html',
@@ -144,7 +173,7 @@
   });
 
   /* ==========================================================================
-     5. userbutton directive
+     # userbutton directive
      Creates a button of a certain type of user
 
      group: A reference to a repo group object.
@@ -200,7 +229,7 @@
   });
 
   /* ==========================================================================
-     6. userlist directive
+     # userlist directive
      Creates a toggleable list of users.
 
      group: A reference to a repo group object.
@@ -213,7 +242,7 @@
         </userlist>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'userlist', function() {
+  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
     return {
       restrict: 'E',
       scope: {
@@ -225,18 +254,114 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.users = scope.group.permissions[scope.role.toLowerCase()];
-        if ( typeof scope.users === 'undefined' ) {
-          scope.total = 0;
-        } else {
-          scope.total = scope.users.length;
-        }
+        scope.editable = UserService.user.permission === 'admin' && scope.role !== 'Admin';
+        scope.users = [];
+        scope.showAllUsers = false;
+        angular.forEach( scope.group.permissions[scope.role.toLowerCase()], function( value, key ) {
+          scope.users.push( UserService.users[value] );
+        });
+        scope.requestURL = '/kratos/teams/' + scope.group.name +
+                           '/members/' + scope.role.toLowerCase() + '/';
+        // Functions
+        scope.updateUsers = function() {
+          scope.allUsers = $filter('userListArray')( scope.users );
+          if ( typeof scope.users === 'undefined' ) {
+            scope.total = 0;
+          } else {
+            scope.total = scope.users.length;
+          }
+        };
+        scope.inUserList = function( user ) {
+          return scope.users.indexOf( user ) > -1;
+        };
+        scope.add = function( user ) {
+          var user_id = getObjKeyByVal( UserService.users, user );
+          $.ajax({
+            type: 'PUT',
+            url: scope.requestURL + user_id
+          })
+          .done(function( msg ) {
+            console.log( 'Data Saved:', msg );
+            scope.$apply(function () {
+              scope.users.push( UserService.users[ user_id ] );
+              scope.updateUsers();
+            });
+          })
+          .error(function( msg ) {
+            console.log( 'Error:', msg );
+          });
+        };
+        scope.remove = function( user ) {
+          var user_id = getObjKeyByVal( UserService.users, user );
+          $.ajax({
+            type: 'DELETE',
+            url: scope.requestURL + user_id
+          })
+          .done(function( msg ) {
+            console.log( 'Data Saved:', msg );
+            scope.$apply(function () {
+              var index = scope.users.indexOf( UserService.users[ user_id ] );
+              scope.users.splice( index, 1 );
+              scope.updateUsers();
+            });
+          })
+          .error(function( msg ) {
+            console.log( 'Error:', msg );
+          });
+        };
+        // Init
+        scope.updateUsers();
       }
     };
   });
 
   /* ==========================================================================
-     7. expandable directive
+     # role directive
+     A simple role label.
+
+     group: A reference to a repo group object.
+     user:  The username you want to use to figure out the role.
+
+     Example:
+        <role group="group"
+              user="a_username">
+        </userlist>
+     ========================================================================== */
+
+  angular.module('OSWizardApp').directive( 'role', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        group: '='
+      },
+      templateUrl: '/static/templates/role.html',
+      link: function( scope, element, attrs ) {
+        // Properties
+        var permissions = scope.group.permissions;
+        scope.role = 'read';
+        if ( permissions.read ) {
+          if ( permissions.read.indexOf( attrs.username * 1 ) > -1 ) {
+            scope.role = 'read';
+          }
+        }
+        if ( permissions.write ) {
+          if ( permissions.write.indexOf( attrs.username * 1 ) > -1 ) {
+            scope.role = 'write';
+          }
+        }
+        if ( permissions.admin ) {
+          if ( permissions.admin.indexOf( attrs.username * 1 ) > -1 ) {
+            scope.role = 'admin';
+          }
+        }
+        element.addClass('role-icon');
+        element.addClass( 'role-icon__' + scope.role );
+      }
+    };
+  });
+
+  /* ==========================================================================
+     # expandable directive
 
      Trying the figure out how to use jQuery plugins with Angular.
      This doesn't seem like the most intuitive way but it's working for now.
@@ -254,7 +379,47 @@
   });
 
   /* ==========================================================================
-     8. prepRepoGroupData filter
+     # username filter
+     Get the username from a user id.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'username', function( UserService ) {
+    return function( id ) {
+      return UserService.getName( id );
+    };
+  });
+
+  /* ==========================================================================
+     # userListArray filter
+     Filter a user list for use in a userlist.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'userListArray', function( UserService ) {
+    return function( users ) {
+      var filteredUsers = [];
+      angular.forEach( UserService.usersArray, function( user ) {
+        if ( users.indexOf( user ) === -1 && user.stub === false ) {
+          filteredUsers.push( user );
+        }
+      });
+      return filteredUsers;
+    };
+  });
+
+  /* ==========================================================================
+     # toArray filter
+     A very simple object to array filter.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'toArray', function() {
+    return function( obj ) {
+      var array = [];
+      angular.forEach( obj, function( obj_prop ) {
+        array.push( obj_prop );
+      });
+      return array;
+    };
+  });
+
+  /* ==========================================================================
+     # prepRepoGroupData filter
      Adds some properties to the repo group data before using it.
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepRepoGroupData', function() {
@@ -275,5 +440,68 @@
       return output;
     };
   });
+
+  /* ==========================================================================
+     # Cross Site Request Forgery protection
+     https://docs.djangoproject.com/en/1.7/ref/contrib/csrf/#ajax
+     ========================================================================== */
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  function sameOrigin(url) {
+    // test that a given url is a same-origin URL
+    // url could be relative or scheme relative or absolute
+    var host = document.location.host; // host + port
+    var protocol = document.location.protocol;
+    var sr_origin = '//' + host;
+    var origin = protocol + sr_origin;
+    // Allow absolute or scheme relative URLs to same origin
+    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+        // or any other URL that isn't scheme relative or absolute i.e relative.
+        !(/^(\/\/|http:|https:).*/.test(url));
+  }
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+        // Send the token to same-origin, relative URLs only.
+        // Send the token only if the method warrants CSRF protection
+        // Using the CSRFToken value acquired earlier
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
+
+  /* ==========================================================================
+     # getObjKeyByVal
+     http://stackoverflow.com/questions/9907419/javascript-object-get-key-by-value
+     ========================================================================== */
+  getObjKeyByVal = function( obj, value ) {
+    for( var prop in obj ) {
+      if( obj.hasOwnProperty( prop ) ) {
+         if( obj[ prop ] === value ) {
+           return prop;
+         }
+      }
+    }
+  };
 
 })();

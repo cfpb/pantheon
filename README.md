@@ -4,10 +4,17 @@ Installation
 ------------
 The easiest way to run the system is to use vagrant.
 
-You must install:
+Prerequisites:
   * [Vagrant](https://www.vagrantup.com/)
   * [Virtualbox](https://www.vagrantup.com/)
   * [Ansible](http://www.ansible.com/) (if using mac w/o root install with `brew install ansible`, otherwise use pip)
+
+1. add secret settings to `devops/devops/settings_secret.py`
+1. `vagrant up`
+1. `vagrant ssh`
+1. `cd /vagrant`
+1. `./manage.py syncdb --noinput`
+1. `./manage.py runserver 0.0.0.0:8000`
 
 Pluggable
 ---------

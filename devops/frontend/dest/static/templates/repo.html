@@ -3,6 +3,9 @@
         <h1 class="expandable_label">
             {{ repo.name }}
         </h1>
+        <role group="repo"
+              username="{{ user.id }}"
+              class="expandable_role"></role>
         <div class="expandable_actions">
             <userbutton group="repo"
                         role="Admin"

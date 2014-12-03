@@ -4,6 +4,9 @@
         <h1 class="expandable_label">
             {{ group.name }}
         </h1>
+        <role group="group"
+              username="{{ user.id }}"
+              class="expandable_role"></role>
         <div class="expandable_actions">
             <div class="expandable_header-left">
                 <userbutton group="group"
@@ -47,9 +50,7 @@
             <h2 class="expandable-group_header">
                 Repos
             </h2>
-            <input ng-model="repofilter" type="text" class="filter_input">
-            <repo ng-repeat="repo in group.repos | filter:repofilter"
-                  repo="repo">
+            <repo ng-repeat="repo in ::group.repos">
             </repo>
         </div> <!-- END .expandable-group -->
     </div> <!-- END .expandable_content -->

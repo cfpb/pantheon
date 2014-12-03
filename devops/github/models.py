@@ -1,8 +1,11 @@
+from __future__ import unicode_literals
+from django.utils.encoding import python_2_unicode_compatible
+
 from django.db import models
-from core.models import User
 from github.client import GitHubEnterprise, GitHub
 from django.conf import settings
 
+User = settings.AUTH_USER_MODEL
 
 class RepoManager(models.Manager):
     def sync_user(self, user):
@@ -11,16 +14,6 @@ class RepoManager(models.Manager):
         dirty = False
         ghe = GitHubEnterprise(user)
         gh = GitHub(user)
-        if not user.ghe_id:
-            user_data = ghe.user.get().json()
-            user.ghe_id = user_data['id']
-            dirty = True
-        if gh and not user.gh_id:
-            user_data = gh.user.get().json()
-            user.gh_id = user_data['id']
-            dirty = True
-        if dirty:
-            user.save()
 
         teams_data = ghe.user.teams.get().json()
         Team.objects.sync_teams(teams_data, ghe)
@@ -54,6 +47,7 @@ class RepoManager(models.Manager):
         return repo_model
 
 # Create your models here.
+@python_2_unicode_compatible
 class Repo(models.Model):
     gh_id = models.IntegerField()
     full_name = models.CharField(max_length=256)
@@ -63,13 +57,19 @@ class Repo(models.Model):
     html_url = models.URLField()
     gh_updated_at = models.DateTimeField()
     teams = models.ManyToManyField('Team', related_name='repos')
-    owner = models.ForeignKey('core.User', blank=True, null=True, related_name='repos')
-
+    owner = models.ForeignKey(User, blank=True, null=True, related_name='repos')
     objects = RepoManager()
 
     class Meta:
         ordering = ['fork']
 
+    def __str__(self):
+        return '<Repo: {} ({})>'.format(self.full_name, 'enterprise' if self.is_enterprise else 'public')
+
+    def save(self, *args, **kwargs):
+        if self.description is None:
+            self.description = ''
+        super(Repo, self).save(*args, **kwargs)
 
 class Org(models.Model):
     gh_id = models.IntegerField()
@@ -103,6 +103,8 @@ class TeamManager(models.Manager):
         member_gh_ids = [m['id'] for m in members_data]
         # get all members in the database
         fltr = {'ghe_id__in': member_gh_ids} if is_enterprise else {'gh_id__in': member_gh_ids}
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
         member_models = User.objects.filter(**fltr)
         team.members = member_models
         repos_data = team_client.repos.get().json()
@@ -116,8 +118,10 @@ class Team(models.Model):
     url = models.URLField()
     permission = models.CharField(max_length=6)
     slug = models.CharField(max_length=100)
-    members = models.ManyToManyField('core.User', related_name='teams')
+    members = models.ManyToManyField(User, related_name='teams')
     is_enterprise = models.BooleanField(default=True)
 #    org = models.ForeignKey('Org')
 
     objects = TeamManager()
+
+

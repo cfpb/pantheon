@@ -2,35 +2,69 @@
    dev-dash
    App-specific styles
 
-   1. Base
-   2. Code demo
-   3. Grid
-   4. Expandables
-   5. Directives
+   # Base
+   # .extra-icon
+   # Code demo
+   # .masthead
+   # .user-meta
+   # .meta
+   # .intro
+   # .tile
+   # Expandables
+   # .role-icon
+   # Directives
+   ## group
+   ## userbutton, repobutton
    ========================================================================== */
 
 
 /* ==========================================================================
-   1. Base
+   # Base
    ========================================================================== */
 
 [role="banner"] {
-    .grid_wrapper();
-    margin-top: 3em;
-    margin-bottom: 3em;
-}
-
-[role="main"] {
-    .grid_wrapper();
+    margin-top: unit(45px / @base-font-size-px, em);
+    margin-bottom: unit(30px / @base-font-size-px, em);
 }
 
 [role="contentinfo"] {
-    margin-top: 3em;
+    margin-top: unit(45px / @base-font-size-px, em);
 }
 
 
 /* ==========================================================================
-   2. Code demo
+   # .extra-icon
+   ========================================================================== */
+
+@font-face {
+    font-family: 'extra-icons';
+    src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAALAIAAAwAwT1MvMg6SAyoAAAC8AAAAYGNtYXAaVcxXAAABHAAAAExnYXNwAAAAEAAAAWgAAAAIZ2x5Zk0tRP8AAAFwAAABnGhlYWQCr3NjAAADDAAAADZoaGVhBgsDxgAAA0QAAAAkaG10eARJAAAAAANoAAAAFGxvY2EAKADiAAADfAAAAAxtYXhwAAoAfwAAA4gAAAAgbmFtZUnnC+AAAAOoAAABYHBvc3QAAwAAAAAFCAAAACAAAwQAAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADmAAPA/8D/wAPAAEAAAAABAAAAAAAAAAAAAAAgAAAAAAACAAAAAwAAABQAAwABAAAAFAAEADgAAAAKAAgAAgACAAEAIOYA//3//wAAAAAAIOYA//3//wAB/+MaBAADAAEAAAAAAAAAAAAAAAEAAf//AA8AAQAAAAAAAAAAAAIAADc5AQAAAAABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAABAAAAAACSQNuABAAIQAyAHwAADc0JyYjIgcGFRQXFjMyNzY1ETQnJiMiBwYVFBcWMzI3NjUFNCcmIyIHBhUUFxYzMjc2NTMUBwYHBgcGBwYHBh0BFhcWFRQHBiMiJyY1NDc2NxEmJyY1NDc2MzIXFhUUBwYHETY3Njc2NzY3Njc2NzY1JicmNTQ3NjMyFxYVpRAQFxcQEBAQFxcQEBAQFxcQEBAQFxcQEAFtEBAXFhAQEBAWFxAQNw8PGQGAJ01JGBcZDw4gIC0uICAPDxkZDw8gIC4tICAODxkeOh8TEhYWDAwLCwUFGg4PICAtLiAgbhcQEBAQFxcQEBAQFwKSFxAQEBAXFxAQEBAXSRcQEBAQFxcQEBAQFx4ZGg6kSRUZFxESKA4PGRodLiAgICAuHRoZDwHUDhoZHi4gICAgLh4ZGg7+5A8SCQgHCgsMDBERFxYeDhoZHi4gICAgLgAAAAEAAAABAACjzOUxXw889QALBAAAAAAA0KQXfAAAAADQpBd8AAAAAAJJA24AAAAIAAIAAAAAAAAAAQAAA8D/wAAABAAAAAAAAkkAAQAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAACAAAAAkkAAAAAAAAACgAUAB4AzgABAAAABQB9AAQAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAADgCuAAEAAAAAAAEAFAAAAAEAAAAAAAIADgBcAAEAAAAAAAMAFAAqAAEAAAAAAAQAFABqAAEAAAAAAAUAFgAUAAEAAAAAAAYACgA+AAEAAAAAAAoANAB+AAMAAQQJAAEAFAAAAAMAAQQJAAIADgBcAAMAAQQJAAMAFAAqAAMAAQQJAAQAFABqAAMAAQQJAAUAFgAUAAMAAQQJAAYAFABIAAMAAQQJAAoANAB+AGUAeAB0AHIAYQAtAGkAYwBvAG4AVgBlAHIAcwBpAG8AbgAgADEALgAwAGUAeAB0AHIAYQAtAGkAYwBvAG5leHRyYS1pY29uAGUAeAB0AHIAYQAtAGkAYwBvAG4AUgBlAGcAdQBsAGEAcgBlAHgAdAByAGEALQBpAGMAbwBuAEYAbwBuAHQAIABnAGUAbgBlAHIAYQB0AGUAZAAgAGIAeQAgAEkAYwBvAE0AbwBvAG4ALgADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA) format('truetype'),
+         url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAAV0AAsAAAAABSgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABPUy8yAAABCAAAAGAAAABgDpIDKmNtYXAAAAFoAAAATAAAAEwaVcxXZ2FzcAAAAbQAAAAIAAAACAAAABBnbHlmAAABvAAAAZwAAAGcTS1E/2hlYWQAAANYAAAANgAAADYCr3NjaGhlYQAAA5AAAAAkAAAAJAYLA8ZobXR4AAADtAAAABQAAAAUBEkAAGxvY2EAAAPIAAAADAAAAAwAKADibWF4cAAAA9QAAAAgAAAAIAAKAH9uYW1lAAAD9AAAAWAAAAFgSecL4HBvc3QAAAVUAAAAIAAAACAAAwAAAAMEAAGQAAUAAAKZAswAAACPApkCzAAAAesAMwEJAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAQAAA5gADwP/A/8ADwABAAAAAAQAAAAAAAAAAAAAAIAAAAAAAAgAAAAMAAAAUAAMAAQAAABQABAA4AAAACgAIAAIAAgABACDmAP/9//8AAAAAACDmAP/9//8AAf/jGgQAAwABAAAAAAAAAAAAAAABAAH//wAPAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABAAAAAAAAAAAAAgAANzkBAAAAAAQAAAAAAkkDbgAQACEAMgB8AAA3NCcmIyIHBhUUFxYzMjc2NRE0JyYjIgcGFRQXFjMyNzY1BTQnJiMiBwYVFBcWMzI3NjUzFAcGBwYHBgcGBwYdARYXFhUUBwYjIicmNTQ3NjcRJicmNTQ3NjMyFxYVFAcGBxE2NzY3Njc2NzY3Njc2NSYnJjU0NzYzMhcWFaUQEBcXEBAQEBcXEBAQEBcXEBAQEBcXEBABbRAQFxYQEBAQFhcQEDcPDxkBgCdNSRgXGQ8OICAtLiAgDw8ZGQ8PICAuLSAgDg8ZHjofExIWFgwMCwsFBRoODyAgLS4gIG4XEBAQEBcXEBAQEBcCkhcQEBAQFxcQEBAQF0kXEBAQEBcXEBAQEBceGRoOpEkVGRcREigODxkaHS4gICAgLh0aGQ8B1A4aGR4uICAgIC4eGRoO/uQPEgkIBwoLDAwRERcWHg4aGR4uICAgIC4AAAABAAAAAQAAo8zlMV8PPPUACwQAAAAAANCkF3wAAAAA0KQXfAAAAAACSQNuAAAACAACAAAAAAAAAAEAAAPA/8AAAAQAAAAAAAJJAAEAAAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAAAgAAAAJJAAAAAAAAAAoAFAAeAM4AAQAAAAUAfQAEAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA4ArgABAAAAAAABABQAAAABAAAAAAACAA4AXAABAAAAAAADABQAKgABAAAAAAAEABQAagABAAAAAAAFABYAFAABAAAAAAAGAAoAPgABAAAAAAAKADQAfgADAAEECQABABQAAAADAAEECQACAA4AXAADAAEECQADABQAKgADAAEECQAEABQAagADAAEECQAFABYAFAADAAEECQAGABQASAADAAEECQAKADQAfgBlAHgAdAByAGEALQBpAGMAbwBuAFYAZQByAHMAaQBvAG4AIAAxAC4AMABlAHgAdAByAGEALQBpAGMAbwBuZXh0cmEtaWNvbgBlAHgAdAByAGEALQBpAGMAbwBuAFIAZQBnAHUAbABhAHIAZQB4AHQAcgBhAC0AaQBjAG8AbgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==) format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.extra-icons {
+    font-family: 'extra-icons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.extra-icons-fork:before {
+    content: "\e600";
+}
+
+
+/* ==========================================================================
+   # Code demo
    ========================================================================== */
 
 .code-demo {
@@ -49,27 +83,118 @@
 
 
 /* ==========================================================================
-   3. Grid
+   # .masthead
    ========================================================================== */
 
-.grid {
-    .respond-to-min(768px, {
-        .grid_nested-col-group();
-    });
-}
-
-.grid_col-1-3 {
-    .respond-to-min(768px, {
-        .grid_column(6);
-    });
-    .respond-to-min(1024px, {
-        .grid_column(4);
+.masthead {
+    .u-clearfix();
+    &_user {
+        .webfont-regular;
+    }
+    .respond-to-min(480px, {
+        &_logo {
+            margin: 0;
+            display: inline-block;
+        }
+        &_user {
+            float: right;
+            display: inline-block;
+        }
     });
 }
 
 
 /* ==========================================================================
-   4. Expandables
+   # .user-meta
+   ========================================================================== */
+
+.user-meta {
+    &_name {
+        .h4();
+        margin: 0;
+        .cf-icon {
+            margin-right: unit(4px / @font-size, em);
+        }
+    }
+    &_employee {
+        .webfont-regular();
+        font-size: unit(12px / @base-font-size-px, em);
+    }
+    &_item {
+        display: inline-block;
+    }
+    &_item + &_item {
+        margin-left: unit(12px / @base-font-size-px, em);
+        padding-left: unit(16px / @base-font-size-px, em);
+        border-left: 1px solid @gray-20;
+    }
+}
+
+
+/* ==========================================================================
+   # .meta
+   ========================================================================== */
+
+.meta {
+    .u-clearfix();
+    padding: unit(30px / @base-font-size-px, em) 0;
+    background: @gray-10;
+    border-bottom: 1px solid @gray-20;
+
+    &_breadcrumbs {
+        margin-top: 0;
+    }
+
+    .respond-to-max(479px, {
+        &_refresh .btn {
+            display: block;
+            width: 100%;
+        }
+    });
+
+    .respond-to-min(480px, {
+        &_breadcrumbs {
+            float: left;
+            margin: 0;
+        }
+        &_refresh {
+            float: right;
+            // Aligns .btn baseline to .breadcrumbs baseline.
+            margin-top: unit(-7px / @base-font-size-px, em);
+        }
+    });
+}
+
+
+/* ==========================================================================
+   # .intro
+   ========================================================================== */
+
+.intro {
+    &_text {
+        .h1();
+        max-width: 20em;
+        margin-bottom: unit(40px / @font-size, em);
+    }
+}
+
+
+/* ==========================================================================
+   # .tile
+   ========================================================================== */
+
+.tile_container {
+    .respond-to-min(1024px, {
+        .grid_nested-col-group();
+        .tile {
+            .grid_column(6);
+        }
+    });
+}
+
+
+/* ==========================================================================
+   # Expandables
    ========================================================================== */
 
 .expandable_target:focus {
@@ -77,7 +202,12 @@
     outline-offset: 1px;
 }
 
+.expandable_label-icon {
+    margin-right: unit(4px / @base-font-size-px, em);
+}
+
 .expandable__repogroup {
+    position: relative;
     border: 1px solid @gray-20;
 
     &.expandable__expanded,
@@ -94,6 +224,12 @@
         // Eyeballed to 15px.
         margin-bottom: unit(9px / @font-size, em);
         line-height: 1;
+    }
+
+    .expandable_role {
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 
     .expandable_actions {
@@ -140,22 +276,82 @@
     padding: unit(16px / @font-size, em);
     border: 1px solid @gray-20;
     background: @gray-20;
-}
 
-.filter {
-    position: relative;
-
-    &_input {
-        position: absolute;
-        top: .5em;
-        right: .5em;
-        width: 60%;
+    &__add {
+        border-color: @green-midtone;
+        background: @green-midtone;
+        color: @black;
     }
 }
 
 
 /* ==========================================================================
-   5. Directives
+   # .role-icon
+   ========================================================================== */
+
+.role-icon {
+    display: inline-block;
+    padding: 4px 6px;
+    border-bottom-left-radius: 4px;
+    background: @gray-20;
+    color: @black;
+    .webfont-regular();
+    font-size: unit(12px / @base-font-size-px, em);
+    line-height: 1;
+
+    &:after {
+        content: "";
+    }
+
+    &__read {
+        display: none;
+    }
+
+    &__write {
+        background-color: @gray-20;
+        &:after {
+            content: "write";
+        }
+    }
+
+    &__admin {
+        background-color: @green-midtone;
+        &:after {
+            content: "admin";
+        }
+    }
+}
+
+
+/* ==========================================================================
+   # Directives
+   ========================================================================== */
+
+
+/* ## Group
+   ========================================================================== */
+
+.group-container {
+    .respond-to-min(768px, {
+        .grid_nested-col-group();
+    });
+}
+
+.group {
+    .respond-to-min(768px, {
+        .grid_column(6);
+        group& {
+            margin-right: 0;
+        }
+    });
+    .respond-to-min(1024px, {
+        .grid_column(4);
+        margin-right: 0;
+    });
+}
+
+
+/* ## userbutton, repobutton
    ========================================================================== */
 
 // .btn overrides.
@@ -181,7 +377,7 @@
     }
 
     &_item {
-        padding: 1em;
+        padding: unit(16px / @base-font-size-px, em);
         line-height: 1;
         & + & {
             border-top: 1px dotted @gray-20;
@@ -189,8 +385,80 @@
     }
 
     &_name {
-        .h4();
+        .webfont-medium();
+        font-size: unit(18px / @base-font-size-px, em);
         line-height: 1;
+        &-stub {
+            .webfont-regular();
+            font-size: unit(12px / 18px, em);
+        }
     }
+
+    &_add,
+    &_remove {
+        @font-size: 14px;
+        display: inline-block;
+        margin: unit(-6px / @font-size, em)
+                unit(6px / @font-size, em)
+                unit(-6px / @font-size, em)
+                unit(-6px / @font-size, em);
+        padding: unit(6px / @font-size, em);
+        border: 0;
+        background: transparent;
+        color: @black;
+        font-size: unit(@font-size / @base-font-size-px, em);
+        line-height: 1;
+
+        &:hover,
+        &:focus {
+            outline: 1px dotted @black;
+        }
+
+        .cf-icon {
+            padding: 1px;
+        }
+    }
+
+    &_add {
+        color: @green;
+        &:hover,
+        &:focus {
+            outline: 1px dotted @green-midtone;
+        }
+    }
+
+    &_remove {
+        color: @redorange;
+        &:hover,
+        &:focus {
+            outline: 1px dotted @redorange-50;
+        }
+    }
+
+    &_show-hide {
+        .btn();
+        .btn__secondary();
+        display: block;
+        width: 100%; // Needed for the button element.
+        margin-top: unit(16px / @btn-font-size, em);
+    }
+
+    &_admin {
+        margin-top: 1em;
+    }
+
+    &_filter {
+        &,
+        &[type="text"] {
+            box-sizing: border-box;
+            width: 100%;
+            margin-bottom: -1px;
+            padding: 1em;
+            .webfont-regular();
+            font-size: 1em;
+            border-color: @gray-20;
+        }
+    }
+
 }
 

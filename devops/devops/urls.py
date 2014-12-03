@@ -16,4 +16,4 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
-load_namespaced_urls(urlpatterns, 'github', 'osw', 'jenkins')
+load_namespaced_urls(urlpatterns, 'github', 'osw', 'jenkins', 'kratos')
