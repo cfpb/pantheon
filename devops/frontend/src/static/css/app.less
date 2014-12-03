@@ -5,8 +5,10 @@
    # Base
    # Code demo
    # .masthead
+   # .user-meta
    # .meta
    # .intro
+   # .tile
    # Expandables
    # .role-icon
    # Directives
@@ -71,6 +73,33 @@
 
 
 /* ==========================================================================
+   # .user-meta
+   ========================================================================== */
+
+.user-meta {
+    &_name {
+        .h4();
+        margin: 0;
+        .cf-icon {
+            margin-right: unit(4px / @font-size, em);
+        }
+    }
+    &_employee {
+        .webfont-regular();
+        font-size: unit(12px / @base-font-size-px, em);
+    }
+    &_item {
+        display: inline-block;
+    }
+    &_item + &_item {
+        margin-left: unit(12px / @base-font-size-px, em);
+        padding-left: unit(16px / @base-font-size-px, em);
+        border-left: 1px solid @gray-20;
+    }
+}
+
+
+/* ==========================================================================
    # .meta
    ========================================================================== */
 
@@ -106,33 +135,6 @@
 
 
 /* ==========================================================================
-   # .user-meta
-   ========================================================================== */
-
-.user-meta {
-    &_name {
-        .h4();
-        margin: 0;
-        .cf-icon {
-            margin-right: unit(4px / @font-size, em);
-        }
-    }
-    &_employee {
-        .webfont-regular();
-        font-size: unit(12px / @base-font-size-px, em);
-    }
-    &_item {
-        display: inline-block;
-    }
-    &_item + &_item {
-        margin-left: unit(12px / @base-font-size-px, em);
-        padding-left: unit(16px / @base-font-size-px, em);
-        border-left: 1px solid @gray-20;
-    }
-}
-
-
-/* ==========================================================================
    # .intro
    ========================================================================== */
 
@@ -142,6 +144,20 @@
         max-width: 20em;
         margin-bottom: unit(40px / @font-size, em);
     }
+}
+
+
+/* ==========================================================================
+   # .tile
+   ========================================================================== */
+
+.tile_container {
+    .respond-to-min(1024px, {
+        .grid_nested-col-group();
+        .tile {
+            .grid_column(6);
+        }
+    });
 }
 
 
