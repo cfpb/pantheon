@@ -28,7 +28,7 @@
      ========================================================================== */
 
   angular.module('OSWizardApp').factory( 'UserService', function() {
-    var user = { id: '', name: '', permission: 'read' };
+    var user = { id: '', name: '' };
     var users = {};
     var usersArray = [];
     return {
@@ -71,7 +71,6 @@
         UserService.usersArray = $filter('toArray')( UserService.users );
         UserService.user.id = response.user;
         UserService.user.name = UserService.getName( response.user );
-        UserService.user.permission = response.permission;
         $scope.repoGroups = preppedResponse;
       });
   });
@@ -262,9 +261,8 @@
         // Properties
         scope.role = attrs.role;
         scope.listPermissions = scope.group.permissions[ scope.role.toLowerCase() ];
-        scope.isAdmin = UserService.user.permission === 'admin';
         scope.isGroupAdmin = UserService.isGroupAdmin( scope.group.permissions.admin );
-        scope.editable = scope.isAdmin && scope.isGroupAdmin && scope.role !== 'Admin';
+        scope.editable = scope.isGroupAdmin && scope.role !== 'Admin';
         scope.users = [];
         scope.showAllUsers = false;
         angular.forEach( scope.listPermissions, function( value, key ) {
