@@ -87,8 +87,15 @@
     <div class="content_bar"></div>
     <div class="content_wrapper">
         <div class="content_main">
+            <h1>My teams</h1>
             <div class="group-container">
-                <group ng-repeat="group in repoGroups"
+                <group ng-repeat="group in repoGroups | hasCurrentUser"
+                       class="group">
+                </group>
+            </div>
+            <h1>Other teams</h1>
+            <div class="group-container">
+                <group ng-repeat="group in repoGroups | hasCurrentUser:false"
                        class="group">
                 </group>
             </div>

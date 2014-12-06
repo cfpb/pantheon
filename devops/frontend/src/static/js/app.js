@@ -397,6 +397,38 @@
   });
 
   /* ==========================================================================
+     # hasCurrentUser filter
+     Figures out if the current user is in a group.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'hasCurrentUser', function( UserService ) {
+    return function( groups, toggle ) {
+      var newGroups = [],
+          inOut = true;
+      if ( typeof toggle !== 'undefined' ) {
+        inOut = toggle;
+      }
+      angular.forEach( groups, function( group ) {
+        var inGroup = false;
+        angular.forEach( group.permissions, function( permission ) {
+          if ( permission.indexOf( UserService.user.id ) > -1 ) {
+            inGroup = true;
+          }
+        });
+        if ( inOut ) {
+          if ( inGroup ) {
+            newGroups.push( group );
+          }
+        } else {
+          if ( !inGroup ) {
+            newGroups.push( group );
+          }
+        }
+      });
+      return newGroups;
+    };
+  });
+
+  /* ==========================================================================
      # userListArray filter
      Filter a user list for use in a userlist.
      ========================================================================== */
