@@ -30,6 +30,8 @@
   with_items:
     - lib
     - log
+- name: make couch listen to external requests
+  lineinfile: dest=/usr/local/etc/couchdb/local.ini regexp=^bind_address= line=bind_address=0.0.0.0
 - name: add service to init.d
   file: path=/etc/init.d/couchdb state=link src=/usr/local/etc/rc.d/couchdb
 - name: start couchdb
