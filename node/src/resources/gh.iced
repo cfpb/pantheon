@@ -83,16 +83,20 @@ x.import_teams = (db_name, admin_id, callback) ->
   return callback()
 
 import_team = (teams, admin_id, callback) ->
+  team_doc = {
+    _id: 'team_' + teams['admin'].iname,
+    name: teams['admin'].iname,
+  }
   await
     import_repos(teams['admin'], admin_id, defer(err, rsrc_doc))
     i = 0
     import_members(teams, admin_id, defer(err, role_doc))
-  return callback(null, [role_doc, rsrc_doc])
+  return callback(null, [team_doc, role_doc, rsrc_doc])
 
 import_members = (teams, admin_id, callback) ->
   now = +new Date()
   role_doc = {
-    _id: 't_' + teams['admin'].iname + '_role_member',
+    _id: 'role_member_' + teams['admin'].iname,
     members: [],
     audit: [{u: admin_id, dt: now, a: '+', id: uuid.v4()}],
     enforce: [],
@@ -122,7 +126,7 @@ import_members = (teams, admin_id, callback) ->
 import_repos = (team, admin_id, callback) ->
   now = +new Date()
   resource_doc = {
-    _id: 't_' + team.iname + '_rsrc_gh',
+    _id: 'rsrc_gh_' + team.iname,
     assets: [],
     audit: [{u: admin_id, dt: now, a: '+', id: uuid.v4()}],
     enforce: [],

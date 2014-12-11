@@ -6,6 +6,7 @@ _ = require('underscore')
 conf = require('./config')
 host = conf.COUCHDB.HOST + ':' + conf.COUCHDB.PORT
 nano = require('nano')(host)
+{exec} = require 'child_process'
 
 x = {}
 
@@ -25,10 +26,9 @@ x.ensure_db = (db, method, args...) ->
     await nano.db.create(db.config.db, defer(err, resp))
     if err
       return callback?(err, resp)
-
-    design_docs = require('./design_docs/' + db.config.db.split('_')[0])
-
-    await x.sync_design_docs(db, design_docs, defer(err, resp))
+    db_name = db.config.db
+    design_docs = require('./design_docs/' + db_name.split('_')[0])
+    await x.sync_design_docs(db_name, design_docs, defer(err, resp))
     if err
       return callback?(err, resp)
     return db[method].apply(db, args.concat([callback]))
@@ -67,20 +67,27 @@ x.sync_all_db_design_docs = (db_type) ->
   errs = []
   await
     for db_name, i in dbs
-      db = nano.use(db_name)
-      x.sync_design_docs(db, design_docs, defer(errs[i]))
+      x.sync_design_docs(db_name, design_docs, defer(errs[i]))
   errs = _.compact(errs)
   if errs.length
     console.log("ERROR": errs)
   else
     console.log('completed without errors')
 
-x.sync_design_docs = (db, design_docs, callback) ->
-  new_docs = []
-  for name, doc of design_docs
-    doc._id = '_design/' + name
-    new_docs.push(doc)
-  x.upsert(db, new_docs, (() -> return true), callback)
+x.sync_design_docs = (db_name, design_doc_names, callback) ->
+  errors = []
+  await
+    for name, i in design_doc_names
+      url = host + '/' + db_name
+      cmd = 'kanso push ' + name + ' ' + url
+      wd = path.join(path.dirname(fs.realpathSync(__filename)), './design_docs')
+      exec(cmd, {cwd: wd}, defer(errors[i]))
+  errors = _.compact(errors)
+  if errors.length
+    console.log(cmd, errors)
+    return callback(errors)
+  else
+    return callback()
 
 x.merge_old_and_new_docs = (old_docs, new_docs, should_update) ->
   out = []

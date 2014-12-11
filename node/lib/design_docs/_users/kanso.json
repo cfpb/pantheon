@@ -1,8 +1,8 @@
 {
     "name": "base",
     "version": "0.0.1",
-    "description": "Org Management",
-    "modules": ["lib", "views"],
+    "description": "User Management",
+    "modules": ["lib"],
     "load": "lib/app",
     "dependencies": {
         "modules": null,
