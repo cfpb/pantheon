@@ -1,0 +1,58 @@
+- name: install rpms for building couchdb
+  yum: name={{ item }}
+  with_items:
+    - libicu-devel
+    - openssl-devel
+    - curl-devel
+    - make
+    - gcc
+    - erlang
+    - js-devel
+    - libtool
+    - which
+- stat: path=/usr/local/bin/couchdb
+  register: couch_bin
+- name: get couchdb tar
+  get_url: url=http://download.nextag.com/apache/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz dest={{ root_dir }}/couchdb.tar.gz
+- name: unzip couchdb
+  shell: tar xvfz {{ root_dir }}/couchdb.tar.gz chdir={{ root_dir }}
+  when: not couch_bin.stat.exists
+- name: configure
+  shell: '{{ root_dir}}/apache-couchdb-1.6.1/configure --with-erlang=/usr/lib64/erlang/usr/include/'
+  when: not couch_bin.stat.exists
+- name: make and install couch
+  shell: 'make && sudo make install chdir={{ root_dir}}/apache-couchdb-1.6.1/'
+  when: not couch_bin.stat.exists
+- name: create couch user
+  user: name=couchdb createhome=no
+- name: make couch user own couch files
+  file: 'path=/usr/local/var/{{ item }}/couchdb owner=couchdb state=directory recurse=yes'
+  with_items:
+    - lib
+    - log
+- name: add service to init.d
+  file: path=/etc/init.d/couchdb state=link src=/usr/local/etc/rc.d/couchdb
+- name: start couchdb
+  service: name=couchdb enabled=yes state=started
+
+# this repo didn't work
+# - name: install rpms for building couchdb
+#   yum: name={{ item }}
+#   with_items:
+#     - gcc
+#     - gcc-c++
+#     - make
+#     - libtool
+#     - zlib-devel
+#     - openssl-devel
+#     - rubygem-rake
+#     - ruby-rdoc
+#     - git
+# - name: clone couchdb builder
+#   git: repo=git://github.com/jhs/build-couchdb.git dest={{ root_dir }}/couchdb
+# - name: build couchdb
+#   shell: rake chdir={{ root_dir}}/couchdb
+
+# this version is way too old
+# - name: install couchdb
+#   yum: name=couchdb

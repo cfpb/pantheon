@@ -9,6 +9,10 @@ env-devops
 /ansible/production_inventory
 /ansible/group_vars/production.yml
 
+# CouchDB #
+###########
+/apache-couchdb-1.6.1/
+
 # Compiled source #
 ###################
 *.com

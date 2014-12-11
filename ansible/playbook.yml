@@ -9,3 +9,7 @@
   roles:
     - role: django
       sudo: yes
+    - role: node
+      sudo: yes
+    - role: couch
+      sudo: yes
