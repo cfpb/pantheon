@@ -13,5 +13,6 @@
     - {name: 'jasmine-node', version: '1.14.5'}
     - {name: 'supervisor', version: '0.6.0'}
     - {name: 'kanso', version: '0.4.0'}
+    - {name: 'forever', version: '0.13.0'}
 - name: install node application package
   npm: path={{ root_dir }}/node
