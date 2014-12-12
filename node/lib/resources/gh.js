@@ -59,7 +59,7 @@
             (function(__iced_k) {
               __iced_deferrals = new iced.Deferrals(__iced_k, {
                 parent: ___iced_passed_deferral,
-                filename: "/vagrant/node/src/resources/gh.iced"
+                filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced"
               });
               client.get(url, __iced_deferrals.defer({
                 assign_fn: (function() {
@@ -105,7 +105,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/resources/gh.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced",
           funcname: "import_users"
         });
         get_all(gha, url, __iced_deferrals.defer({
@@ -125,7 +125,7 @@
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: "/vagrant/node/src/resources/gh.iced",
+            filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced",
             funcname: "import_users"
           });
           couch_utils.get_uuids(members.length, __iced_deferrals.defer({
@@ -180,7 +180,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/resources/gh.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced",
           funcname: "import_teams"
         });
         get_all(gha, url, __iced_deferrals.defer({
@@ -219,7 +219,7 @@
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: "/vagrant/node/src/resources/gh.iced",
+            filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced",
             funcname: "import_teams"
           });
           i = 0;
@@ -245,7 +245,7 @@
           (function(__iced_k) {
             __iced_deferrals = new iced.Deferrals(__iced_k, {
               parent: ___iced_passed_deferral,
-              filename: "/vagrant/node/src/resources/gh.iced",
+              filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced",
               funcname: "import_teams"
             });
             couch_utils.ensure_db(db, 'bulk', team_docs, __iced_deferrals.defer({
@@ -279,7 +279,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/resources/gh.iced"
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced"
         });
         import_repos(teams['admin'], admin_id, __iced_deferrals.defer({
           assign_fn: (function() {
@@ -337,7 +337,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/resources/gh.iced"
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced"
         });
         i = 0;
         for (team_name in teams) {
@@ -369,7 +369,7 @@
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: "/vagrant/node/src/resources/gh.iced"
+            filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced"
           });
           couch_utils.nano.use('_users').view('base', 'by_resource_id', {
             keys: member_gh_ids
@@ -426,7 +426,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/resources/gh.iced"
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/resources/gh.iced"
         });
         get_all(gha, url, __iced_deferrals.defer({
           assign_fn: (function() {

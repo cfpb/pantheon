@@ -43,7 +43,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/couch_utils.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
           funcname: "ensure_db"
         });
         db[method].apply(db, args.concat([
@@ -65,7 +65,7 @@
           (function(__iced_k) {
             __iced_deferrals = new iced.Deferrals(__iced_k, {
               parent: ___iced_passed_deferral,
-              filename: "/vagrant/node/src/couch_utils.iced",
+              filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
               funcname: "ensure_db"
             });
             nano.db.create(db.config.db, __iced_deferrals.defer({
@@ -87,7 +87,7 @@
             (function(__iced_k) {
               __iced_deferrals = new iced.Deferrals(__iced_k, {
                 parent: ___iced_passed_deferral,
-                filename: "/vagrant/node/src/couch_utils.iced",
+                filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
                 funcname: "ensure_db"
               });
               x.sync_design_docs(db_name, design_docs, __iced_deferrals.defer({
@@ -128,7 +128,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/couch_utils.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
           funcname: "force_get"
         });
         x.ensure_db(db, 'get', doc_id, __iced_deferrals.defer({
@@ -164,7 +164,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/couch_utils.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
           funcname: "update"
         });
         x.force_get(db, doc_id, __iced_deferrals.defer({
@@ -187,7 +187,7 @@
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: "/vagrant/node/src/couch_utils.iced",
+            filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
             funcname: "update"
           });
           db.insert(doc, doc_id, __iced_deferrals.defer({
@@ -220,7 +220,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/couch_utils.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
           funcname: "sync_all_db_design_docs"
         });
         nano.db.list(__iced_deferrals.defer({
@@ -244,7 +244,7 @@
           var _i, _len;
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: "/vagrant/node/src/couch_utils.iced",
+            filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
             funcname: "sync_all_db_design_docs"
           });
           for (i = _i = 0, _len = dbs.length; _i < _len; i = ++_i) {
@@ -283,7 +283,7 @@
         var _i, _len;
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/couch_utils.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
           funcname: "sync_design_docs"
         });
         for (i = _i = 0, _len = design_doc_names.length; _i < _len; i = ++_i) {
@@ -342,7 +342,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/couch_utils.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
           funcname: "upsert"
         });
         x.ensure_db(db, 'fetch', {
@@ -367,7 +367,7 @@
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: "/vagrant/node/src/couch_utils.iced",
+            filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
             funcname: "upsert"
           });
           db.bulk({
@@ -422,7 +422,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/couch_utils.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
           funcname: "get_uuid"
         });
         nano.request({
@@ -456,7 +456,7 @@
       return (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "/vagrant/node/src/couch_utils.iced",
+          filename: "/Users/greisend/programming/open-source-wizard/node/src/couch_utils.iced",
           funcname: "get_uuids"
         });
         nano.request({

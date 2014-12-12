@@ -17,8 +17,8 @@ task 'watch', 'Watch src directory and build the .js files', (options) ->
   cp.stdout.on "data", (data) -> console.log(data)
   cp.stderr.on "data", (data) -> console.log(data)
 
-task 'runserver', 'Run the server (port 500); restart on change', (options) ->
-  console.log('Running the server on port 500; restarting on change')
+task 'runtestserver', 'Run the server (port 5000); restart on change', (options) ->
+  console.log('Running the server on port 5000; restarting on change')
   cp = exec "iced --watch --output ./lib/ ./src/"
   cp.stdout.on "data", (data) -> console.log(data)
   cp.stderr.on "data", (data) -> console.log(data)
