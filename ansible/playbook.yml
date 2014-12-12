@@ -6,6 +6,10 @@
 - hosts:
     - vagrant
     - production
+  gather_facts: no
+  vars:
+    node_port: 5000
+    django_port: 8000
   roles:
     - role: django
       sudo: yes
