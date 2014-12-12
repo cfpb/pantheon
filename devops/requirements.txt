@@ -4,3 +4,4 @@ python-social-auth==0.1.26
 universalclient==0.6.3
 rauth==0.7.0
 django-fsm==2.2.0
+gunicorn==19.1.1

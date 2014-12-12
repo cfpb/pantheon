@@ -1,0 +1,57 @@
+<section expandable
+         class="expandable expandable__padded expandable__repogroup">
+    <div class="expandable_header">
+        <h1 class="expandable_label">
+            {{ group.name }}
+        </h1>
+        <role group="group"
+              username="{{ user.id }}"
+              class="expandable_role"></role>
+        <div class="expandable_actions">
+            <div class="expandable_header-left">
+                <userbutton group="group"
+                            role="Admin"
+                            show="group.showAdmin">
+                </userbutton>
+                <userbutton group="group"
+                            role="Write"
+                            show="group.showWrite">
+                </userbutton>
+                <userbutton group="group"
+                            role="Read"
+                            show="group.showRead">
+                </userbutton>
+            </div>
+            <div class="expandable_header-right">
+                <repobutton group="group"
+                            show="group.showRepo">
+                </repobutton>
+            </div>
+        </div>
+    </div>
+    <div class="expandable_content">
+        <userlist filter="adminfilter"
+                  group="group"
+                  role="Admin"
+                  show="group.showAdmin">
+        </userlist>
+        <userlist filter="writefilter"
+                  group="group"
+                  role="Write"
+                  show="group.showWrite">
+        </userlist>
+        <userlist filter="readfilter"
+                  group="group"
+                  role="Read"
+                  show="group.showRead">
+        </userlist>
+        <div ng-show="group.showRepo"
+             class="expandable-group filter">
+            <h2 class="expandable-group_header">
+                Repos
+            </h2>
+            <repo ng-repeat="repo in ::group.repos">
+            </repo>
+        </div> <!-- END .expandable-group -->
+    </div> <!-- END .expandable_content -->
+</section> <!-- END .expandable -->
