@@ -17,12 +17,12 @@
   app.use(bodyParser.json());
 
   app.use(session({
-    keys: conf.SESSION_KEYS
+    secret: conf.SECRET_KEY
   }));
 
   routes(app);
 
-  server = app.listen(8000, function() {
+  server = app.listen(5000, function() {
     var host, port;
     host = server.address().address;
     port = server.address().port;

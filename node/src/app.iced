@@ -13,11 +13,11 @@ routes = require('./routes')
 
 app = express()
 app.use(bodyParser.json())
-app.use(session(keys: conf.SESSION_KEYS))
+app.use(session(secret: conf.SECRET_KEY))
 routes(app)
 
 
-server = app.listen(8000, () ->
+server = app.listen(5000, () ->
   host = server.address().address
   port = server.address().port
   console.log('app listening at http://%s:%s', host, port)
