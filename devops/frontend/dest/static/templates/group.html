@@ -50,8 +50,14 @@
             <h2 class="expandable-group_header">
                 Repos
             </h2>
-            <repo ng-repeat="repo in ::group.repos">
-            </repo>
+            <ul class="userlist_list">
+                <li ng-repeat="repo in ::group.repos"
+                    class="userlist_item">
+                    <span class="userlist_name">
+                        {{ repo.name }}
+                    </span>
+                </li>
+            </ul>
         </div> <!-- END .expandable-group -->
     </div> <!-- END .expandable_content -->
 </section> <!-- END .expandable -->

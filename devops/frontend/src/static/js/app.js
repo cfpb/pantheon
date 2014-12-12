@@ -4,7 +4,6 @@
    # UserService service
    # RepoGroupsCtrl controller
    # group directive
-   # repo directive
    # repobutton directive
    # userbutton directive
    # userlist directive
@@ -101,26 +100,6 @@
       // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
       priority: 1001,
       templateUrl: '/static/templates/group.html'
-    };
-  });
-
-  /* ==========================================================================
-     # repo directive
-     Displays a repo from a repo group.
-
-     repo: This property is required. It should point to a repo object that has
-           name and permissions properties.
-
-     Example:
-        <repo ng-repeat="repo in group.repos
-              repo="repo">
-        </repo>
-     ========================================================================== */
-
-  angular.module('OSWizardApp').directive( 'repo', function() {
-    return {
-      restrict: 'E',
-      templateUrl: '/static/templates/repo.html'
     };
   });
 
