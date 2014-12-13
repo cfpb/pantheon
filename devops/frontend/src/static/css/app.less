@@ -503,23 +503,23 @@
 /* ## Group
    ========================================================================== */
 
-.group-container {
+.groups {
     .respond-to-min(768px, {
         .grid_nested-col-group();
     });
-}
 
-.group {
-    .respond-to-min(768px, {
-        .grid_column(6);
-        group& {
+    &_item {
+        .respond-to-min(768px, {
+            .grid_column(6);
+            group& {
+                margin-right: 0;
+            }
+        });
+        .respond-to-min(1024px, {
+            .grid_column(4);
             margin-right: 0;
-        }
-    });
-    .respond-to-min(1024px, {
-        .grid_column(4);
-        margin-right: 0;
-    });
+        });
+    }
 }
 
 

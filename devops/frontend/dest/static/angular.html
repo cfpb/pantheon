@@ -88,15 +88,15 @@
     <div class="content_wrapper">
         <div class="content_main">
             <h1>My teams</h1>
-            <div class="group-container">
+            <div class="groups">
                 <group ng-repeat="group in repoGroups | hasCurrentUser"
-                       class="group">
+                       class="groups_item">
                 </group>
             </div>
             <h1>Other teams</h1>
-            <div class="group-container">
+            <div class="groups">
                 <group ng-repeat="group in repoGroups | hasCurrentUser:false"
-                       class="group">
+                       class="groups_item">
                 </group>
             </div>
         </div>
