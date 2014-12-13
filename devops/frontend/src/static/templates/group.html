@@ -53,13 +53,13 @@
         </section>
         <div ng-show="group.showRepo"
              class="expandable-group filter">
-            <h2 class="expandable-group_header">
+            <h2 class="slats-header">
                 Repos
             </h2>
-            <ul class="userlist_list">
+            <ul class="slats">
                 <li ng-repeat="repo in ::group.repos"
-                    class="userlist_item">
-                    <span class="userlist_name">
+                    class="slats_item slat">
+                    <span class="slat_label">
                         {{ repo.name }}
                     </span>
                 </li>
