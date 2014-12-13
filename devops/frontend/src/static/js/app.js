@@ -229,7 +229,7 @@
 
   angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
     return {
-      restrict: 'E',
+      restrict: 'A',
       scope: {
         filter: '=',
         group: '=',

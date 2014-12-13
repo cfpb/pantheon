@@ -1,87 +1,85 @@
-<section ng-show="show"
-         class="userlist">
-    <h1 class="slats-header">{{ ::role }}</h1>
-    <ul class="slats">
-        <li ng-if="total === 0"
-            class="slats_item slat">
-            <span class="slat_label">No {{ ::role | lowercase }} users</span>
-        </li>
-        <li ng-repeat="user in users | orderBy:'username'"
-            class="slats_item slat">
-            <button ng-if="editable"
-                    ng-click="remove(user)"
-                    class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
-                <span class="u-visually-hidden">Remove</span>
-                <span class="cf-icon cf-icon-minus-round"></span>
-            </button>
-            <span class="slat_label">
-                {{ user.username }}
-            </span>
-            <span ng-if="user.stub"
-                  class="slat_small">
-                stub
-            </span>
-        </li>
-    </ul>
-    <div ng-if="editable">
-        <button ng-show="showAllUsers"
-                ng-click="showAllUsers = !showAllUsers"
-                class="userlist_show-hide">
-            <span ng-show="!showAllUsers">
-                Add new {{ ::role | lowercase }} users
-            </span>
-            <span ng-show="showAllUsers">
-                Close list of all users
-            </span>
+<h1 class="slats-header">{{ ::role }}</h1>
+<ul class="userlist_item slats">
+    <li ng-if="total === 0"
+        class="slats_item slat">
+        <span class="slat_label">No {{ ::role | lowercase }} users</span>
+    </li>
+    <li ng-repeat="user in users | orderBy:'username'"
+        class="slats_item slat">
+        <button ng-if="editable"
+                ng-click="remove(user)"
+                class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
+            <span class="u-visually-hidden">Remove</span>
+            <span class="cf-icon cf-icon-minus-round"></span>
         </button>
-        <div ng-show="showAllUsers"
-             class="userlist_admin">
-            <h2 class="slats-header slats-header__add">
-                Add new {{ ::role }} users
-            </h2>
-            <input ng-model="filter"
-                   type="text"
-                   class="userlist_filter"
-                   placeholder="Type to filter by username">
-            <ul class="slats">
-                <li ng-if="(allUsers | filter:filter).length === 0"
-                    class="slats_item slat">
-                    <span class="slat_label">
-                        Sorry, there's no user named &ldquo;{{ filter }}&rdquo;
+        <span class="slat_label">
+            {{ user.username }}
+        </span>
+        <span ng-if="user.stub"
+              class="slat_small">
+            stub
+        </span>
+    </li>
+</ul>
+<div ng-if="editable"
+     class="userlist_item">
+    <button ng-show="showAllUsers"
+            ng-click="showAllUsers = !showAllUsers"
+            class="userlist_item userlist_show-hide btn btn__secondary btn__block">
+        <span ng-show="!showAllUsers">
+            Add new {{ ::role | lowercase }} users
+        </span>
+        <span ng-show="showAllUsers">
+            Close list of all users
+        </span>
+    </button>
+    <div ng-show="showAllUsers"
+         class="userlist_item">
+        <h2 class="slats-header slats-header__add">
+            Add new {{ ::role }} users
+        </h2>
+        <input ng-model="filter"
+               type="text"
+               class="userlist_filter"
+               placeholder="Type to filter by username">
+        <ul class="slats">
+            <li ng-if="(allUsers | filter:filter).length === 0"
+                class="slats_item slat">
+                <span class="slat_label">
+                    Sorry, there's no user named &ldquo;{{ filter }}&rdquo;
+                </span>
+            </li>
+            <li ng-repeat="user in allUsers | filter:filter"
+                class="slats_item slat">
+                <button ng-if="!inUserList(user)"
+                        ng-click="add(user)"
+                        class="slat_icon-btn slat_icon-btn__add slat_icon-btn__first">
+                    <span class="u-visually-hidden">Add</span>
+                    <span class="cf-icon cf-icon-plus-round"></span>
+                </button>
+                <button ng-if="inUserList(user)"
+                        ng-click="remove(user)"
+                        class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
+                    <span class="u-visually-hidden">Remove</span>
+                    <span class="cf-icon cf-icon-minus-round"></span>
+                </button>
+                <span class="slat_label">
+                    {{ user.username }}
+                    <span ng-if="user.stub"
+                          class="slat_small">
+                        stub
                     </span>
-                </li>
-                <li ng-repeat="user in allUsers | filter:filter"
-                    class="slats_item slat">
-                    <button ng-if="!inUserList(user)"
-                            ng-click="add(user)"
-                            class="slat_icon-btn slat_icon-btn__add slat_icon-btn__first">
-                        <span class="u-visually-hidden">Add</span>
-                        <span class="cf-icon cf-icon-plus-round"></span>
-                    </button>
-                    <button ng-if="inUserList(user)"
-                            ng-click="remove(user)"
-                            class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
-                        <span class="u-visually-hidden">Remove</span>
-                        <span class="cf-icon cf-icon-minus-round"></span>
-                    </button>
-                    <span class="slat_label">
-                        {{ user.username }}
-                        <span ng-if="user.stub"
-                              class="slat_small">
-                            stub
-                        </span>
-                    </span>
-                </li>
-            </ul>
-        </div>
-        <button ng-click="showAllUsers = !showAllUsers"
-                class="userlist_show-hide">
-            <span ng-show="!showAllUsers">
-                Add new {{ ::role | lowercase }} users
-            </span>
-            <span ng-show="showAllUsers">
-                Close list of all users
-            </span>
-        </button>
+                </span>
+            </li>
+        </ul>
     </div>
-</section>
+    <button ng-click="showAllUsers = !showAllUsers"
+            class="userlist_item userlist_show-hide btn btn__secondary btn__block">
+        <span ng-show="!showAllUsers">
+            Add new {{ ::role | lowercase }} users
+        </span>
+        <span ng-show="showAllUsers">
+            Close list of all users
+        </span>
+    </button>
+</div>

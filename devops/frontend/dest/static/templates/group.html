@@ -30,21 +30,27 @@
         </div>
     </div>
     <div class="expandable_content">
-        <userlist filter="adminfilter"
-                  group="group"
-                  role="Admin"
-                  show="group.showAdmin">
-        </userlist>
-        <userlist filter="writefilter"
-                  group="group"
-                  role="Write"
-                  show="group.showWrite">
-        </userlist>
-        <userlist filter="readfilter"
-                  group="group"
-                  role="Read"
-                  show="group.showRead">
-        </userlist>
+        <section userlist
+                 class="userlist"
+                 filter="adminfilter"
+                 group="group"
+                 role="Admin"
+                 ng-show="group.showAdmin">
+        </section>
+        <section userlist
+                 class="userlist"
+                 filter="writefilter"
+                 group="group"
+                 role="Write"
+                 ng-show="group.showWrite">
+        </section>
+        <section userlist
+                 class="userlist"
+                 filter="readfilter"
+                 group="group"
+                 role="Read"
+                 ng-show="group.showRead">
+        </section>
         <div ng-show="group.showRepo"
              class="expandable-group filter">
             <h2 class="expandable-group_header">
