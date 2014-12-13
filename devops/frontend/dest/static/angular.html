@@ -59,7 +59,7 @@
 
 </head>
 
-<body ng-app="OSWizardApp" ng-controller="RepoGroupsCtrl">
+<body ng-app="OSWizardApp" ng-controller="TeamsCtrl">
 
 <!--
     =================
@@ -88,19 +88,19 @@
     <div class="content_wrapper">
         <div class="content_main">
             <h1>My teams</h1>
-            <div class="groups">
+            <div class="teams">
                 <section team
-                         data="group"
-                         ng-repeat="group in repoGroups | hasCurrentUser"
-                         class="groups_item">
+                         data="team"
+                         ng-repeat="team in teams | hasCurrentUser"
+                         class="teams_item">
                 </section>
             </div>
             <h1>Other teams</h1>
-            <div class="groups">
+            <div class="teams">
                 <section team
-                         data="group"
-                         ng-repeat="group in repoGroups | hasCurrentUser:false"
-                         class="groups_item">
+                         data="team"
+                         ng-repeat="team in teams | hasCurrentUser:false"
+                         class="teams_item">
                 </section>
             </div>
         </div>

@@ -2,7 +2,7 @@
    dev-dash
 
    # UserService service
-   # RepoGroupsCtrl controller
+   # TeamsCtrl controller
    # team directive
    # repobutton directive
    # userbutton directive
@@ -12,7 +12,7 @@
    # username filter
    # userListArray filter
    # toArray filter
-   # prepRepoGroupData filter
+   # prepTeamData filter
    # Cross Site Request Forgery protection
    # getObjKeyByVal
    ========================================================================== */
@@ -41,7 +41,7 @@
           return '';
         }
       },
-      isGroupAdmin: function( permissions ) {
+      isTeamAdmin: function( permissions ) {
         if ( typeof permissions !== 'undefined' ) {
           return permissions.indexOf( this.user.id ) > -1;
         } else {
@@ -52,25 +52,25 @@
   });
 
   /* ==========================================================================
-     # RepoGroupsCtrl controller
+     # TeamsCtrl controller
      The main controller. All it really does is grabs a JSON file, filters it
      and sets two main properties used throughout the app.
      ========================================================================== */
 
-  angular.module('OSWizardApp').controller( 'RepoGroupsCtrl', function( $scope, $http, $filter, UserService ) {
+  angular.module('OSWizardApp').controller( 'TeamsCtrl', function( $scope, $http, $filter, UserService ) {
     // Properties
     $scope.user = UserService.user;
     $scope.users = UserService.users;
-    $scope.repoGroups = [];
+    $scope.teams = [];
     // Data
     $http.get( '/kratos/teams/' ).
       success( function( response, status, headers, config ) {
-        var preppedResponse = $filter('prepRepoGroupData')( response.groups );
+        var preppedResponse = $filter('prepTeamData')( response.groups );
         UserService.users = response.users;
         UserService.usersArray = $filter('toArray')( UserService.users );
         UserService.user.id = response.user;
         UserService.user.name = UserService.getName( response.user );
-        $scope.repoGroups = preppedResponse;
+        $scope.teams = preppedResponse;
       });
   });
 
@@ -79,15 +79,18 @@
      Displays a team.
 
      Example:
-        <section team="team" ng-repeat="team in repoGroups">
+        <section data="team" ng-repeat="team in teams">
         </section>
 
-     team: This property is required. In this example it is getting accessed
-           through `group in repoGroups`. It should point to a group object
-           with name, permissions, and repos properties.
+     data: This property is required. In this example it is getting accessed
+           through `team in teams`. It should point to a team object with name,
+           permissions, and repos properties.
 
      Note: This directive uses the following directives:
-           - expandables
+           - expandable
+           - role
+           - userbutton
+           - userlist
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'team', function() {
@@ -104,16 +107,10 @@
      # repobutton directive
      Creates a button to toggle a list of repos on and off.
 
-     group: A reference to a repo group object.
-     role:  The permission role you wish to display.
-            Can be "Admin", "Write", or "Read", capitalization is important.
-     show: The state variable that the button should toggle.
+     team-model: A reference to a team model.
 
      Example:
-        <userbutton group="group"
-                    role="Admin"
-                    show="group.showRead">
-        </userbutton>
+        <repobutton team-model="team"></repobutton>
 
      TODO: Merge with userbutton since they do almost the exact same thing.
      ========================================================================== */
@@ -122,21 +119,21 @@
     return {
       restrict: 'E',
       scope: {
-        group: '=',
+        teamModel: '=',
         show: '='
       },
       controller: function( $scope ) {
         $scope.toggle = function( show ) {
-          $scope.group.showAdmin = false;
-          $scope.group.showWrite = false;
-          $scope.group.showRead = false;
+          $scope.teamModel.showAdmin = false;
+          $scope.teamModel.showWrite = false;
+          $scope.teamModel.showRead = false;
           $scope.show = !show;
         };
       },
       templateUrl: '/static/templates/repobutton.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.repos = scope.group.repos;
+        scope.repos = scope.teamModel.repos;
         if ( typeof scope.repos === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -158,33 +155,28 @@
      # userbutton directive
      Creates a button of a certain type of user
 
-     group: A reference to a repo group object.
-     role:  The permission role you wish to display.
-            Can be "Admin", "Write", or "Read", capitalization is important.
-     show: The state variable that the button should toggle.
+     team-model: A reference to a team model.
 
      Example:
-        <userbutton role="Admin"
-                    group="group">
-        </userbutton>
+        <userbutton team-model="team"></userbutton>
 
-     TODO: Merge with userbutton since they do almost the exact same thing.
+     TODO: Merge with repobutton since they do almost the exact same thing.
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'userbutton', function() {
     return {
       restrict: 'E',
       scope: {
-        group: '=',
+        teamModel: '=',
         show: '='
       },
       controller: function( $scope ) {
         $scope.toggle = function( show ) {
           var toggledShow = !show;
-          $scope.group.showAdmin = false;
-          $scope.group.showWrite = false;
-          $scope.group.showRead = false;
-          $scope.group.showRepo = false;
+          $scope.teamModel.showAdmin = false;
+          $scope.teamModel.showWrite = false;
+          $scope.teamModel.showRead = false;
+          $scope.teamModel.showRepo = false;
           $scope.show = toggledShow;
         };
       },
@@ -192,7 +184,7 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.users = scope.group.permissions[scope.role.toLowerCase()];
+        scope.users = scope.teamModel.permissions[scope.role.toLowerCase()];
         if ( typeof scope.users === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -214,14 +206,12 @@
      # userlist directive
      Creates a toggleable list of users.
 
-     group: A reference to a repo group object.
-     role:  The permission role you wish to display.
-            Can be "Admin", "Write", or "Read", capitalization is important.
+     team-model: A reference to a team model.
+     role:       The permission role you wish to display.
+                 Can be "Admin", "Write", or "Read", capitalization is important.
 
      Example:
-        <userlist group="group"
-                  role="Admin">
-        </userlist>
+        <userlist team-model="team" role="Admin"></userlist>
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
@@ -229,22 +219,22 @@
       restrict: 'A',
       scope: {
         filter: '=',
-        group: '=',
+        teamModel: '=',
         show: '='
       },
       templateUrl: '/static/templates/userlist.html',
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.listPermissions = scope.group.permissions[ scope.role.toLowerCase() ];
-        scope.isGroupAdmin = UserService.isGroupAdmin( scope.group.permissions.admin );
-        scope.editable = scope.isGroupAdmin && scope.role !== 'Admin';
+        scope.listPermissions = scope.teamModel.permissions[ scope.role.toLowerCase() ];
+        scope.isTeamAdmin = UserService.isTeamAdmin( scope.teamModel.permissions.admin );
+        scope.editable = scope.isTeamAdmin && scope.role !== 'Admin';
         scope.users = [];
         scope.showAllUsers = false;
         angular.forEach( scope.listPermissions, function( value, key ) {
           scope.users.push( UserService.users[value] );
         });
-        scope.requestURL = '/kratos/teams/' + scope.group.name +
+        scope.requestURL = '/kratos/teams/' + scope.teamModel.name +
                            '/members/' + scope.role.toLowerCase() + '/';
         // Functions
         scope.updateUsers = function() {
@@ -303,23 +293,23 @@
      # role directive
      Creates a label identifying the current users permission for a given team.
 
-     group: A reference to a repo group object.
+     team-model: A reference to a team model.
 
      Example:
-        <role group="group"user="a_username"></role>
+        <role teamModel="team"></role>
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'role', function( UserService ) {
     return {
       restrict: 'E',
       scope: {
-        group: '=',
+        teamModel: '=',
         username: '='
       },
       templateUrl: '/static/templates/role.html',
       link: function( scope, element, attrs ) {
         // Properties
-        var permissions = scope.group.permissions;
+        var permissions = scope.teamModel.permissions;
         scope.role = 'read';
         if ( permissions.read ) {
           if ( permissions.read.indexOf( UserService.user.id * 1 ) > -1 ) {
@@ -372,33 +362,33 @@
 
   /* ==========================================================================
      # hasCurrentUser filter
-     Figures out if the current user is in a group.
+     Figures out if the current user is in a team.
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'hasCurrentUser', function( UserService ) {
-    return function( groups, toggle ) {
-      var newGroups = [],
+    return function( teams, toggle ) {
+      var newTeams = [],
           inOut = true;
       if ( typeof toggle !== 'undefined' ) {
         inOut = toggle;
       }
-      angular.forEach( groups, function( group ) {
-        var inGroup = false;
-        angular.forEach( group.permissions, function( permission ) {
+      angular.forEach( teams, function( team ) {
+        var inTeam = false;
+        angular.forEach( team.permissions, function( permission ) {
           if ( permission.indexOf( UserService.user.id ) > -1 ) {
-            inGroup = true;
+            inTeam = true;
           }
         });
         if ( inOut ) {
-          if ( inGroup ) {
-            newGroups.push( group );
+          if ( inTeam ) {
+            newTeams.push( team );
           }
         } else {
-          if ( !inGroup ) {
-            newGroups.push( group );
+          if ( !inTeam ) {
+            newTeams.push( team );
           }
         }
       });
-      return newGroups;
+      return newTeams;
     };
   });
 
@@ -433,23 +423,23 @@
   });
 
   /* ==========================================================================
-     # prepRepoGroupData filter
-     Adds some properties to the repo group data before using it.
+     # prepTeamData filter
+     Adds some properties to the team data before using it.
      ========================================================================== */
-  angular.module('OSWizardApp').filter( 'prepRepoGroupData', function() {
-    return function( repoGroups ) {
+  angular.module('OSWizardApp').filter( 'prepTeamData', function() {
+    return function( teams ) {
       var output = [];
-      angular.forEach( repoGroups, function( group ) {
-        group.showAdmin = false;
-        group.showWrite = false;
-        group.showRead = false;
-        group.showRepo = false;
-        angular.forEach( group.repos, function( repo ) {
+      angular.forEach( teams, function( team ) {
+        team.showAdmin = false;
+        team.showWrite = false;
+        team.showRead = false;
+        team.showRepo = false;
+        angular.forEach( team.repos, function( repo ) {
           repo.showAdmin = false;
           repo.showWrite = false;
           repo.showRead = false;
         });
-        output.push( group );
+        output.push( team );
       });
       return output;
     };

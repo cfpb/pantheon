@@ -4,7 +4,9 @@
 
    # Base
    # .extra-icon
-   # Code demo
+   # Code demo stuff
+   ## .code-demo-group
+   ## .code-demo
    # .masthead
    # .user-meta
    # .meta
@@ -16,9 +18,10 @@
    # Slats
    ## .slats
    ## .slats-header
+   ## .slats-type
    ## .slat
+   # .teams
    # Directives
-   ## group
    ## userbutton, repobutton
    ## userlist
    ========================================================================== */
@@ -70,7 +73,11 @@
 
 
 /* ==========================================================================
-   # Code demo
+   # Code demo stuff
+   ========================================================================== */
+
+
+/* ## .code-demo-group
    ========================================================================== */
 
 .code-demo-group {
@@ -85,6 +92,10 @@
         });
     }
 }
+
+
+/* ## .code-demo
+   ========================================================================== */
 
 .code-demo {
     margin: 0;
@@ -237,7 +248,7 @@
     margin-right: unit(4px / @base-font-size-px, em);
 }
 
-.expandable__repogroup {
+.expandable__team {
     position: relative;
     border: 1px solid @gray-20;
 
@@ -274,29 +285,6 @@
             height: 0;
             margin-bottom: unit(5px / @base-font-size-px, em);
         }
-    }
-}
-
-.expandable__repogroup .expandable-group {
-    margin-bottom: 0;
-}
-
-.expandable-group .expandable__repogroup {
-    // Needed to kill margins from spilling outside of the exandable.
-    .u-clearfix();
-    border: 1px solid @gray-20;
-    border-top: 0;
-
-    &.expandable__expanded,
-    &:hover {
-        background: @white;
-    }
-
-    .expandable_label {
-        .h4();
-        // Eyeballed to 12px.
-        margin-bottom: unit(7px / @font-size, em);
-        line-height: 1;
     }
 }
 
@@ -343,6 +331,7 @@
    # Slats
    ========================================================================== */
 
+
 /* ## .slats
    ========================================================================== */
 
@@ -385,7 +374,7 @@
 }
 
 
-/* ## .slats-input
+/* ## .slats-type
    ========================================================================== */
 
 .slats-type {
@@ -496,14 +485,10 @@
 
 
 /* ==========================================================================
-   # Directives
+   # .teams
    ========================================================================== */
 
-
-/* ## Group
-   ========================================================================== */
-
-.groups {
+.teams {
     .respond-to-min(768px, {
         .grid_nested-col-group();
     });
@@ -521,6 +506,11 @@
         });
     }
 }
+
+
+/* ==========================================================================
+   # Directives
+   ========================================================================== */
 
 
 /* ## userbutton, repobutton
