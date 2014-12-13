@@ -38,10 +38,12 @@
         <h2 class="slats-header slats-header__add">
             Add new {{ ::role }} users
         </h2>
-        <input ng-model="filter"
-               type="text"
-               class="slat_input"
-               placeholder="Type to filter by username">
+        <div class="slats-type">
+            <input ng-model="filter"
+                   type="text"
+                   class="slats-type_input"
+                   placeholder="Type to filter by username">
+        </div>
         <ul class="slats">
             <li ng-if="(allUsers | filter:filter).length === 0"
                 class="slats_item slat">
