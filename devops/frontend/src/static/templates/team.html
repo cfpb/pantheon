@@ -1,30 +1,28 @@
-<section expandable
-         class="expandable expandable__padded expandable__repogroup">
+<div expandable class="expandable expandable__padded expandable__repogroup">
     <div class="expandable_header">
         <h1 class="expandable_label">
-            {{ group.name }}
+            {{ data.name }}
         </h1>
-        <role group="group"
-              username="{{ user.id }}"
+        <role group="data"
               class="expandable_role"></role>
         <div class="expandable_actions">
             <div class="expandable_header-left">
-                <userbutton group="group"
+                <userbutton group="data"
                             role="Admin"
-                            show="group.showAdmin">
+                            show="data.showAdmin">
                 </userbutton>
-                <userbutton group="group"
+                <userbutton group="data"
                             role="Write"
-                            show="group.showWrite">
+                            show="data.showWrite">
                 </userbutton>
-                <userbutton group="group"
+                <userbutton group="data"
                             role="Read"
-                            show="group.showRead">
+                            show="data.showRead">
                 </userbutton>
             </div>
             <div class="expandable_header-right">
-                <repobutton group="group"
-                            show="group.showRepo">
+                <repobutton group="data"
+                            show="data.showRepo">
                 </repobutton>
             </div>
         </div>
@@ -33,31 +31,31 @@
         <section userlist
                  class="userlist"
                  filter="adminfilter"
-                 group="group"
+                 group="data"
                  role="Admin"
-                 ng-show="group.showAdmin">
+                 ng-show="data.showAdmin">
         </section>
         <section userlist
                  class="userlist"
                  filter="writefilter"
-                 group="group"
+                 group="data"
                  role="Write"
-                 ng-show="group.showWrite">
+                 ng-show="data.showWrite">
         </section>
         <section userlist
                  class="userlist"
                  filter="readfilter"
-                 group="group"
+                 group="data"
                  role="Read"
-                 ng-show="group.showRead">
+                 ng-show="data.showRead">
         </section>
-        <div ng-show="group.showRepo"
+        <div ng-show="data.showRepo"
              class="expandable-group filter">
             <h2 class="slats-header">
                 Repos
             </h2>
             <ul class="slats">
-                <li ng-repeat="repo in ::group.repos"
+                <li ng-repeat="repo in ::data.repos"
                     class="slats_item slat">
                     <span class="slat_label">
                         {{ repo.name }}
@@ -66,4 +64,4 @@
             </ul>
         </div> <!-- END .expandable-group -->
     </div> <!-- END .expandable_content -->
-</section> <!-- END .expandable -->
+</div> <!-- END .expandable -->

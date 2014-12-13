@@ -89,15 +89,19 @@
         <div class="content_main">
             <h1>My teams</h1>
             <div class="groups">
-                <group ng-repeat="group in repoGroups | hasCurrentUser"
-                       class="groups_item">
-                </group>
+                <section team
+                         data="group"
+                         ng-repeat="group in repoGroups | hasCurrentUser"
+                         class="groups_item">
+                </section>
             </div>
             <h1>Other teams</h1>
             <div class="groups">
-                <group ng-repeat="group in repoGroups | hasCurrentUser:false"
-                       class="groups_item">
-                </group>
+                <section team
+                         data="group"
+                         ng-repeat="group in repoGroups | hasCurrentUser:false"
+                         class="groups_item">
+                </section>
             </div>
         </div>
     </div>

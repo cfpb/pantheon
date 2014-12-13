@@ -3,7 +3,7 @@
 
    # UserService service
    # RepoGroupsCtrl controller
-   # group directive
+   # team directive
    # repobutton directive
    # userbutton directive
    # userlist directive
@@ -75,31 +75,28 @@
   });
 
   /* ==========================================================================
-     # group directive
-     Displays a repo group.
+     # team directive
+     Displays a team.
 
      Example:
-        <group ng-repeat="group in repoGroups">
-        </group>
+        <section team="team" ng-repeat="team in repoGroups">
+        </section>
 
-     group: This property is required. In this example it is getting accessed
-            through `group in repoGroups`. It should point to a group object
-            with name, permissions, and repos properties.
+     team: This property is required. In this example it is getting accessed
+           through `group in repoGroups`. It should point to a group object
+           with name, permissions, and repos properties.
 
      Note: This directive uses the following directives:
-           - repo
-           - repobutton
-           - userbutton
-           - userlist
+           - expandables
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'group', function() {
+  angular.module('OSWizardApp').directive( 'team', function() {
     return {
-      restrict: 'E',
-      // Priority forces this directive to run before ng-repeat:
-      // http://stackoverflow.com/questions/15344306/angularjs-ng-repeat-in-combination-with-custom-directive
-      priority: 1001,
-      templateUrl: '/static/templates/group.html'
+      restrict: 'A',
+      scope: {
+        data: '='
+      },
+      templateUrl: '/static/templates/team.html'
     };
   });
 
@@ -304,22 +301,20 @@
 
   /* ==========================================================================
      # role directive
-     A simple role label.
+     Creates a label identifying the current users permission for a given team.
 
      group: A reference to a repo group object.
-     user:  The username you want to use to figure out the role.
 
      Example:
-        <role group="group"
-              user="a_username">
-        </userlist>
+        <role group="group"user="a_username"></role>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'role', function() {
+  angular.module('OSWizardApp').directive( 'role', function( UserService ) {
     return {
       restrict: 'E',
       scope: {
-        group: '='
+        group: '=',
+        username: '='
       },
       templateUrl: '/static/templates/role.html',
       link: function( scope, element, attrs ) {
@@ -327,17 +322,17 @@
         var permissions = scope.group.permissions;
         scope.role = 'read';
         if ( permissions.read ) {
-          if ( permissions.read.indexOf( attrs.username * 1 ) > -1 ) {
+          if ( permissions.read.indexOf( UserService.user.id * 1 ) > -1 ) {
             scope.role = 'read';
           }
         }
         if ( permissions.write ) {
-          if ( permissions.write.indexOf( attrs.username * 1 ) > -1 ) {
+          if ( permissions.write.indexOf( UserService.user.id * 1 ) > -1 ) {
             scope.role = 'write';
           }
         }
         if ( permissions.admin ) {
-          if ( permissions.admin.indexOf( attrs.username * 1 ) > -1 ) {
+          if ( permissions.admin.indexOf( UserService.user.id * 1 ) > -1 ) {
             scope.role = 'admin';
           }
         }
