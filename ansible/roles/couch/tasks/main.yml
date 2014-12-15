@@ -30,31 +30,15 @@
   with_items:
     - lib
     - log
-- name: make couch listen to external requests
-  lineinfile: dest=/usr/local/etc/couchdb/local.ini regexp=^bind_address= line=bind_address=0.0.0.0
+
 - name: add service to init.d
   file: path=/etc/init.d/couchdb state=link src=/usr/local/etc/rc.d/couchdb
 - name: start couchdb
   service: name=couchdb enabled=yes state=started
-
-# this repo didn't work
-# - name: install rpms for building couchdb
-#   yum: name={{ item }}
-#   with_items:
-#     - gcc
-#     - gcc-c++
-#     - make
-#     - libtool
-#     - zlib-devel
-#     - openssl-devel
-#     - rubygem-rake
-#     - ruby-rdoc
-#     - git
-# - name: clone couchdb builder
-#   git: repo=git://github.com/jhs/build-couchdb.git dest={{ root_dir }}/couchdb
-# - name: build couchdb
-#   shell: rake chdir={{ root_dir}}/couchdb
-
-# this version is way too old
-# - name: install couchdb
-#   yum: name=couchdb
+- name: get couchdb password
+  shell: node -e "console.log(require('{{ root_dir }}/node/lib/config.js').COUCH_PWD)"
+  register: couch_pwd
+  changed_when: False
+- name: template couch ini file
+  template: src=local.ini.j2 dest=/usr/local/etc/couchdb/local.ini owner=couchdb
+  notify: restart couchdb
