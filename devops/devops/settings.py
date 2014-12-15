@@ -79,6 +79,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
     'core.pipeline.sync',
+    'kratos.pipeline.register_kratos',
 )
 
 SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY')
@@ -137,6 +138,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'core.express_auth.SetExpressAuthentication',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -157,6 +159,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+KRATOS_URL = 'http://localhost/kratos'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -176,3 +179,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

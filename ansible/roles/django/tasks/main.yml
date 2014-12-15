@@ -17,3 +17,8 @@
 
 - name: Install python packages
   pip: requirements={{ root_dir }}/devops/requirements.txt executable=pip2.7
+
+- name: migrate db
+  shell: "{{ root_dir }}/devops/manage.py migrate"
+  register: migrate_result
+  changed_when: "'No migrations to apply.' not in migrate_result.stdout"

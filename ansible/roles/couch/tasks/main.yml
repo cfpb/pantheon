@@ -1,0 +1,52 @@
+- name: install rpms for building couchdb
+  yum: name={{ item }}
+  with_items:
+    - libicu-devel
+    - openssl-devel
+    - curl-devel
+    - make
+    - gcc
+    - erlang
+    - js-devel
+    - libtool
+    - which
+- stat: path=/usr/local/bin/couchdb
+  register: couch_bin
+- name: get couchdb tar
+  get_url: url=http://download.nextag.com/apache/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz dest={{ root_dir }}/couchdb.tar.gz
+- name: unzip couchdb
+  shell: tar xvfz {{ root_dir }}/couchdb.tar.gz chdir={{ root_dir }}
+  when: not couch_bin.stat.exists
+- name: configure
+  shell: '{{ root_dir}}/apache-couchdb-1.6.1/configure --with-erlang=/usr/lib64/erlang/usr/include/'
+  register: configure_result
+  when: not couch_bin.stat.exists
+  failed_when: configure_result.stderr and 'directory already configured' not in configure_result.stderr
+  changed_when: not configure_result.stderr or 'directory already configured' not in configure_result.stderr
+- name: make and install couch
+  shell: 'make && sudo make install chdir={{ root_dir}}/apache-couchdb-1.6.1/'
+  when: not couch_bin.stat.exists
+- name: create couch user
+  user: name=couchdb createhome=no
+- name: make couch user own couch files
+  file: 'path=/usr/local/var/{{ item }}/couchdb owner=couchdb state=directory recurse=yes'
+  with_items:
+    - lib
+    - log
+
+- name: add service to init.d
+  file: path=/etc/init.d/couchdb state=link src=/usr/local/etc/rc.d/couchdb
+- name: start couchdb
+  service: name=couchdb enabled=yes state=started
+- name: get couchdb password
+  shell: node -e "console.log(require('{{ root_dir }}/node/lib/config.js').COUCH_PWD)"
+  register: couch_pwd
+  changed_when: False
+- name: template couch ini file
+  template: src=local.ini.j2 dest=/usr/local/etc/couchdb/local.ini owner=couchdb
+  notify: restart couchdb
+- name: upgrade any design documents
+  shell: icake -t {{ item }} sync_design_docs chdir={{ root_dir }}/node
+  with_items:
+    - _users
+    - org

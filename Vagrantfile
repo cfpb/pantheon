@@ -12,12 +12,17 @@ Vagrant.configure("2") do |config|
   config.cache.auto_detect = true
 
   # port forwarding
-  config.vm.network :forwarded_port, guest: 8000, host: 8000
+  config.vm.network :forwarded_port, guest: 80, host: 8000
+  config.vm.network :forwarded_port, guest: 5984, host: 5984
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ansible/playbook.yml"
     ansible.groups = {
       "vagrant" => ["default"]
     }
+  end
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
   end
 end

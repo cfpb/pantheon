@@ -1,0 +1,64 @@
+# copyright David Greisen licensed under Apache License v 2.0
+# derived from code from ShareJS https://github.com/share/ShareJS (MIT)
+
+{exec} = require 'child_process'
+
+
+
+task 'build', 'Build the .js files', (options) ->
+  console.log('Compiling Coffee from lib to src')
+  exec "iced --compile --output ./lib/ ./src/", (err, stdout, stderr) ->
+    throw err if err
+    console.log stdout + stderr
+
+task 'watch', 'Watch src directory and build the .js files', (options) ->
+  console.log('Watching Coffee in lib and compiling to src')
+  cp = exec "iced --watch --output ./lib/ ./src/"
+  cp.stdout.on "data", (data) -> console.log(data)
+  cp.stderr.on "data", (data) -> console.log(data)
+
+task 'runtestserver', 'Run the server (port 5000); restart on change', (options) ->
+  console.log('Running the server on port 5000; restarting on change')
+  cp = exec "iced --watch --output ./lib/ ./src/"
+  cp.stdout.on "data", (data) -> console.log(data)
+  cp.stderr.on "data", (data) -> console.log(data)
+  cp = exec "supervisor -w ./lib ./lib/app.js"
+  cp.stdout.on "data", (data) -> console.log(data)
+  cp.stderr.on "data", (data) -> console.log(data)
+
+task 'runworker', 'Run the couchdb worker; restart on change', (options) ->
+  console.log('Running the couchdb worker; restarting on change')
+  cp = exec "iced --watch --output ./lib/ ./src/"
+  cp.stdout.on "data", (data) -> console.log(data)
+  cp.stderr.on "data", (data) -> console.log(data)
+  cp = exec "supervisor -w ./lib ./lib/worker.js"
+  cp.stdout.on "data", (data) -> console.log(data)
+  cp.stderr.on "data", (data) -> console.log(data)
+
+option '-t', '--db_type [type]', 'db type to update'
+
+task 'sync_design_docs', 'sync all design docs with couchdb', (options) ->
+  db_type =  options.db_type or 'user'
+  console.log('Syncing couchdb ' + db_type + ' design docs ')
+  require('./lib/couch_utils').sync_all_db_design_docs(db_type)
+
+option '-n', '--db_name [name]', 'db name to import to'
+
+task 'import_from_gh', 'Import from Github - not idempotent!!', (options) ->
+  db_name = options.db_name
+  console.log('importing from github to ' + db_name)
+  await require('./lib/resources/gh').import_all(db_name, defer(err))
+  if err
+    console.log(err)
+  else
+    console.log('completed without error')
+
+option '-v', '--verbose', 'verbose testing output'
+
+task 'test', 'run all tests', (options) ->
+  if options.verbose
+    cp = exec "jasmine-node --coffee --verbose ./spec"
+  else
+    cp = exec "jasmine-node --coffee ./spec"
+  cp.stdout.on "data", (data) -> console.log(data)
+  cp.stderr.on "data", (data) -> console.log(data)

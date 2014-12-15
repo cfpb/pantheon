@@ -13,7 +13,7 @@ UserModel = settings.AUTH_USER_MODEL
 class User(AbstractUser):
     gh_id = models.IntegerField(blank=True, null=True)
     ghe_id = models.IntegerField(blank=True, null=True)
-
+    kratos_id = models.CharField(max_length=32, blank=True, null=True)
     stub = models.BooleanField(default=False)
     contractor = models.BooleanField(default=True)
 
