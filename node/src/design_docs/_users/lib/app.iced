@@ -2,15 +2,14 @@ module.exports =
   views:
     by_resource_id:
       map: (doc) ->
-        for resource_name of doc.resrcs
-          resource = doc.resrcs[resource_name]
-          resource_id = resource.data.id
-          emit([resource_name, resource_id], doc.name)
+        for resource_name, resource of doc.rsrcs
+          resource_id = resource.id
+          if resource_id
+            emit([resource_name, resource_id], doc.name)
     by_resource_username:
       map: (doc) ->
-        for resource_name of doc.resrcs
-          resource = doc.resrcs[resource_name]
-          resource_username = resource.data.username || resource.data.login
+        for resource_name, resource of doc.rsrcs
+          resource_username = resource.username || resource.login
           if resource_username
             emit([resource_name, resource_username], doc.name)
     by_username:
@@ -21,19 +20,36 @@ module.exports =
       map: (doc) ->
         if doc.name
           emit(doc.name)
+    by_auth:
+      map: (doc) ->
+        for role in doc.roles
+          out = role.split('/')
+          out.push(doc.name)
+          emit(out)
     contractors:
       map: (doc) ->
         emit(doc.data?.contractor or false, doc.username)
   lists:
-    all_users: (header, req) ->
+    get_users: (header, req) ->
       out = []
       while(row = getRow())
-        out.push(row.doc)
+        doc = row.doc
+        delete doc.password_scheme
+        delete doc.iterations
+        delete doc.derived_key
+        delete doc.salt
+        out.push(doc)
       return JSON.stringify(out)
+    get_doc: (header, req) ->
+      row = getRow()
+      if row
+        return JSON.stringify(row.doc)
+      else
+        throw(['error', 'not_found', 'document matching query does not exist'])
   rewrites: [
     {
       from: "/users",
-      to: "/_list/all_users/by_username",
+      to: "/_list/get_users/by_username",
       method: 'GET',
       query: {include_docs: 'true'},
     },
@@ -43,3 +59,5 @@ module.exports =
       query: {},
     },
   ]
+  validate_doc_update: (newDoc, oldDoc, userCtx, secObj) ->
+

@@ -7,38 +7,63 @@ exports.views =
       return emit([team_data.team, team_data.typ, team_data.name], 1)
 
 exports.lists =
-  teams: (head, req) ->
-    data = {}
-    while (row = getRow())
-      doc = row.doc
-      team_data = require('views/lib/team_data').parse(doc._id)
-      if (!team_data)
-        continue
-      if (!data[team_data.team])
-        data[team_data.team] = {
-          roles: {},
-          rsrcs: {},
-        }
-      if (team_data.typ == 'team')
-        doc.roles = data[team_data.team].roles
-        doc.rsrcs = data[team_data.team].rsrcs
-        data[team_data.team] = doc
-      else
-        delete doc.audit
-        delete doc.enforce
-        data[team_data.team][team_data.typ + 's'][team_data.name] = doc
+  get_docs: (header, req) ->
     out = []
-    for k, v of data
-      out.push(v)
+    while(row = getRow())
+      out.push(row.doc)
     return JSON.stringify(out)
-  team: (head, req) ->
-    return ''
+
+exports.updates = 
+  do_action: (team, req) ->
+    _ = require('underscore')
+    if not team
+      return [null, '{"status": "error", "msg": "team not found"}']
+    body = JSON.parse(req.body)
+    action = body.action
+    key = body.key
+    value = body.value
+    if action not in ['u+', 'u-', 'a+', 'a-']
+      return [null, '{"status": "error", "msg": "invalid action"}']
+
+    if action[0] == 'u'
+      if not team.roles[key]
+        team.roles[key] = []
+      container = team.roles[key]
+      item = value
+    else
+      if not team.rsrcs[key]
+        team.rsrcs[key] = {}
+      if not team.rsrcs[key].assets
+        team.rsrcs[key].assets = []
+      container = team.rsrcs[key].assets
+      item = _.find(container, (item) -> item.id==value or String(item.id)==value)
+    if action[1] == '+'
+      if item in container
+        return [null, JSON.stringify(team)]
+      else
+        container.push(value)
+    else
+      if item not in container
+        return [null, JSON.stringify(team)]
+      else
+        i = container.indexOf(item)
+        container.splice(i, 1)
+
+    team.audit.push({
+      u: req.userCtx.name,
+      dt: +new Date(),
+      a: action,
+      k: key,
+      v: value,
+    })
+
+    return [team, JSON.stringify(team)]
 
 exports.rewrites = [
-  {
-    from: "/teams",
-    to: "/_list/teams/by_type",
-    method: 'GET',
-    query: {include_docs: 'true'},
-  },
+  # {
+  #   from: "/teams",
+  #   to: "/_list/teams/by_type",
+  #   method: 'GET',
+  #   query: {include_docs: 'true'},
+  # },
 ]
