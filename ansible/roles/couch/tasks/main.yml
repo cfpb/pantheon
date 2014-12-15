@@ -36,8 +36,6 @@
 
 - name: add service to init.d
   file: path=/etc/init.d/couchdb state=link src=/usr/local/etc/rc.d/couchdb
-- name: start couchdb
-  service: name=couchdb enabled=yes state=started
 - name: get couchdb password
   shell: node -e "console.log(require('{{ root_dir }}/node/lib/config.js').COUCH_PWD)"
   register: couch_pwd
@@ -45,6 +43,8 @@
 - name: template couch ini file
   template: src=local.ini.j2 dest=/usr/local/etc/couchdb/local.ini owner=couchdb
   notify: restart couchdb
+- name: start couchdb
+  service: name=couchdb enabled=yes state=started
 - name: upgrade any design documents
   shell: icake -t {{ item }} sync_design_docs chdir={{ root_dir }}/node
   with_items:

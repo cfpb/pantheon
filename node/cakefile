@@ -53,6 +53,15 @@ task 'import_from_gh', 'Import from Github - not idempotent!!', (options) ->
   else
     console.log('completed without error')
 
+task 'import_teams_from_gh', 'Import teams from Github - not idempotent!!', (options) ->
+  db_name = options.db_name
+  console.log('importing teams from github to ' + db_name)
+  await require('./lib/resources/gh').import_teams(db_name, 'admin', defer(err))
+  if err
+    console.log(err)
+  else
+    console.log('completed without error')
+
 option '-v', '--verbose', 'verbose testing output'
 
 task 'test', 'run all tests', (options) ->
