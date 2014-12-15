@@ -511,6 +511,16 @@
     }
 }
 
+.team-content {
+    &_item {
+        & + & {
+            margin-top: 1em;
+            margin-top: 1rem;
+        }
+    }
+}
+
+
 
 /* ==========================================================================
    # Directives
@@ -531,17 +541,3 @@
     // Fixes weirdness with the right edge of the text getting cropped.
     padding-right: 1px;
 }
-
-
-/* ## userlist
-   ========================================================================== */
-
-.userlist {
-    &_item {
-        & + & {
-            margin-top: 1em;
-            margin-top: 1rem;
-        }
-    }
-}
-

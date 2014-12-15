@@ -1,5 +1,5 @@
 <h1 class="slats-header">{{ ::role }}</h1>
-<ul class="userlist_item slats">
+<ul class="team-content_item slats">
     <li ng-if="total === 0"
         class="slats_item slat">
         <span class="slat_label">No {{ ::role | lowercase }} users</span>
@@ -22,10 +22,10 @@
     </li>
 </ul>
 <div ng-if="editable"
-     class="userlist_item">
+     class="team-content_item">
     <button ng-show="showAllUsers"
             ng-click="showAllUsers = !showAllUsers"
-            class="userlist_item userlist_show-hide btn btn__secondary btn__block">
+            class="team-content_item userlist_show-hide btn btn__secondary btn__block">
         <span ng-show="!showAllUsers">
             Add new {{ ::role | lowercase }} users
         </span>
@@ -34,7 +34,7 @@
         </span>
     </button>
     <div ng-show="showAllUsers"
-         class="userlist_item">
+         class="team-content_item">
         <h2 class="slats-header slats-header__add">
             Add new {{ ::role }} users
         </h2>
@@ -76,7 +76,7 @@
         </ul>
     </div>
     <button ng-click="showAllUsers = !showAllUsers"
-            class="userlist_item userlist_show-hide btn btn__secondary btn__block">
+            class="team-content_item userlist_show-hide btn btn__secondary btn__block">
         <span ng-show="!showAllUsers">
             Add new {{ ::role | lowercase }} users
         </span>
