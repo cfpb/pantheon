@@ -35,13 +35,23 @@ task 'runworker', 'Run the couchdb worker; restart on change', (options) ->
   cp.stdout.on "data", (data) -> console.log(data)
   cp.stderr.on "data", (data) -> console.log(data)
 
-option '-d', '--db [type]', 'db type to update'
+option '-t', '--db_type [type]', 'db type to update'
 
 task 'sync_design_docs', 'sync all design docs with couchdb', (options) ->
-  db_type =  options.db or 'user'
+  db_type =  options.db_type or 'user'
   console.log('Syncing couchdb ' + db_type + ' design docs ')
   require('./lib/couch_utils').sync_all_db_design_docs(db_type)
 
+option '-n', '--db_name [name]', 'db name to import to'
+
+task 'import_from_gh', 'Import from Github - not idempotent!!', (options) ->
+  db_name = options.db_name
+  console.log('importing from github to ' + db_name)
+  await require('./lib/resources/gh').import_all(db_name, defer(err))
+  if err
+    console.log(err)
+  else
+    console.log('completed without error')
 
 option '-v', '--verbose', 'verbose testing output'
 

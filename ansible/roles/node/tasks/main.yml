@@ -16,3 +16,5 @@
     - {name: 'forever', version: '0.13.0'}
 - name: install node application package
   npm: path={{ root_dir }}/node
+- name: build all iced coffeescript
+  shell: icake build chdir={{ root_dir }}/node

@@ -144,8 +144,10 @@ import_repos = (teams, admin_id, callback) ->
   return callback(null, resource_doc)
 module.exports = x
 
-###
-gh = require('./gh')
-gh.import_users(function(err, resp) {console.log(err, resp)})
-gh.import_teams('devdesign', 'c0301d9be96094b552835c014f01cf07', function(err, resp) {console.log(err, resp)})
-###
+x.import_all = (db_name, callback) ->
+  admin_id = 'admin'
+  await x.import_users(defer(err, resp))
+  return callback(err) if err
+  await x.import_teams(db_name, admin_id, defer(err, resp))
+  callback(err) if err
+  callback()
