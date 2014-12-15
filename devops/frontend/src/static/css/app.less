@@ -252,6 +252,11 @@
     margin-right: unit(4px / @base-font-size-px, em);
 }
 
+// Adds some space between an .expandable_target and .expandable_content
+.expandable__teams .expandable_content {
+    padding-top: unit(@grid_gutter-width / @base-font-size-px, em);
+}
+
 .expandable__team {
     position: relative;
     border: 1px solid @gray-20;
@@ -519,7 +524,6 @@
         }
     }
 }
-
 
 
 /* ==========================================================================
