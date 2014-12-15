@@ -40,17 +40,16 @@ x.import_users = (callback) ->
       name: uuids[i],
       roles: [],
       username: member.login,
-      resrcs: {
+      password: conf.COUCH_PWD,
+      rsrcs: {
         gh: {
-          roles: {user: false},
-          data: {
-            login: member.login
-            id: member.id
-          }
+          login: member.login
+          id: member.id
         }
-      }
+      },
+      audit: [],
     })
-  db = couch_utils.nano.use('_users')
+  db = couch_utils.nano_admin.use('_users')
   return db.bulk({docs: users}, callback)
 
 x.import_teams = (db_name, admin_id, callback) ->
@@ -76,33 +75,41 @@ x.import_teams = (db_name, admin_id, callback) ->
     for team_name, team of teams
       import_team(team, admin_id, defer(err, team_data[i]))
       i++
-  team_docs = {docs: _.flatten(team_data, true)}
-  db = couch_utils.nano.use('org_' + db_name)
+  team_docs = {docs: team_data}
+  db = couch_utils.nano_admin.use('org_' + db_name)
   await couch_utils.ensure_db(db, 'bulk', team_docs, defer(err, resp))
   console.log('total time:', +new Date() - start_time)
   return callback()
 
 import_team = (teams, admin_id, callback) ->
+  now = +new Date()
+  await
+    import_repos(teams, admin_id, defer(err, rsrc_doc))
+    i = 0
+    import_members(teams, admin_id, defer(err, role_doc))
+
   team_doc = {
     _id: 'team_' + teams['admin'].iname,
     name: teams['admin'].iname,
+    rsrcs: {
+      'gh': rsrc_doc,
+    },
+    roles: role_doc,
+    audit: [{u: admin_id, dt: now, a: 't+', id: uuid.v4()}]
+    enforce: []
   }
-  await
-    import_repos(teams['admin'], admin_id, defer(err, rsrc_doc))
-    i = 0
-    import_members(teams, admin_id, defer(err, role_doc))
-  return callback(null, [team_doc, role_doc, rsrc_doc])
+  record = _.clone(team_doc)
+  delete record.enforce
+  delete record.audit
+  record.rsrcs = _.clone(record.rsrcs)
+  record.rsrcs.gh = _.clone(record.rsrcs.gh)
+  delete record.rsrcs.gh.data
+  team_doc.audit[0].r = record
+  return callback(null, team_doc)
 
 import_members = (teams, admin_id, callback) ->
-  now = +new Date()
   role_doc = {
-    _id: 'role_member_' + teams['admin'].iname,
-    members: [],
-    audit: [{u: admin_id, dt: now, a: '+', id: uuid.v4()}],
-    enforce: [],
-    rsrcs_data: {
-      gh: _.object(_.map(teams, (item) -> [item.perm, item.id]))
-    },
+    member: []
   }
 
   members = []
@@ -116,20 +123,16 @@ import_members = (teams, admin_id, callback) ->
   members = _.map(members, (item) -> item.id)
   members = _.uniq(members)
   member_gh_ids = _.map(members, (item) -> ['gh', item])
-  await couch_utils.nano.use('_users').view('base', 'by_resource_id', {keys: member_gh_ids}, defer(err, user_rows))
-
+  await couch_utils.nano_admin.use('_users').view('base', 'by_resource_id', {keys: member_gh_ids}, defer(err, user_rows))
   for user in user_rows.rows
-    role_doc.members.push(user.value)
-    role_doc.audit.push({u: admin_id, dt: now, a: 'c', r: user.value, id: uuid.v4()})
+    role_doc.member.push(user.value)
   return callback(null, role_doc)
 
-import_repos = (team, admin_id, callback) ->
-  now = +new Date()
+import_repos = (teams, admin_id, callback) ->
+  team = teams['admin']
   resource_doc = {
-    _id: 'rsrc_gh_' + team.iname,
     assets: [],
-    audit: [{u: admin_id, dt: now, a: '+', id: uuid.v4()}],
-    enforce: [],
+    data: _.object(_.map(teams, (item) -> [item.perm, item.id]))
   }
 
   url = team.url + '/repos'
@@ -138,19 +141,11 @@ import_repos = (team, admin_id, callback) ->
   for repo in repos
     repo_record = {id: repo.id, name: repo.name, full_name: repo.full_name}
     resource_doc.assets.push(repo_record)
-    resource_doc.audit.push({u: admin_id, dt: now, a: 'c', r: repo_record, id: uuid.v4()})
   return callback(null, resource_doc)
 module.exports = x
 
 ###
 gh = require('./gh')
+gh.import_users(function(err, resp) {console.log(err, resp)})
 gh.import_teams('devdesign', 'c0301d9be96094b552835c014f01cf07', function(err, resp) {console.log(err, resp)})
-gh.import_all(function(err, resp) {console.log(err, resp)})
 ###
-    # "51": {
-    #   "username": "poorgeek",
-    #   resrcs: {
-    #     'kratos': {"roles": {"admin": true}},
-    #     'gh': {"roles": {"user": false}}
-    #   }
-    # },

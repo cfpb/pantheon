@@ -4,13 +4,19 @@ fs = require('fs')
 path = require('path')
 _ = require('underscore')
 conf = require('./config')
-host = conf.COUCHDB.HOST + ':' + conf.COUCHDB.PORT
-nano = require('nano')(host)
 {exec} = require 'child_process'
 
 x = {}
 
-x.nano = nano
+get_couchdb_url = (user) ->
+  out = if conf.COUCHDB.HTTPS then 'https' else 'http'
+  out += '://'
+  out += user + ':' + conf.COUCH_PWD + '@'
+  out += conf.COUCHDB.HOST + ':' + conf.COUCHDB.PORT
+
+x.nano_user = (user) ->
+  return require('nano')(get_couchdb_url(user))
+x.nano_admin = nano_admin = x.nano_user('admin')
 x.ensure_db = (db, method, args...) ->
   ###
   call the method against the db with the given args.
@@ -23,7 +29,7 @@ x.ensure_db = (db, method, args...) ->
   await
     db[method].apply(db, args.concat([defer(err, resp)]))
   if err?.message == 'no_db_file'
-    await nano.db.create(db.config.db, defer(err, resp))
+    await nano_admin.db.create(db.config.db, defer(err, resp))
     if err
       return callback?(err, resp)
     db_name = db.config.db
@@ -62,9 +68,10 @@ x.sync_all_db_design_docs = (db_type) ->
   db_type - the type of database - updates all dbs whos names start with db_type
   """
   design_docs = require('./design_docs/' + db_type)
-  await nano.db.list(defer(err, all_dbs))
+  await nano_admin.db.list(defer(err, all_dbs))
   dbs = _.filter(all_dbs, (db) -> db.indexOf(db_type) == 0)
   errs = []
+  console.log(dbs)
   await
     for db_name, i in dbs
       x.sync_design_docs(db_name, design_docs, defer(errs[i]))
@@ -78,8 +85,9 @@ x.sync_design_docs = (db_name, design_doc_names, callback) ->
   errors = []
   await
     for name, i in design_doc_names
-      url = host + '/' + db_name
+      url = get_couchdb_url('admin') + '/' + db_name
       cmd = 'kanso push ' + name + ' ' + url
+      console.log(cmd)
       wd = path.join(path.dirname(fs.realpathSync(__filename)), './design_docs')
       exec(cmd, {cwd: wd}, defer(errors[i]))
   errors = _.compact(errors)
@@ -127,14 +135,14 @@ x.upsert = (db, new_docs, should_update, callback) ->
     return callback(null, bulk_resp)
 
 x.get_uuid = (callback) ->
-  await nano.request({db: "_uuids"}, defer(err, resp))
+  await nano_admin.request({db: "_uuids"}, defer(err, resp))
   if err
     return callback(err, resp)
   return callback(null, resp.uuids[0])
 
 x.get_uuids = (count, callback) ->
   # params is not working for some reason so hacked around it with path
-  await nano.request({db: "_uuids", path: '?count=' + count}, defer(err, resp))
+  await nano_admin.request({db: "_uuids", path: '?count=' + count}, defer(err, resp))
   if err
     return callback(err, resp)
   return callback(null, resp.uuids)

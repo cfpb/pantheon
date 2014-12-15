@@ -8,8 +8,9 @@
 
   config = {
     COUCHDB: {
-      HOST: 'http://localhost',
-      PORT: 5984
+      HOST: 'localhost',
+      PORT: 5984,
+      HTTPS: false
     }
   };
 

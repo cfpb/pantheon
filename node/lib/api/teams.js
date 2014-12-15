@@ -10,14 +10,34 @@
 
   teams.update_team = function(req, resp) {};
 
-  teams.get_team = function(req, resp) {};
+  teams.get_team = function(req, resp) {
+    var org, team;
+    org = 'org_' + req.params.org_id;
+    team = 'team_' + req.params.team_id;
+    return couch_utils.nano_admin.use(org).get(team).pipe(resp);
+  };
 
-  teams.get_teams = function(req, resp, org) {
-    req.session.hello = 'world';
-    return couch_utils.nano.request({
-      db: 'org_devdesign',
-      path: '/_design/base/_rewrite/teams'
+  teams.get_teams = function(req, resp) {
+    var org;
+    org = 'org_' + req.params.org_id;
+    return couch_utils.nano_admin.use(org).viewWithList('base', 'by_type', 'get_docs', {
+      include_docs: true
     }).pipe(resp);
+  };
+
+  teams.add_remove_member_asset = function(action_type) {
+    return function(req, resp) {
+      var action, db, org, team;
+      org = 'org_' + req.params.org_id;
+      team = 'team_' + req.params.team_id;
+      db = req.couch.use(org);
+      action = {
+        action: action_type,
+        key: req.params.key,
+        value: req.params.value
+      };
+      return db.atomic('base', 'do_action', team, action).pipe(resp);
+    };
   };
 
   module.exports = teams;

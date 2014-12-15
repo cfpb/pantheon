@@ -3,8 +3,9 @@ config_secret = require('./config_secret')
 
 config = 
   COUCHDB:
-    HOST: 'http://localhost'
+    HOST: 'localhost'
     PORT: 5984
+    HTTPS: false
 
 _.extend(config, config_secret)
 
