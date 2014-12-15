@@ -1,0 +1,16 @@
+<h1 class="slats-header">{{ ::heading }}</h1>
+<ul class="team-content_item slats">
+    <li ng-if="total === 0"
+        class="slats_item slat">
+        <span class="slat_label">No {{ ::heading | lowercase }}</span>
+    </li>
+    <li ng-repeat="asset in ::assets | orderBy:'name'"
+        class="slats_item slat">
+        <span class="slat_label">
+            {{ asset.name }}
+        </span>
+    </li>
+</ul>
+<button class="btn btn__secondary btn__block team-content_item">
+    Add new {{ ::heading | lowercase }}
+</button>

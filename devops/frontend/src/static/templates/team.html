@@ -30,41 +30,25 @@
     <div class="expandable_content">
         <section userlist
                  class="team-content"
-                 filter="adminfilter"
                  team-model="data"
                  role="Admin"
                  ng-show="data.showAdmin">
         </section>
         <section userlist
                  class="team-content"
-                 filter="writefilter"
                  team-model="data"
                  role="Write"
                  ng-show="data.showWrite">
         </section>
         <section userlist
                  class="team-content"
-                 filter="readfilter"
                  team-model="data"
                  role="Read"
                  ng-show="data.showRead">
         </section>
         <div ng-show="data.showRepo"
              class="team-content">
-            <h2 class="slats-header">
-                Repos
-            </h2>
-            <ul class="slats team-content_item">
-                <li ng-repeat="repo in ::data.repos"
-                    class="slats_item slat">
-                    <span class="slat_label">
-                        {{ repo.name }}
-                    </span>
-                </li>
-            </ul>
-            <button class="btn btn__secondary btn__block team-content_item">
-                Add new repo
-            </button>
+            <div assetlist assets="data.repos" heading="Repos"></div>
         </div>
     </div> <!-- END .expandable_content -->
 </div> <!-- END .expandable -->

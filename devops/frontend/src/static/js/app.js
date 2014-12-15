@@ -7,6 +7,7 @@
    # repobutton directive
    # userbutton directive
    # userlist directive
+   # assetlist directive
    # role directive
    # expandable directive
    # username filter
@@ -211,7 +212,7 @@
                  Can be "Admin", "Write", or "Read", capitalization is important.
 
      Example:
-        <userlist team-model="team" role="Admin"></userlist>
+        <section userlist team-model="team" role="Admin"></section>
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
@@ -285,6 +286,33 @@
         };
         // Init
         scope.updateUsers();
+      }
+    };
+  });
+
+  /* ==========================================================================
+     # assetlist directive
+     Creates a list of assets for a resource.
+
+     heading: The heading to show above the list of assets, should be plural.
+
+     Example:
+        <div assetlist assets="[{name: 'Assets 1'}, {name: 'Assets 2'}]"
+             heading="My assets">
+        </div>
+     ========================================================================== */
+
+  angular.module('OSWizardApp').directive( 'assetlist', function() {
+    return {
+      restrict: 'A',
+      scope: {
+        assets: '=',
+        heading: '='
+      },
+      templateUrl: '/static/templates/assetlist.html',
+      link: function( scope, element, attrs ) {
+        // Properties
+        scope.heading = attrs.heading;
       }
     };
   });
