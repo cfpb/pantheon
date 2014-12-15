@@ -95,14 +95,14 @@
     <div class="content_bar"></div>
     <div class="meta">
       <div class="wrapper wrapper__match-content">
-        <ul class="meta_breadcrumbs breadcrumbs">
+        <ul class="meta_left meta_breadcrumbs breadcrumbs">
           {% block breadcrumbs %}
             <li class="breadcrumbs_item">Home</li>
           {% endblock breadcrumbs %}
         </ul>
         {% if user.is_authenticated %}
-          <form class="meta_refresh" action="{% url "sync" %}" method="POST">{% csrf_token %}
-            <input type="submit" class="btn btn__secondary" value="refresh" />
+          <form class="meta_right meta_refresh" action="{% url "sync" %}" method="POST">{% csrf_token %}
+            <input type="submit" class="btn btn__secondary meta_btn" value="refresh" />
           </form>
         {% endif %}
       </div>

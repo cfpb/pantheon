@@ -63,7 +63,7 @@
     $scope.users = UserService.users;
     $scope.teams = [];
     // Data
-    $http.get( '/kratos/teams/' ).
+    $http.get('/kratos/teams/').
       success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepTeamData')( response.groups );
         UserService.users = response.users;

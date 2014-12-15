@@ -183,14 +183,18 @@
     });
 
     .respond-to-min(480px, {
-        &_breadcrumbs {
+        &_left {
             float: left;
+        }
+        &_right {
+            float: right;
+        }
+        &_breadcrumbs {
             margin: 0;
         }
-        &_refresh {
-            float: right;
+        &_btn {
             // Aligns .btn baseline to .breadcrumbs baseline.
-            margin-top: unit(-7px / @base-font-size-px, em);
+            margin-top: unit(-7px / @btn-font-size, em);
         }
     });
 }
