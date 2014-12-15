@@ -6,7 +6,7 @@
 
 
 task 'build', 'Build the .js files', (options) ->
-  console.log('Compiling Coffee from backend/coffee to backend/node')
+  console.log('Compiling Coffee from lib to src')
   exec "iced --compile --output ./lib/ ./src/", (err, stdout, stderr) ->
     throw err if err
     console.log stdout + stderr
