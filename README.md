@@ -13,11 +13,14 @@ Prerequisites:
 1. add Django secret settings to `/vagrant/devops/devops/settings_secret.py`
 1. `vagrant up`
 1. `vagrant ssh`
+1. load data from github:
+  1. `cd /vagrant/node`
+  1. `icake -n devdesign import_from_gh`
 1. start the django server
   1. `/vagrant/devops/manage.py runserver 0.0.0.0:8000`
 1. start the node server
-1. `cd /vagrant/node`
-1. `icake runtestserver`
+  1. `cd /vagrant/node`
+  1. `icake runtestserver`
 
 Development
 -----------

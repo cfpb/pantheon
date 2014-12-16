@@ -56,6 +56,7 @@ x.import_teams = (db_name, admin_id, callback) ->
   start_time = +new Date()
   url = gha_url + '/organizations/' + gh_conf.ORG_ID + '/teams'
   await get_all(gha, url, defer(err, raw_teams))
+  callback(err) if err
   teams = {}
   for raw_team in raw_teams
     if raw_team.id in gh_conf.UNMANAGED_TEAMS
@@ -70,23 +71,28 @@ x.import_teams = (db_name, admin_id, callback) ->
       teams[name] = {}
     teams[name][perm] = raw_team
   team_data = []
+  errs = []
   await
     i = 0
     for team_name, team of teams
-      import_team(team, admin_id, defer(err, team_data[i]))
+      import_team(team, admin_id, defer(errs[i], team_data[i]))
       i++
+  errs = _.compact(errs)
+  return callback(errs) if errs.length
   team_docs = {docs: team_data}
   db = couch_utils.nano_admin.use('org_' + db_name)
   await couch_utils.ensure_db(db, 'bulk', team_docs, defer(err, resp))
+  return callback(err) if err
   console.log('total time:', +new Date() - start_time)
   return callback()
 
 import_team = (teams, admin_id, callback) ->
   now = +new Date()
   await
-    import_repos(teams, admin_id, defer(err, rsrc_doc))
+    import_repos(teams, admin_id, defer(repo_errs, rsrc_doc))
     i = 0
-    import_members(teams, admin_id, defer(err, role_doc))
+    import_members(teams, admin_id, defer(member_errs, role_doc))
+  return callback([repo_errs, member_errs]) if repo_errs or member_errs
 
   team_doc = {
     _id: 'team_' + teams['admin'].iname,
@@ -95,7 +101,7 @@ import_team = (teams, admin_id, callback) ->
       'gh': rsrc_doc,
     },
     roles: role_doc,
-    audit: [{u: admin_id, dt: now, a: 't+', id: uuid.v4()}]
+    audit: [{u: admin_id, dt: now, a: 't+'}]
     enforce: []
   }
   record = _.clone(team_doc)
@@ -113,17 +119,23 @@ import_members = (teams, admin_id, callback) ->
   }
 
   members = []
+  err = []
   await
     i = 0
     for team_name, team of teams
       url = team.url + '/members'
-      get_all(gha, url, defer(err, members[i]))
+      get_all(gha, url, defer(err[i], members[i]))
       i++
+  err = _.compact(err)
+  return callback(err) if err.length
+
   members = _.flatten(members, true)
   members = _.map(members, (item) -> item.id)
   members = _.uniq(members)
   member_gh_ids = _.map(members, (item) -> ['gh', item])
   await couch_utils.nano_admin.use('_users').view('base', 'by_resource_id', {keys: member_gh_ids}, defer(err, user_rows))
+  return callback(err) if err
+
   for user in user_rows.rows
     role_doc.member.push(user.value)
   return callback(null, role_doc)
@@ -137,12 +149,12 @@ import_repos = (teams, admin_id, callback) ->
 
   url = team.url + '/repos'
   await get_all(gha, url, defer(err, repos))
+  return callback(err) if err
 
   for repo in repos
-    repo_record = {id: repo.id, name: repo.name, full_name: repo.full_name}
+    repo_record = {id: uuid.v4(), gh_id: repo.id, name: repo.name, full_name: repo.full_name}
     resource_doc.assets.push(repo_record)
   return callback(null, resource_doc)
-module.exports = x
 
 x.import_all = (db_name, callback) ->
   admin_id = 'admin'
@@ -151,3 +163,5 @@ x.import_all = (db_name, callback) ->
   await x.import_teams(db_name, admin_id, defer(err, resp))
   callback(err) if err
   callback()
+
+module.exports = x

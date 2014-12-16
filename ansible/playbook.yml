@@ -17,3 +17,5 @@
       sudo: yes
     - role: couch
       sudo: yes
+    - role: nginx
+      sudo: yes
