@@ -64,7 +64,7 @@ Thumbs.db
 # Grunt.js #
 ############
 .grunt/
-node_modules/
+/devops/frontend/node_modules/
 
 # Bower packages #
 ##################
