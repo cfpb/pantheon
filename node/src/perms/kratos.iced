@@ -9,11 +9,17 @@ kratos = (perms) ->
     remove_team: (user) ->
       return is_kratos_admin(user)
 
-    add_team_member: (user, team) ->
-      return is_kratos_admin(user) or perms._is_team_admin(user, team)
+    add_team_member: (user, team, role) ->
+      if role in ['admin', 'deploy']
+        return is_kratos_admin(user)
+      else
+        return is_kratos_admin(user) or perms._is_team_admin(user, team)
 
-    remove_team_member: (user, team) ->
-      return is_kratos_admin(user) or perms._is_team_admin(user, team)
+    remove_team_member: (user, team, role) ->
+      if role in ['admin', 'deploy']
+        return is_kratos_admin(user)
+      else
+        return is_kratos_admin(user) or perms._is_team_admin(user, team)
 
     _is_kratos_admin: is_kratos_admin
 

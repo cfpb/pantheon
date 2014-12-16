@@ -14,11 +14,19 @@
       remove_team: function(user) {
         return is_kratos_admin(user);
       },
-      add_team_member: function(user, team) {
-        return is_kratos_admin(user) || perms._is_team_admin(user, team);
+      add_team_member: function(user, team, role) {
+        if (role === 'admin' || role === 'deploy') {
+          return is_kratos_admin(user);
+        } else {
+          return is_kratos_admin(user) || perms._is_team_admin(user, team);
+        }
       },
-      remove_team_member: function(user, team) {
-        return is_kratos_admin(user) || perms._is_team_admin(user, team);
+      remove_team_member: function(user, team, role) {
+        if (role === 'admin' || role === 'deploy') {
+          return is_kratos_admin(user);
+        } else {
+          return is_kratos_admin(user) || perms._is_team_admin(user, team);
+        }
       },
       _is_kratos_admin: is_kratos_admin
     };

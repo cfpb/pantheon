@@ -25,27 +25,43 @@ describe 'remove_team', () ->
     expect(actual).toBe(false)
 
 describe 'add_team_member', ->
-  it 'allowed when user is a kratos admin', () ->
-    actual = kratos.add_team_member(kratos_admin, team)
+  it 'allowed when user is a kratos admin adding a team admin', () ->
+    actual = kratos.add_team_member(kratos_admin, team, 'admin')
     expect(actual).toBe(true)
 
-  it 'allowed when user is a team admin', () ->
-    actual = kratos.add_team_member(team_admin, team)
+  it 'allowed when user is a kratos admin adding a team non-admin admin', () ->
+    actual = kratos.add_team_member(kratos_admin, team, 'member')
+    expect(actual).toBe(true)
+
+  it 'not allowed when user is a team admin adding a team admin', () ->
+    actual = kratos.add_team_member(team_admin, team, 'admin')
+    expect(actual).toBe(false)
+
+  it 'allowed when user is a team admin adding a non-team admin', () ->
+    actual = kratos.add_team_member(team_admin, team, 'member')
     expect(actual).toBe(true)
 
   it 'not allowed when user is not a kratos admin or a team admin', () ->
-    actual = kratos.add_team_member(user, team)
+    actual = kratos.add_team_member(user, team, 'member')
     expect(actual).toBe(false)
 
 describe 'remove_team_member', ->
-  it 'allowed when user is a kratos admin', () ->
-    actual = kratos.remove_team_member(kratos_admin, team)
+  it 'allowed when user is a kratos admin adding a team admin', () ->
+    actual = kratos.remove_team_member(kratos_admin, team, 'admin')
     expect(actual).toBe(true)
 
-  it 'allowed when user is a team admin', () ->
-    actual = kratos.remove_team_member(team_admin, team)
+  it 'allowed when user is a kratos admin adding a team non-admin admin', () ->
+    actual = kratos.remove_team_member(kratos_admin, team, 'member')
+    expect(actual).toBe(true)
+
+  it 'not allowed when user is a team admin adding a team admin', () ->
+    actual = kratos.remove_team_member(team_admin, team, 'admin')
+    expect(actual).toBe(false)
+
+  it 'allowed when user is a team admin adding a non-team admin', () ->
+    actual = kratos.remove_team_member(team_admin, team, 'member')
     expect(actual).toBe(true)
 
   it 'not allowed when user is not a kratos admin or a team admin', () ->
-    actual = kratos.remove_team_member(user, team)
+    actual = kratos.remove_team_member(user, team, 'member')
     expect(actual).toBe(false)

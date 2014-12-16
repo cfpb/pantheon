@@ -9,6 +9,15 @@ perms._is_resource_admin = (user, resource) ->
 perms._is_team_admin = (user, team) ->
   return perms._has_team_role(user, team, 'admin')
 
+perms.roles = 
+  team: [
+    'admin',
+    'member',
+  ],
+  resource: {
+    kratos: ['admin'],
+    gh: ['user'],
+  }
 if window?
   window.kratos = {perms: perms}
 else if exports?

@@ -24,6 +24,14 @@
     return perms._has_team_role(user, team, 'admin');
   };
 
+  perms.roles = {
+    team: ['admin', 'member'],
+    resource: {
+      kratos: ['admin'],
+      gh: ['user']
+    }
+  };
+
   if (typeof window !== "undefined" && window !== null) {
     window.kratos = {
       perms: perms
