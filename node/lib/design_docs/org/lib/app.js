@@ -38,8 +38,6 @@
       value = body.value;
       action = body.action;
       key = body.key;
-      log(body);
-      log(value);
       if (action === 'u+') {
         container = uh.mk_objs(team.roles, [key], []);
         if (__indexOf.call(container, value) >= 0) {
