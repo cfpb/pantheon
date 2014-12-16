@@ -28,49 +28,56 @@
 
   exports.updates = {
     do_action: function(team, req) {
-      var action, body, container, i, item, key, value, _;
+      var action, body, container, i, item, key, uh, value, _;
       _ = require('underscore');
+      uh = require('lib/update_helpers');
       if (!team) {
         return [null, '{"status": "error", "msg": "team not found"}'];
       }
       body = JSON.parse(req.body);
+      value = body.value;
       action = body.action;
       key = body.key;
-      value = body.value;
-      if (action !== 'u+' && action !== 'u-' && action !== 'a+' && action !== 'a-') {
-        return [null, '{"status": "error", "msg": "invalid action"}'];
-      }
-      if (action[0] === 'u') {
-        if (!team.roles[key]) {
-          team.roles[key] = [];
-        }
-        container = team.roles[key];
-        item = value;
-      } else {
-        if (!team.rsrcs[key]) {
-          team.rsrcs[key] = {};
-        }
-        if (!team.rsrcs[key].assets) {
-          team.rsrcs[key].assets = [];
-        }
-        container = team.rsrcs[key].assets;
-        item = _.find(container, function(item) {
-          return item.id === value || String(item.id) === value;
-        });
-      }
-      if (action[1] === '+') {
-        if (__indexOf.call(container, item) >= 0) {
+      log(body);
+      log(value);
+      if (action === 'u+') {
+        container = uh.mk_objs(team.roles, [key], []);
+        if (__indexOf.call(container, value) >= 0) {
           return [null, JSON.stringify(team)];
         } else {
           container.push(value);
         }
-      } else {
-        if (__indexOf.call(container, item) < 0) {
+      } else if (action === 'u-') {
+        container = uh.mk_objs(team.roles, [key], []);
+        if (__indexOf.call(container, value) < 0) {
+          return [null, JSON.stringify(team)];
+        } else {
+          i = container.indexOf(value);
+          container.splice(i, 1);
+        }
+      } else if (action === 'a+') {
+        container = uh.mk_objs(team.rsrcs, [key, 'assets'], []);
+        item = _.find(container, function(item) {
+          return (item.id && (item.id === value.id || String(item.id) === value.id)) || (item["new"] && item["new"] === value["new"]);
+        });
+        if (item) {
+          return [null, JSON.stringify(team)];
+        } else {
+          container.push(value);
+        }
+      } else if (action === 'a-') {
+        container = uh.mk_objs(team.rsrcs, [key, 'assets'], []);
+        item = _.find(container, function(item) {
+          return item.id === value || String(item.id) === value;
+        });
+        if (!item) {
           return [null, JSON.stringify(team)];
         } else {
           i = container.indexOf(item);
           container.splice(i, 1);
         }
+      } else {
+        return [null, '{"status": "error", "msg": "invalid action"}'];
       }
       team.audit.push({
         u: req.userCtx.name,

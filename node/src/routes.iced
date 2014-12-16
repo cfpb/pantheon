@@ -8,7 +8,11 @@ module.exports = (app) ->
 
     app.get('/kratos/users', users.get_users)
 
+    # add user to team - no body
     app.put('/kratos/org/:org_id/teams/:team_id/roles/:key/:value/', teams.add_remove_member_asset('u+'))
+    # remove user from team - no body
     app.delete('/kratos/org/:org_id/teams/:team_id/roles/:key/:value/', teams.add_remove_member_asset('u-'))
-    app.put('/kratos/org/:org_id/teams/:team_id/resources/:key/:value/', teams.add_remove_member_asset('a+'))
+    # add asset to team - content_type=application/json; {new: <string>}
+    app.post('/kratos/org/:org_id/teams/:team_id/resources/:key/', teams.add_asset)
+    # remove asset from team - no body
     app.delete('/kratos/org/:org_id/teams/:team_id/resources/:key/:value/', teams.add_remove_member_asset('a-'))

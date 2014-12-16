@@ -13,7 +13,7 @@
     app.get('/kratos/users', users.get_users);
     app.put('/kratos/org/:org_id/teams/:team_id/roles/:key/:value/', teams.add_remove_member_asset('u+'));
     app["delete"]('/kratos/org/:org_id/teams/:team_id/roles/:key/:value/', teams.add_remove_member_asset('u-'));
-    app.put('/kratos/org/:org_id/teams/:team_id/resources/:key/:value/', teams.add_remove_member_asset('a+'));
+    app.post('/kratos/org/:org_id/teams/:team_id/resources/:key/', teams.add_asset);
     return app["delete"]('/kratos/org/:org_id/teams/:team_id/resources/:key/:value/', teams.add_remove_member_asset('a-'));
   };
 

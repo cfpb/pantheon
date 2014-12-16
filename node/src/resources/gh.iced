@@ -101,7 +101,7 @@ import_team = (teams, admin_id, callback) ->
       'gh': rsrc_doc,
     },
     roles: role_doc,
-    audit: [{u: admin_id, dt: now, a: 't+', id: uuid.v4()}]
+    audit: [{u: admin_id, dt: now, a: 't+'}]
     enforce: []
   }
   record = _.clone(team_doc)
@@ -152,7 +152,7 @@ import_repos = (teams, admin_id, callback) ->
   return callback(err) if err
 
   for repo in repos
-    repo_record = {id: repo.id, name: repo.name, full_name: repo.full_name}
+    repo_record = {id: uuid.v4(), gh_id: repo.id, name: repo.name, full_name: repo.full_name}
     resource_doc.assets.push(repo_record)
   return callback(null, resource_doc)
 

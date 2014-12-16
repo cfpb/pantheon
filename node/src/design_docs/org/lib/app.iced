@@ -13,42 +13,50 @@ exports.lists =
       out.push(row.doc)
     return JSON.stringify(out)
 
-exports.updates = 
+exports.updates =
   do_action: (team, req) ->
     _ = require('underscore')
+    uh = require('lib/update_helpers')
     if not team
       return [null, '{"status": "error", "msg": "team not found"}']
     body = JSON.parse(req.body)
+    value = body.value
     action = body.action
     key = body.key
-    value = body.value
-    if action not in ['u+', 'u-', 'a+', 'a-']
-      return [null, '{"status": "error", "msg": "invalid action"}']
-
-    if action[0] == 'u'
-      if not team.roles[key]
-        team.roles[key] = []
-      container = team.roles[key]
-      item = value
-    else
-      if not team.rsrcs[key]
-        team.rsrcs[key] = {}
-      if not team.rsrcs[key].assets
-        team.rsrcs[key].assets = []
-      container = team.rsrcs[key].assets
-      item = _.find(container, (item) -> item.id==value or String(item.id)==value)
-    if action[1] == '+'
-      if item in container
+    if action == 'u+'
+      container = uh.mk_objs(team.roles, [key], [])
+      if value in container
         return [null, JSON.stringify(team)]
       else
         container.push(value)
-    else
-      if item not in container
+
+    else if action == 'u-'
+      container = uh.mk_objs(team.roles, [key], [])
+      if value not in container
+        return [null, JSON.stringify(team)]
+      else
+        i = container.indexOf(value)
+        container.splice(i, 1)
+
+    else if action == 'a+'
+      container = uh.mk_objs(team.rsrcs, [key, 'assets'], [])
+      item = _.find(container, (item) -> (item.id and (item.id==value.id or String(item.id)==value.id)) or (item.new and item.new==value.new))
+      if item
+        return [null, JSON.stringify(team)]
+      else
+        container.push(value)
+
+    else if action == 'a-'
+      container = uh.mk_objs(team.rsrcs, [key, 'assets'], [])
+      item = _.find(container, (item) -> item.id==value or String(item.id)==value)
+      if not item
         return [null, JSON.stringify(team)]
       else
         i = container.indexOf(item)
         container.splice(i, 1)
 
+    else
+      return [null, '{"status": "error", "msg": "invalid action"}']
     team.audit.push({
       u: req.userCtx.name,
       dt: +new Date(),
@@ -56,7 +64,6 @@ exports.updates =
       k: key,
       v: value,
     })
-
     return [team, JSON.stringify(team)]
 
 exports.rewrites = [

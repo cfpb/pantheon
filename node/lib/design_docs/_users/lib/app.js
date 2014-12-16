@@ -77,6 +77,7 @@
         out = [];
         while ((row = getRow())) {
           doc = row.doc;
+          log(doc);
           delete doc.password_scheme;
           delete doc.iterations;
           delete doc.derived_key;
