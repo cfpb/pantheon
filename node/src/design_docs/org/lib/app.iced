@@ -13,10 +13,17 @@ exports.lists =
       out.push(row.doc)
     return JSON.stringify(out)
 
+exports.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
+  log(newDoc)
+  log(oldDoc)
+  log(userCtx)
+  log(secObj)
+  require('lib/validation').validate_doc_update(newDoc, oldDoc, userCtx, secObj)
+
 exports.updates =
   do_action: (team, req) ->
-    _ = require('underscore')
-    uh = require('lib/update_helpers')
+    _ = require('lib/underscore')
+    h = require('lib/helpers')
     if not team
       return [null, '{"status": "error", "msg": "team not found"}']
     body = JSON.parse(req.body)
@@ -24,14 +31,14 @@ exports.updates =
     action = body.action
     key = body.key
     if action == 'u+'
-      container = uh.mk_objs(team.roles, [key], [])
+      container = h.mk_objs(team.roles, [key], [])
       if value in container
         return [null, JSON.stringify(team)]
       else
         container.push(value)
 
     else if action == 'u-'
-      container = uh.mk_objs(team.roles, [key], [])
+      container = h.mk_objs(team.roles, [key], [])
       if value not in container
         return [null, JSON.stringify(team)]
       else
@@ -39,7 +46,7 @@ exports.updates =
         container.splice(i, 1)
 
     else if action == 'a+'
-      container = uh.mk_objs(team.rsrcs, [key, 'assets'], [])
+      container = h.mk_objs(team.rsrcs, [key, 'assets'], [])
       item = _.find(container, (item) -> (item.id and (item.id==value.id or String(item.id)==value.id)) or (item.new and item.new==value.new))
       if item
         return [null, JSON.stringify(team)]
@@ -47,7 +54,7 @@ exports.updates =
         container.push(value)
 
     else if action == 'a-'
-      container = uh.mk_objs(team.rsrcs, [key, 'assets'], [])
+      container = h.mk_objs(team.rsrcs, [key, 'assets'], [])
       item = _.find(container, (item) -> item.id==value or String(item.id)==value)
       if not item
         return [null, JSON.stringify(team)]

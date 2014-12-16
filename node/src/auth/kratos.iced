@@ -23,7 +23,6 @@ kratos = (auth) ->
 
     _is_kratos_admin: is_kratos_admin
 
-
 if window?
   kratos(window.kratos.auth)
 else if exports?

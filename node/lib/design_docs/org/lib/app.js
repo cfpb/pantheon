@@ -26,11 +26,19 @@
     }
   };
 
+  exports.validate_doc_update = function(newDoc, oldDoc, userCtx, secObj) {
+    log(newDoc);
+    log(oldDoc);
+    log(userCtx);
+    log(secObj);
+    return require('lib/validation').validate_doc_update(newDoc, oldDoc, userCtx, secObj);
+  };
+
   exports.updates = {
     do_action: function(team, req) {
-      var action, body, container, i, item, key, uh, value, _;
-      _ = require('underscore');
-      uh = require('lib/update_helpers');
+      var action, body, container, h, i, item, key, value, _;
+      _ = require('lib/underscore');
+      h = require('lib/helpers');
       if (!team) {
         return [null, '{"status": "error", "msg": "team not found"}'];
       }
@@ -39,14 +47,14 @@
       action = body.action;
       key = body.key;
       if (action === 'u+') {
-        container = uh.mk_objs(team.roles, [key], []);
+        container = h.mk_objs(team.roles, [key], []);
         if (__indexOf.call(container, value) >= 0) {
           return [null, JSON.stringify(team)];
         } else {
           container.push(value);
         }
       } else if (action === 'u-') {
-        container = uh.mk_objs(team.roles, [key], []);
+        container = h.mk_objs(team.roles, [key], []);
         if (__indexOf.call(container, value) < 0) {
           return [null, JSON.stringify(team)];
         } else {
@@ -54,7 +62,7 @@
           container.splice(i, 1);
         }
       } else if (action === 'a+') {
-        container = uh.mk_objs(team.rsrcs, [key, 'assets'], []);
+        container = h.mk_objs(team.rsrcs, [key, 'assets'], []);
         item = _.find(container, function(item) {
           return (item.id && (item.id === value.id || String(item.id) === value.id)) || (item["new"] && item["new"] === value["new"]);
         });
@@ -64,7 +72,7 @@
           container.push(value);
         }
       } else if (action === 'a-') {
-        container = uh.mk_objs(team.rsrcs, [key, 'assets'], []);
+        container = h.mk_objs(team.rsrcs, [key, 'assets'], []);
         item = _.find(container, function(item) {
           return item.id === value || String(item.id) === value;
         });
