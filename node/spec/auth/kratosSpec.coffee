@@ -1,5 +1,5 @@
-perms = require('../../lib/perms/perms')
-kratos = perms.kratos
+auth = require('../../lib/auth/auth')
+kratos = auth.kratos
 
 team_admin   = {name: 'etkdg394hpmujn', roles: []}
 user         = {name: 'thubsn24joa5gk', roles: []}

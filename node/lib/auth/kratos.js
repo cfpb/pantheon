@@ -2,12 +2,12 @@
 (function() {
   var kratos;
 
-  kratos = function(perms) {
+  kratos = function(auth) {
     var is_kratos_admin;
     is_kratos_admin = function(user) {
-      return perms._is_resource_admin(user, 'kratos');
+      return auth._is_resource_admin(user, 'kratos');
     };
-    return perms.kratos = {
+    return auth.kratos = {
       add_team: function(user) {
         return is_kratos_admin(user);
       },
@@ -18,14 +18,14 @@
         if (role === 'admin' || role === 'deploy') {
           return is_kratos_admin(user);
         } else {
-          return is_kratos_admin(user) || perms._is_team_admin(user, team);
+          return is_kratos_admin(user) || auth._is_team_admin(user, team);
         }
       },
       remove_team_member: function(user, team, role) {
         if (role === 'admin' || role === 'deploy') {
           return is_kratos_admin(user);
         } else {
-          return is_kratos_admin(user) || perms._is_team_admin(user, team);
+          return is_kratos_admin(user) || auth._is_team_admin(user, team);
         }
       },
       _is_kratos_admin: is_kratos_admin
@@ -33,7 +33,7 @@
   };
 
   if (typeof window !== "undefined" && window !== null) {
-    kratos(window.kratos.perms);
+    kratos(window.kratos.auth);
   } else if (typeof exports !== "undefined" && exports !== null) {
     module.exports = kratos;
   }

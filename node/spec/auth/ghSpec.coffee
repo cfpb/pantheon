@@ -1,5 +1,5 @@
-perms = require('../../lib/perms/perms')
-gh = perms.gh
+auth = require('../../lib/auth/auth')
+gh = auth.gh
 
 team_admin    = {name: 'etkdg394hpmujn', roles: []}
 team_gh_admin = {name: 'nauhbkuwmkjvqq', roles: ['gh|user']}
