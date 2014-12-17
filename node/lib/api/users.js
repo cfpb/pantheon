@@ -23,19 +23,33 @@
       if (isInt(rsrcs_id)) {
         rsrcs_id = parseInt(rsrcs_id);
       }
-      return user_db.viewWithList('base', 'by_resource_id', 'get_doc', {
+      return user_db.viewWithList('base', 'by_resource_id', 'get_user', {
         include_docs: true,
         key: [resource, rsrcs_id]
       }).pipe(resp);
     } else {
-      return couch_utils.nano_admin.request({
-        db: '_users',
-        path: '/_design/base/_rewrite/users'
-      }).pipe(resp);
+      return couch_utils.rewrite(user_db, 'base', '/users').pipe(resp);
     }
   };
 
-  users.remove_member = function(req, resp) {};
+  users.get_user = function(req, resp) {
+    return couch_utils.rewrite(user_db, 'base', '/users/org.couchdb.user:' + req.params.user_id).pipe(resp);
+  };
+
+  users.add_remove_role = function(action_type) {
+    return function(req, resp) {
+      var action, resource, role, user;
+      user = 'org.couchdb.user:' + req.params.user_id;
+      resource = req.params.resource;
+      role = req.params.role;
+      action = {
+        action: action_type,
+        key: resource,
+        value: role
+      };
+      return user_db.atomic('base', 'do_action', user, action).pipe(resp);
+    };
+  };
 
   module.exports = users;
 

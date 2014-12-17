@@ -1,3 +1,9 @@
+- name: ensure epel repo installed
+  copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+
+- name: ensure epel gpg key installed
+  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
+
 - name: install rpms for building couchdb
   yum: name={{ item }}
   with_items:
@@ -6,6 +12,7 @@
     - curl-devel
     - make
     - gcc
+    - gcc-c++
     - erlang
     - js-devel
     - libtool
@@ -21,25 +28,30 @@
   shell: tar xvfz {{ root_dir }}/couchdb.tar.gz chdir={{ root_dir }}
   when: not couch_bin.stat.exists
 
+- name: create couch user
+  user: name=couchdb createhome=no
+
+
 - name: configure
   shell: '{{ root_dir}}/apache-couchdb-1.6.1/configure --with-erlang=/usr/lib64/erlang/usr/include/'
   register: configure_result
   when: not couch_bin.stat.exists
   failed_when: configure_result.stderr and 'directory already configured' not in configure_result.stderr
   changed_when: not configure_result.stderr or 'directory already configured' not in configure_result.stderr
+  sudo_user: couchdb
 
-- name: make and install couch
-  shell: 'make && sudo make install chdir={{ root_dir}}/apache-couchdb-1.6.1/'
+- name: make couch
+  shell: 'make chdir={{ root_dir}}/apache-couchdb-1.6.1/'
+  when: not couch_bin.stat.exists
+  sudo_user: couchdb
+
+- name: install couch
+  shell: 'make install chdir={{ root_dir}}/apache-couchdb-1.6.1/'
   when: not couch_bin.stat.exists
 
-- name: create couch user
-  user: name=couchdb createhome=no
-
-- name: make couch user own couch files
-  file: 'path=/usr/local/var/{{ item }}/couchdb owner=couchdb state=directory recurse=yes'
-  with_items:
-    - lib
-    - log
+# can't do a perm addition in 1.7
+- name: ensure all users can traverse to the couch folders
+  shell: chmod -R a+x /usr/local
 
 - name: add service to init.d
   file: path=/etc/init.d/couchdb state=link src=/usr/local/etc/rc.d/couchdb
