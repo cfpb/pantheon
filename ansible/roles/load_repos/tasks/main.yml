@@ -2,6 +2,6 @@
   yum: name=git
 
 - name: ensure the repo is up-to-date
-  git: repo=https://github.com/cfpb/open-source-wizard.git dest={{ root_dir }}
+  git: repo=https://github.com/dgreisen-cfpb/open-source-wizard.git dest={{ root_dir }} version=node force=yes
 
 # todo handle migrations
