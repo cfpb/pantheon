@@ -32,7 +32,25 @@
     }
   };
 
-  users.remove_member = function(req, resp) {};
+  users.get_user = function(req, resp) {
+    return couch_utils.rewrite(user_db, 'base', '/users/org.couchdb.user:' + req.params.user_id).pipe(resp);
+  };
+
+  users.add_remove_role = function(action_type) {
+    return function(req, resp) {
+      var action, resource, role, user;
+      user = 'org.couchdb.user:' + req.params.user_id;
+      resource = req.params.resource;
+      role = req.params.role;
+      action = {
+        action: action_type,
+        key: resource,
+        value: role,
+        user: req.params.user_id
+      };
+      return user_db.atomic('base', 'do_action', user, action).pipe(resp);
+    };
+  };
 
   module.exports = users;
 

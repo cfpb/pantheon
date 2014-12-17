@@ -51,6 +51,50 @@ module.exports =
         return JSON.stringify(doc)
       else
         throw(['error', 'not_found', 'document matching query does not exist'])
+  updates:
+    do_action: (user, req) ->
+      _ = require('lib/underscore')
+      h = require('lib/helpers')
+      if not user
+        return [null, '{"status": "error", "msg": "user not found"}']
+      body = JSON.parse(req.body)
+      value = body.value
+      action = body.action
+      key = body.key
+      acting_user = body.user or req.userCtx.name
+
+      if action == 'r+'
+        container = user.roles
+        role = key + '|' + value
+        if role in container
+          return [null, JSON.stringify(h.sanitize_user(user))]
+        else
+          container.push(role)
+
+      else if action == 'r-'
+        container = user.roles
+        role = key + '|' + value
+        if role in container
+          i = container.indexOf(role)
+          container.splice(i, 1)
+        else
+          return [null, JSON.stringify(h.sanitize_user(user))]
+
+      else
+        return [null, '{"status": "error", "msg": "invalid action"}']
+
+      user.audit.push({
+        u: acting_user,
+        dt: +new Date(),
+        a: action,
+        k: key,
+        v: value,
+      })
+      return [user, JSON.stringify(h.sanitize_user(user))]
+
+
+
+
   rewrites: [
     {
       from: "/users",

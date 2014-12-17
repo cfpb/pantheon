@@ -1,5 +1,4 @@
 h = {}
-
 h.sanitize_user = (user) ->
   delete user.password_scheme
   delete user.iterations
