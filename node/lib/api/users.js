@@ -45,8 +45,7 @@
       action = {
         action: action_type,
         key: resource,
-        value: role,
-        user: req.params.user_id
+        value: role
       };
       return user_db.atomic('base', 'do_action', user, action).pipe(resp);
     };

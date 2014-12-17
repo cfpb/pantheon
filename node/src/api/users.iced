@@ -32,7 +32,6 @@ users.add_remove_role = (action_type) ->
       action: action_type
       key: resource
       value: role
-      user: req.params.user_id
     }
     user_db.atomic('base', 'do_action', user, action).pipe(resp)
 
