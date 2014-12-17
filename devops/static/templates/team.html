@@ -1,0 +1,54 @@
+<div expandable class="expandable expandable__padded expandable__team">
+    <div class="expandable_header">
+        <h1 class="expandable_label">
+            {{ data.name }}
+        </h1>
+        <role team-model="data"
+              class="expandable_role"></role>
+        <div class="expandable_actions">
+            <div class="expandable_header-left">
+                <userbutton team-model="data"
+                            role="Admin"
+                            show="data.showAdmin">
+                </userbutton>
+                <userbutton team-model="data"
+                            role="Write"
+                            show="data.showWrite">
+                </userbutton>
+                <userbutton team-model="data"
+                            role="Read"
+                            show="data.showRead">
+                </userbutton>
+            </div>
+            <div class="expandable_header-right">
+                <repobutton team-model="data"
+                            show="data.showRepo">
+                </repobutton>
+            </div>
+        </div>
+    </div>
+    <div class="expandable_content">
+        <section userlist
+                 class="team-content"
+                 team-model="data"
+                 role="Admin"
+                 ng-show="data.showAdmin">
+        </section>
+        <section userlist
+                 class="team-content"
+                 team-model="data"
+                 role="Write"
+                 ng-show="data.showWrite">
+        </section>
+        <section userlist
+                 class="team-content"
+                 team-model="data"
+                 role="Read"
+                 ng-show="data.showRead">
+        </section>
+        <div ng-show="data.showRepo"
+             class="team-content">
+            <div assetlist assets="data.repos" heading="Repos"></div>
+        </div>
+    </div> <!-- END .expandable_content -->
+</div> <!-- END .expandable -->

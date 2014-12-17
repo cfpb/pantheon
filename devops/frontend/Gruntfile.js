@@ -250,6 +250,18 @@ module.exports = function(grunt) {
       all: ['src/static/js/main.js']
     },
 
+    shell: {
+      manage_py: {
+        command: './manage.py collectstatic --noinput',
+        options: {
+          stderr: false,
+          execOptions: {
+            cwd: '..'
+          }
+        }
+      }
+    },
+
     /**
      * Watch: https://github.com/gruntjs/grunt-contrib-watch
      * 
@@ -279,6 +291,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-shell');
 
   /**
    * Create custom task aliases and combinations
@@ -287,7 +300,7 @@ module.exports = function(grunt) {
   grunt.registerTask('vendor-to-static', ['copy:vendor']);
   grunt.registerTask('cssdev', ['less', 'autoprefixer', 'cssmin', 'usebanner:css']);
   grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates']);
-  grunt.registerTask('default', ['cssdev', 'jsdev']);
+  grunt.registerTask('default', ['cssdev', 'jsdev', 'shell:manage_py']);
   grunt.registerTask('test', ['jshint']);
 
 };

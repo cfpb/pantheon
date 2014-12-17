@@ -64,14 +64,14 @@
     $scope.users = UserService.users;
     $scope.teams = [];
     // Data
-    $http.get('/kratos/teams/').
+    $http.get('/kratos/orgs/devdesign/teams/').
       success( function( response, status, headers, config ) {
-        var preppedResponse = $filter('prepTeamData')( response.groups );
-        UserService.users = response.users;
-        UserService.usersArray = $filter('toArray')( UserService.users );
-        UserService.user.id = response.user;
-        UserService.user.name = UserService.getName( response.user );
-        $scope.teams = preppedResponse;
+        // var preppedResponse = $filter('prepTeamData')( response.groups );
+        // UserService.users = response.users;
+        // UserService.usersArray = $filter('toArray')( UserService.users );
+        // UserService.user.id = response.user;
+        // UserService.user.name = UserService.getName( response.user );
+        // $scope.teams = preppedResponse;
       });
   });
 
