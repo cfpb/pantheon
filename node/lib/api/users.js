@@ -23,15 +23,12 @@
       if (isInt(rsrcs_id)) {
         rsrcs_id = parseInt(rsrcs_id);
       }
-      return user_db.viewWithList('base', 'by_resource_id', 'get_doc', {
+      return user_db.viewWithList('base', 'by_resource_id', 'get_user', {
         include_docs: true,
         key: [resource, rsrcs_id]
       }).pipe(resp);
     } else {
-      return couch_utils.nano_admin.request({
-        db: '_users',
-        path: '/_design/base/_rewrite/users'
-      }).pipe(resp);
+      return couch_utils.rewrite(user_db, 'base', '/users').pipe(resp);
     }
   };
 

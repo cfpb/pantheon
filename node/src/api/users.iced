@@ -13,14 +13,11 @@ users.get_users = (req, resp) ->
     if isInt(rsrcs_id)
       rsrcs_id = parseInt(rsrcs_id)
     user_db
-      .viewWithList('base', 'by_resource_id', 'get_doc', 
+      .viewWithList('base', 'by_resource_id', 'get_user', 
                     {include_docs: true, key: [resource, rsrcs_id]})
       .pipe(resp)
   else
-    couch_utils.nano_admin.request({
-      db: '_users',
-      path: '/_design/base/_rewrite/users'
-    }).pipe(resp)
+    couch_utils.rewrite(user_db, 'base', '/users').pipe(resp)
 
 
 

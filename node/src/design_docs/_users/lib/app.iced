@@ -29,21 +29,26 @@ module.exports =
     contractors:
       map: (doc) ->
         emit(doc.data?.contractor or false, doc.username)
+  shows:
+    get_user: (doc, req) ->
+      h = require('lib/helpers')
+      doc = h.sanitize_user(doc)
+      return JSON.stringify(doc)
   lists:
     get_users: (header, req) ->
+      h = require('lib/helpers')
       out = []
       while(row = getRow())
         doc = row.doc
-        delete doc.password_scheme
-        delete doc.iterations
-        delete doc.derived_key
-        delete doc.salt
+        doc = h.sanitize_user(doc)
         out.push(doc)
       return JSON.stringify(out)
-    get_doc: (header, req) ->
+    get_user: (header, req) ->
+      h = require('lib/helpers')
       row = getRow()
       if row
-        return JSON.stringify(row.doc)
+        doc = h.sanitize_user(row.doc)
+        return JSON.stringify(doc)
       else
         throw(['error', 'not_found', 'document matching query does not exist'])
   rewrites: [
@@ -55,9 +60,9 @@ module.exports =
     },
     {
       from: "/users/:user_id",
-      to: "../../:user_id",
+      to: "/_show/get_user/:user_id",
       query: {},
-    },
+    }
   ]
   validate_doc_update: (newDoc, oldDoc, userCtx, secObj) ->
 

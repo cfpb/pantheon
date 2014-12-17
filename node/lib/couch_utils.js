@@ -493,6 +493,17 @@
     })(this));
   };
 
+  x.rewrite = function(db, design_doc, path, callback) {
+    var db_name, nano;
+    db_name = db.config.db;
+    nano = require('nano')(db.config.url);
+    return nano.request({
+      db: db_name,
+      path: '/_design/' + design_doc + '/_rewrite' + path,
+      callback: callback
+    });
+  };
+
   module.exports = x;
 
 }).call(this);

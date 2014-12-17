@@ -71,25 +71,33 @@
         }
       }
     },
+    shows: {
+      get_user: function(doc, req) {
+        var h;
+        h = require('lib/helpers');
+        doc = h.sanitize_user(doc);
+        return JSON.stringify(doc);
+      }
+    },
     lists: {
       get_users: function(header, req) {
-        var doc, out, row;
+        var doc, h, out, row;
+        h = require('lib/helpers');
         out = [];
         while ((row = getRow())) {
           doc = row.doc;
-          delete doc.password_scheme;
-          delete doc.iterations;
-          delete doc.derived_key;
-          delete doc.salt;
+          doc = h.sanitize_user(doc);
           out.push(doc);
         }
         return JSON.stringify(out);
       },
-      get_doc: function(header, req) {
-        var row;
+      get_user: function(header, req) {
+        var doc, h, row;
+        h = require('lib/helpers');
         row = getRow();
         if (row) {
-          return JSON.stringify(row.doc);
+          doc = h.sanitize_user(row.doc);
+          return JSON.stringify(doc);
         } else {
           throw ['error', 'not_found', 'document matching query does not exist'];
         }
@@ -105,7 +113,7 @@
         }
       }, {
         from: "/users/:user_id",
-        to: "../../:user_id",
+        to: "/_show/get_user/:user_id",
         query: {}
       }
     ],

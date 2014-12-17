@@ -147,7 +147,14 @@ x.get_uuids = (count, callback) ->
     return callback(err, resp)
   return callback(null, resp.uuids)
 
-
+x.rewrite = (db, design_doc, path, callback) ->
+  db_name = db.config.db
+  nano = require('nano')(db.config.url)
+  return nano.request({
+    db: db_name,
+    path: '/_design/' + design_doc + '/_rewrite' + path,
+    callback: callback,
+  })
 
 # x.add_user = (db, username, password, callback)
 #   if _.isFunction(password) and not callback?

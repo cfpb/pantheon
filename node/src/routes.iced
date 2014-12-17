@@ -1,5 +1,6 @@
 teams = require('./api/teams')
 users = require('./api/users')
+user = require('./api/user')
 
 module.exports = (app) ->
     app.get('/kratos/org/:org_id/teams/', teams.get_teams)
@@ -7,6 +8,8 @@ module.exports = (app) ->
     app.put('/kratos/org/:org_id/teams/:team_id', teams.update_team)
 
     app.get('/kratos/users', users.get_users)
+
+    app.get('/kratos/user', user.get_user)
 
     # add user to team - no body
     app.put('/kratos/org/:org_id/teams/:team_id/roles/:key/:value/', teams.add_remove_member_asset('u+'))
