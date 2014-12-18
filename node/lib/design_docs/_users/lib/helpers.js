@@ -5,11 +5,14 @@
   h = {};
 
   h.sanitize_user = function(user) {
-    delete user.password_scheme;
-    delete user.iterations;
-    delete user.derived_key;
-    delete user.salt;
-    return user;
+    var sanitized_user, _;
+    _ = require('lib/underscore');
+    sanitized_user = _.clone(user);
+    delete sanitized_user.password_scheme;
+    delete sanitized_user.iterations;
+    delete sanitized_user.derived_key;
+    delete sanitized_user.salt;
+    return sanitized_user;
   };
 
   module.exports = h;

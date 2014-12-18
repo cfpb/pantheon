@@ -25,6 +25,7 @@ teams.add_remove_member_asset = (action_type) ->
       action: action_type
       key: req.params.key
       value: req.params.value
+      uuid: uuid.v4()
     }
     db.atomic('base', 'do_action', team, action).pipe(resp)
 

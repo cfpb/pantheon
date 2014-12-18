@@ -89,6 +89,7 @@ module.exports =
         a: action,
         k: key,
         v: value,
+        id: body.uuid,
       })
       return [user, JSON.stringify(h.sanitize_user(user))]
 

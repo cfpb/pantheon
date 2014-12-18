@@ -13,7 +13,6 @@ gha = request.defaults(
   headers:
     'User-Agent': 'cfpb-kratos'
 )
-
 get_all = (client, url, callback) ->
   out = []
   while url
@@ -101,7 +100,7 @@ import_team = (teams, admin_id, callback) ->
       'gh': rsrc_doc,
     },
     roles: role_doc,
-    audit: [{u: admin_id, dt: now, a: 't+'}]
+    audit: [{u: admin_id, dt: now, a: 't+', id: uuid.v4()}]
     enforce: []
   }
   record = _.clone(team_doc)

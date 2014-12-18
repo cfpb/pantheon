@@ -69,7 +69,7 @@
                     return data = arguments[2];
                   };
                 })(),
-                lineno: 19
+                lineno: 18
               }));
               __iced_deferrals._fulfill();
             })(function() {
@@ -115,7 +115,7 @@
               return members = arguments[1];
             };
           })(),
-          lineno: 31
+          lineno: 30
         }));
         __iced_deferrals._fulfill();
       });
@@ -135,7 +135,7 @@
                 return uuids = arguments[1];
               };
             })(),
-            lineno: 33
+            lineno: 32
           }));
           __iced_deferrals._fulfill();
         })(function() {
@@ -187,7 +187,7 @@
               return raw_teams = arguments[1];
             };
           })(),
-          lineno: 57
+          lineno: 56
         }));
         __iced_deferrals._fulfill();
       });
@@ -233,7 +233,7 @@
                   return __slot_3[__slot_4] = arguments[1];
                 };
               })(errs, i, team_data, i),
-              lineno: 77
+              lineno: 76
             }));
             i++;
           }
@@ -260,7 +260,7 @@
                   return resp = arguments[1];
                 };
               })(),
-              lineno: 83
+              lineno: 82
             }));
             __iced_deferrals._fulfill();
           })(function() {
@@ -293,7 +293,7 @@
               return rsrc_doc = arguments[1];
             };
           })(),
-          lineno: 91
+          lineno: 90
         }));
         i = 0;
         import_members(teams, admin_id, __iced_deferrals.defer({
@@ -303,7 +303,7 @@
               return role_doc = arguments[1];
             };
           })(),
-          lineno: 93
+          lineno: 92
         }));
         __iced_deferrals._fulfill();
       });
@@ -323,7 +323,8 @@
             {
               u: admin_id,
               dt: now,
-              a: 't+'
+              a: 't+',
+              id: uuid.v4()
             }
           ],
           enforce: []
@@ -366,7 +367,7 @@
                 return __slot_3[__slot_4] = arguments[1];
               };
             })(err, i, members, i),
-            lineno: 126
+            lineno: 125
           }));
           i++;
         }
@@ -400,7 +401,7 @@
                 return user_rows = arguments[1];
               };
             })(),
-            lineno: 135
+            lineno: 134
           }));
           __iced_deferrals._fulfill();
         })(function() {
@@ -444,7 +445,7 @@
               return repos = arguments[1];
             };
           })(),
-          lineno: 150
+          lineno: 149
         }));
         __iced_deferrals._fulfill();
       });
@@ -488,7 +489,7 @@
               return resp = arguments[1];
             };
           })(),
-          lineno: 160
+          lineno: 159
         }));
         __iced_deferrals._fulfill();
       });
@@ -510,7 +511,7 @@
                 return resp = arguments[1];
               };
             })(),
-            lineno: 162
+            lineno: 161
           }));
           __iced_deferrals._fulfill();
         })(function() {
