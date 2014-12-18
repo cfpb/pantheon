@@ -33,7 +33,7 @@ module.exports =
     get_user: (doc, req) ->
       h = require('lib/helpers')
       doc = h.sanitize_user(doc)
-      return JSON.stringify(doc)
+      return {body: JSON.stringify(doc), "headers" : {"Content-Type" : "application/json"}}
   lists:
     get_users: (header, req) ->
       h = require('lib/helpers')

@@ -78,7 +78,12 @@
         var h;
         h = require('lib/helpers');
         doc = h.sanitize_user(doc);
-        return JSON.stringify(doc);
+        return {
+          body: JSON.stringify(doc),
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        };
       }
     },
     lists: {
