@@ -4,7 +4,27 @@ uuid = require('node-uuid')
 
 teams = {}
 
-teams.update_team = (req, resp) ->
+teams.create_team = (req, resp) ->
+  now = +new Date()
+  user = req.session.user
+  org = 'org_' + req.params.org_id
+  team_name = req.params.team_id
+  team_id = 'team_' + team_name
+  team_doc = {
+    _id: team_id,
+    name: team_name,
+    rsrcs: {},
+    roles: {},
+    audit: [{u: user, dt: now, a: 't+', id: uuid.v4()}]
+    enforce: []
+  }
+  org_db = req.couch.use(org)
+  org_db.insert(team_doc).on('response', (couch_resp) ->
+    if couch_resp.statusCode < 400
+      org_db.get(team_id).pipe(resp)
+    else
+      couch_resp.pipe(resp)
+  )
   
 teams.get_team = (req, resp) ->
   org = 'org_' + req.params.org_id

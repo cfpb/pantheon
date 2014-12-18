@@ -20,7 +20,9 @@ v.get_new_audit_entries = (new_doc, old_doc) ->
 v.validate_audit_entry = (entry, user, team) ->
   if entry.u != user.name
     throw({ forbidden: 'User performing action (' + entry.u + ') does not match logged in user (' + user.username + ').' })
-  if entry.a == 'u+'
+  if entry.a == 't+'
+    authorized = auth.kratos.add_team(user)
+  else if entry.a == 'u+'
     authorized = auth.kratos.add_team_member(user, team, entry.k)
   else if entry.a == 'u-'
     authorized = auth.kratos.add_team_member(user, team, entry.k)

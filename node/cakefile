@@ -44,7 +44,6 @@ task 'sync_design_docs', 'sync all design docs with couchdb', (options) ->
     design_docs = fs.readdirSync(design_docs_dir)
     db_types = []
     design_docs.forEach((file_name) ->
-      console.log(file_name)
       file_parts = file_name.split('.')
       db_types.push(file_parts[0]) if file_parts[1] == 'js'
     )
