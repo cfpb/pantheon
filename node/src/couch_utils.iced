@@ -153,8 +153,7 @@ x.rewrite = (db, design_doc, path, callback) ->
   return nano.request({
     db: db_name,
     path: '/_design/' + design_doc + '/_rewrite' + path,
-    callback: callback,
-  })
+  }, callback)
 
 # x.add_user = (db, username, password, callback)
 #   if _.isFunction(password) and not callback?

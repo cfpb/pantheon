@@ -90,7 +90,8 @@
         dt: +new Date(),
         a: action,
         k: key,
-        v: value
+        v: value,
+        id: body.uuid
       });
       return [team, JSON.stringify(team)];
     }

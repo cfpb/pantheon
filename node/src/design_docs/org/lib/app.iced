@@ -70,6 +70,7 @@ exports.updates =
       a: action,
       k: key,
       v: value,
+      id: body.uuid,
     })
     return [team, JSON.stringify(team)]
 

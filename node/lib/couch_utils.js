@@ -499,9 +499,8 @@
     nano = require('nano')(db.config.url);
     return nano.request({
       db: db_name,
-      path: '/_design/' + design_doc + '/_rewrite' + path,
-      callback: callback
-    });
+      path: '/_design/' + design_doc + '/_rewrite' + path
+    }, callback);
   };
 
   module.exports = x;
