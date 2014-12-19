@@ -283,7 +283,7 @@
   };
 
   x.sync_design_docs = function(db_name, design_doc_names, callback) {
-    var cmd, errors, i, name, url, wd, ___iced_passed_deferral, __iced_deferrals, __iced_k;
+    var cmd, cp, errors, i, name, url, wd, ___iced_passed_deferral, __iced_deferrals, __iced_k;
     __iced_k = __iced_k_noop;
     ___iced_passed_deferral = iced.findDeferral(arguments);
     errors = [];
@@ -301,7 +301,7 @@
           cmd = 'kanso push ' + name + ' ' + url;
           console.log(cmd);
           wd = path.join(path.dirname(fs.realpathSync(__filename)), './design_docs');
-          exec(cmd, {
+          cp = exec(cmd, {
             cwd: wd
           }, __iced_deferrals.defer({
             assign_fn: (function(__slot_1, __slot_2) {
@@ -311,6 +311,8 @@
             })(errors, i),
             lineno: 91
           }));
+          cp.stdout.pipe(process.stdout);
+          cp.stderr.pipe(process.stderr);
         }
         __iced_deferrals._fulfill();
       });
@@ -318,7 +320,6 @@
       return function() {
         errors = _.compact(errors);
         if (errors.length) {
-          console.log(cmd, errors);
           return callback(errors);
         } else {
           return callback();
@@ -364,7 +365,7 @@
               return old_docs = arguments[1];
             };
           })(),
-          lineno: 113
+          lineno: 115
         }));
         __iced_deferrals._fulfill();
       });
@@ -389,7 +390,7 @@
                 return bulk_resp = arguments[1];
               };
             })(),
-            lineno: 117
+            lineno: 119
           }));
           __iced_deferrals._fulfill();
         })(function() {
@@ -444,7 +445,7 @@
               return resp = arguments[1];
             };
           })(),
-          lineno: 137
+          lineno: 139
         }));
         __iced_deferrals._fulfill();
       });
@@ -479,7 +480,7 @@
               return resp = arguments[1];
             };
           })(),
-          lineno: 144
+          lineno: 146
         }));
         __iced_deferrals._fulfill();
       });

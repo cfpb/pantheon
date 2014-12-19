@@ -9,30 +9,30 @@ DIR = __dirname
 
 task 'build', 'Build the .js files', (options) ->
   console.log('Compiling Coffee from lib to src')
-  exec "iced --compile --output ./lib/ ./src/", (err, stdout, stderr) ->
-    throw err if err
-    console.log stdout + stderr
+  cp = exec "iced --compile --output ./lib/ ./src/"
+  cp.stdout.pipe(process.stdout)
+  cp.stderr.pipe(process.stderr)
 
 task 'watch', 'Watch src directory and build the .js files', (options) ->
   console.log('Watching Coffee in lib and compiling to src')
   cp = exec "iced --watch --output ./lib/ ./src/"
-  cp.stdout.on "data", (data) -> console.log(data)
-  cp.stderr.on "data", (data) -> console.log(data)
+  cp.stdout.pipe(process.stdout)
+  cp.stderr.pipe(process.stderr)
 
 task 'runtestserver', 'Run the server (port 5000); restart on change', (options) ->
   console.log('Running the server on port 5000; restarting on change')
   cp = exec "iced --watch --output ./lib/ ./src/"
-  cp.stdout.on "data", (data) -> console.log(data)
-  cp.stderr.on "data", (data) -> console.log(data)
+  cp.stdout.pipe(process.stdout)
+  cp.stderr.pipe(process.stderr)
   cp = exec "supervisor -w ./lib ./lib/app.js"
-  cp.stdout.on "data", (data) -> console.log(data)
-  cp.stderr.on "data", (data) -> console.log(data)
+  cp.stdout.pipe(process.stdout)
+  cp.stderr.pipe(process.stderr)
 
 task 'runworker', 'Run the couchdb worker', (options) ->
   console.log('Running the couchdb worker')
   cp = exec "node ./lib/worker.js"
-  cp.stdout.on "data", (data) -> console.log(data)
-  cp.stderr.on "data", (data) -> console.log(data)
+  cp.stdout.pipe(process.stdout)
+  cp.stderr.pipe(process.stderr)
 
 option '-t', '--db_type [type]', 'db type to update'
 

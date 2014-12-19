@@ -89,10 +89,12 @@ x.sync_design_docs = (db_name, design_doc_names, callback) ->
       cmd = 'kanso push ' + name + ' ' + url
       console.log(cmd)
       wd = path.join(path.dirname(fs.realpathSync(__filename)), './design_docs')
-      exec(cmd, {cwd: wd}, defer(errors[i]))
+      cp = exec(cmd, {cwd: wd}, defer(errors[i]))
+      cp.stdout.pipe(process.stdout)
+      cp.stderr.pipe(process.stderr)
+
   errors = _.compact(errors)
   if errors.length
-    console.log(cmd, errors)
     return callback(errors)
   else
     return callback()
