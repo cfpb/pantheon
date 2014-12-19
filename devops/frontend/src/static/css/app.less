@@ -4,17 +4,26 @@
 
    # Base
    # .extra-icon
-   # Code demo
+   # Code demo stuff
+   ## .code-demo-group
+   ## .code-demo
    # .masthead
    # .user-meta
    # .meta
    # .intro
    # .tile
+   # .btn__block
    # Expandables
    # .role-icon
+   # Slats
+   ## .slats
+   ## .slats-header
+   ## .slats-type
+   ## .slat
+   # .teams
    # Directives
-   ## group
    ## userbutton, repobutton
+   ## userlist
    ========================================================================== */
 
 
@@ -64,7 +73,28 @@
 
 
 /* ==========================================================================
-   # Code demo
+   # Code demo stuff
+   ========================================================================== */
+
+
+/* ## .code-demo-group
+   ========================================================================== */
+
+.code-demo-group {
+    .respond-to-min(600px, {
+        .grid_nested-col-group();
+    });
+
+    &_item {
+        margin-bottom: @grid_gutter-width;
+        .respond-to-min(600px, {
+            .grid_column(6);
+        });
+    }
+}
+
+
+/* ## .code-demo
    ========================================================================== */
 
 .code-demo {
@@ -153,14 +183,18 @@
     });
 
     .respond-to-min(480px, {
-        &_breadcrumbs {
+        &_left {
             float: left;
+        }
+        &_right {
+            float: right;
+        }
+        &_breadcrumbs {
             margin: 0;
         }
-        &_refresh {
-            float: right;
+        &_btn {
             // Aligns .btn baseline to .breadcrumbs baseline.
-            margin-top: unit(-7px / @base-font-size-px, em);
+            margin-top: unit(-7px / @btn-font-size, em);
         }
     });
 }
@@ -194,6 +228,18 @@
 
 
 /* ==========================================================================
+   # .btn__block
+   ========================================================================== */
+
+.btn__block {
+    box-sizing: border-box;
+    display: block;
+    width: 100%; // Needed for the button element.
+    text-align: center;
+}
+
+
+/* ==========================================================================
    # Expandables
    ========================================================================== */
 
@@ -206,7 +252,12 @@
     margin-right: unit(4px / @base-font-size-px, em);
 }
 
-.expandable__repogroup {
+// Adds some space between an .expandable_target and .expandable_content
+.expandable_content__teams {
+    padding-top: unit(@grid_gutter-width / @base-font-size-px, em);
+}
+
+.expandable__team {
     position: relative;
     border: 1px solid @gray-20;
 
@@ -243,44 +294,6 @@
             height: 0;
             margin-bottom: unit(5px / @base-font-size-px, em);
         }
-    }
-}
-
-.expandable__repogroup .expandable-group {
-    margin-bottom: 0;
-}
-
-.expandable-group .expandable__repogroup {
-    // Needed to kill margins from spilling outside of the exandable.
-    .u-clearfix();
-    border: 1px solid @gray-20;
-    border-top: 0;
-
-    &.expandable__expanded,
-    &:hover {
-        background: @white;
-    }
-
-    .expandable_label {
-        .h4();
-        // Eyeballed to 12px.
-        margin-bottom: unit(7px / @font-size, em);
-        line-height: 1;
-    }
-}
-
-.expandable-group_header {
-    .h5();
-    line-height: 1;
-    margin: 0;
-    padding: unit(16px / @font-size, em);
-    border: 1px solid @gray-20;
-    background: @gray-20;
-
-    &__add {
-        border-color: @green-midtone;
-        background: @green-midtone;
-        color: @black;
     }
 }
 
@@ -324,31 +337,198 @@
 
 
 /* ==========================================================================
-   # Directives
+   # Slats
    ========================================================================== */
 
 
-/* ## Group
+/* ## .slats
    ========================================================================== */
 
-.group-container {
+.slats {
+    margin: 0;
+    padding: 0;
+    border: 1px solid @gray-20;
+    background: @white;
+    list-style-type: none;
+
+    &_item {
+        & + & {
+            border-top: 1px dotted @gray-20;
+        }
+    }
+}
+
+
+/* ## .slats-header
+   ========================================================================== */
+
+.slats-header {
+    .h5();
+    line-height: 1;
+    margin: 0;
+    padding: unit(16px / @font-size, em);
+    border: 1px solid @gray-20;
+    background: @gray-20;
+
+    &__add {
+        border-color: @green-midtone;
+        background: @green-midtone;
+        color: @black;
+    }
+}
+
+.slats-header + .slats,
+.slats-header + .slats-type {
+    border-top: 0;
+}
+
+
+/* ## .slats-type
+   ========================================================================== */
+
+.slats-type {
+    display: block;
+    margin: 0;
+    border: 1px solid @gray-20;
+    background: @white;
+
+    &_input,
+    &_input[type="text"] {
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        padding: unit(14px / @base-font-size-px, em);
+        .webfont-regular();
+        font-size: unit(16px / @base-font-size-px, em);
+        border-color: transparent;
+    }
+}
+
+.slats-type + .slats {
+    margin-top: -1px;
+}
+
+
+/* ## .slat
+   ========================================================================== */
+
+.slat {
+    @padding: 16px;
+
+    .u-clearfix();
+    padding: unit(@padding / @base-font-size-px, em);
+
+    &_label {
+        .webfont-medium();
+        font-size: unit(18px / @base-font-size-px, em);
+        line-height: 1;
+    }
+
+    &_small {
+        .webfont-regular();
+        font-size: unit(12px / 18px, em);
+        line-height: 1;
+    }
+
+    &_btn__link {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    &_icon-btn {
+        @font-size: 14px;
+        display: inline-block;
+        margin: unit(-6px / @font-size, em)
+                unit((@padding - 6px - 4px) / @font-size, em);
+        padding: unit(6px / @font-size, em);
+        border: 0;
+        background: transparent;
+        color: @pacific;
+        font-size: unit(@font-size / @base-font-size-px, em);
+        line-height: unit(18px / 14px);
+
+        &:hover,
+        &:focus {
+            outline: 1px dotted @pacific;
+        }
+
+        & + & {
+            margin-left: unit(-6px / @font-size, em);
+        }
+
+        &__first {
+            margin-left: unit(-6px / @font-size, em);
+        }
+
+        &__last {
+            margin-right: unit(-6px / @font-size, em);
+        }
+
+        &__add {
+            color: @green;
+            &:hover,
+            &:focus {
+                color: @green;
+                outline-color: @green;
+            }
+        }
+
+        &__remove {
+            color: @redorange;
+            &:hover,
+            &:focus {
+                color: @redorange;
+                outline-color: @redorange;
+            }
+        }
+    }
+
+    &_left {
+        float: left;
+    }
+
+    &_right {
+        float: right;
+    }
+}
+
+
+/* ==========================================================================
+   # .teams
+   ========================================================================== */
+
+.teams {
     .respond-to-min(768px, {
         .grid_nested-col-group();
     });
+
+    &_item {
+        .respond-to-min(768px, {
+            .grid_column(6);
+            group& {
+                margin-right: 0;
+            }
+        });
+        .respond-to-min(1024px, {
+            .grid_column(4);
+            margin-right: 0;
+        });
+    }
 }
 
-.group {
-    .respond-to-min(768px, {
-        .grid_column(6);
-        group& {
-            margin-right: 0;
+.team-content {
+    &_item {
+        & + & {
+            margin-top: 1em;
+            margin-top: 1rem;
         }
-    });
-    .respond-to-min(1024px, {
-        .grid_column(4);
-        margin-right: 0;
-    });
+    }
 }
+
+
+/* ==========================================================================
+   # Directives
+   ========================================================================== */
 
 
 /* ## userbutton, repobutton
@@ -365,100 +545,3 @@
     // Fixes weirdness with the right edge of the text getting cropped.
     padding-right: 1px;
 }
-
-// Styled to look like expandable group expandables.
-.userlist {
-    &_list {
-        margin: 0;
-        padding: 0;
-        border: 1px solid @gray-20;
-        background: @white;
-        list-style-type: none;
-    }
-
-    &_item {
-        padding: unit(16px / @base-font-size-px, em);
-        line-height: 1;
-        & + & {
-            border-top: 1px dotted @gray-20;
-        }
-    }
-
-    &_name {
-        .webfont-medium();
-        font-size: unit(18px / @base-font-size-px, em);
-        line-height: 1;
-        &-stub {
-            .webfont-regular();
-            font-size: unit(12px / 18px, em);
-        }
-    }
-
-    &_add,
-    &_remove {
-        @font-size: 14px;
-        display: inline-block;
-        margin: unit(-6px / @font-size, em)
-                unit(6px / @font-size, em)
-                unit(-6px / @font-size, em)
-                unit(-6px / @font-size, em);
-        padding: unit(6px / @font-size, em);
-        border: 0;
-        background: transparent;
-        color: @black;
-        font-size: unit(@font-size / @base-font-size-px, em);
-        line-height: 1;
-
-        &:hover,
-        &:focus {
-            outline: 1px dotted @black;
-        }
-
-        .cf-icon {
-            padding: 1px;
-        }
-    }
-
-    &_add {
-        color: @green;
-        &:hover,
-        &:focus {
-            outline: 1px dotted @green-midtone;
-        }
-    }
-
-    &_remove {
-        color: @redorange;
-        &:hover,
-        &:focus {
-            outline: 1px dotted @redorange-50;
-        }
-    }
-
-    &_show-hide {
-        .btn();
-        .btn__secondary();
-        display: block;
-        width: 100%; // Needed for the button element.
-        margin-top: unit(16px / @btn-font-size, em);
-    }
-
-    &_admin {
-        margin-top: 1em;
-    }
-
-    &_filter {
-        &,
-        &[type="text"] {
-            box-sizing: border-box;
-            width: 100%;
-            margin-bottom: -1px;
-            padding: 1em;
-            .webfont-regular();
-            font-size: 1em;
-            border-color: @gray-20;
-        }
-    }
-
-}
-

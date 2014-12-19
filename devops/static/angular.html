@@ -59,7 +59,7 @@
 
 </head>
 
-<body ng-app="OSWizardApp" ng-controller="RepoGroupsCtrl">
+<body ng-app="OSWizardApp" ng-controller="TeamsCtrl">
 
 <!--
     =================
@@ -77,21 +77,67 @@
           <span class="cf-icon cf-icon-user"></span>
           {{ user.name }}
         </span>
-        <span class="user-meta_employee">
-          (employee) ({{ user.permission }})
-        </span>
+        <!-- <span class="user-meta_employee">
+          (employee)
+        </span> -->
     </div>
 </header>
 
 <main class="content" id="main" role="main">
     <div class="content_bar"></div>
+    <div class="meta">
+      <div class="wrapper wrapper__match-content">
+        <ul class="meta_left meta_breadcrumbs breadcrumbs">
+            <li class="breadcrumbs_item">
+                <a class="breadcrumbs_link" href="/">
+                    Home
+                </a>
+            </li>
+            <li class="breadcrumbs_item">My teams</li>
+        </ul>
+        <!-- <div class="meta_right">
+            <button class="btn btn__secondary meta_btn">Add new team</button>
+        </div> -->
+      </div>
+    </div>
     <div class="content_wrapper">
-        <div class="content_main">
-            <div class="group-container">
-                <group ng-repeat="group in repoGroups"
-                       class="group">
-                </group>
+        <div ng-if="ready()"
+             class="content_main">
+            <div id="my-teams">
+                <h1 class="u-visually-hidden">My teams</h1>
+                <div class="teams">
+                    <section team
+                             data="team"
+                             ng-repeat="team in teams | hasCurrentUser"
+                             class="teams_item">
+                    </section>
+                </div>
             </div>
+            <div expandable class="expandable">
+                <button class="expandable_target btn__block">
+                    <span class="btn btn__secondary btn__block">
+                        <span class="expandable_cue-open">
+                            Show other teams
+                            <span class="btn_icon__right cf-icon cf-icon-down"></span>
+                        </span>
+                        <span class="expandable_cue-close">
+                            Hide other teams
+                            <span class="btn_icon__right cf-icon cf-icon-up"></span>
+                        </span>
+                    </span>
+                </button>
+                <div class="expandable_content expandable_content__teams">
+                    <div id="other-teams">
+                        <div class="teams">
+                            <section team
+                                     data="team"
+                                     ng-repeat="team in teams | hasCurrentUser:false"
+                                     class="teams_item">
+                            </section>
+                        </div>
+                    </div><!-- END #other-teams -->
+                </div>
+            </div><!-- END .expandable -->
         </div>
     </div>
 </main>
