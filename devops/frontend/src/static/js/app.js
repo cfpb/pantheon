@@ -349,18 +349,19 @@
         scope.editable = UserService.isTeamAdmin( scope.teamModel.roles.admin );
         scope.heading = attrs.heading;
         scope.assets = [];
+        if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
+          scope.assets = scope.teamModel.rsrcs.gh.assets;
+          angular.forEach( scope.assets, function( asset ) {
+            if ( asset.new ) {
+              asset.name = asset.new;
+            }
+          });
+          scope.assets = $filter( 'orderBy' )( scope.assets, 'name' );
+        }
         scope.total = scope.assets.length;
         scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
                            '/resources/' + 'gh' + '/';
-        scope.updateAssets = function( newAsset ) {
-          if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
-            scope.assets = $filter( 'orderBy', 'name' )( scope.teamModel.rsrcs.gh.assets );
-          } else {
-            scope.assets = [];
-          }
-          if ( typeof newAsset !== 'undefined' ) {
-            scope.assets.unshift( newAsset );
-          }
+        scope.updateAssets = function() {
           scope.total = scope.assets.length;
         };
         scope.add = function( name ) {
@@ -374,7 +375,32 @@
           .done(function( msg ) {
             console.log( 'Data Saved:', msg );
             scope.$apply(function () {
-              scope.updateAssets( data );
+              data.name = data.new;
+              scope.assets.unshift( data );
+              scope.updateAssets();
+            });
+          })
+          .error(function( msg ) {
+            console.log( 'Error:', msg );
+          });
+        };
+        scope.remove = function( assetToRemove ) {
+          var assetObj, index;
+          angular.forEach( scope.assets, function( asset ) {
+            if ( asset.name === assetToRemove.name || asset.new === assetToRemove.name ) {
+              assetObj = asset;
+            }
+          });
+          index = scope.assets.indexOf( assetObj );
+          $.ajax({
+            type: 'DELETE',
+            url: scope.requestURL + assetObj.id
+          })
+          .done(function( msg ) {
+            console.log( 'Data Saved:', msg );
+            scope.$apply(function () {
+              scope.assets.splice( index, 1 );
+              scope.updateAssets();
             });
           })
           .error(function( msg ) {
