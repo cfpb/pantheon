@@ -378,7 +378,7 @@
       link: function( scope, element, attrs ) {
         // Properties
         var roles = scope.teamModel.roles;
-        scope.role = 'member';
+        scope.role = 'non-member';
         if ( roles.member ) {
           if ( roles.member.indexOf( UserService.user.id ) > -1 ) {
             scope.role = 'member';
@@ -387,10 +387,15 @@
         if ( roles.admin ) {
           if ( roles.admin.indexOf( UserService.user.id ) > -1 ) {
             scope.role = 'admin';
+            element.addClass('role-icon__bg-green');
           }
         }
         element.addClass('role-icon');
-        element.addClass( 'role-icon__' + scope.role );
+        element.append( scope.role );
+        // Hide this if the role is 'non-member'.
+        if ( scope.role === 'non-member' ) {
+          element.addClass('role-icon__hide');
+        }
       }
     };
   });
