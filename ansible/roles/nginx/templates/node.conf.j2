@@ -13,6 +13,9 @@ server {
 
 
     location /static {
+        {% if is_virtualbox %}
+        sendfile off;
+        {% endif %}
         alias {{ root_dir }}/devops/static;
     }
 

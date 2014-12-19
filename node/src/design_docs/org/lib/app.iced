@@ -1,3 +1,7 @@
+_ = require('lib/underscore')
+h = require('lib/helpers')
+validation = require('lib/validation')
+
 exports.views =
   by_type:
     map: (doc) ->
@@ -12,18 +16,25 @@ exports.lists =
     while(row = getRow())
       out.push(row.doc)
     return JSON.stringify(out)
+  get_teams: (header, req) ->
+    out = []
+    while(row = getRow())
+      doc = row.doc
+      continue if not validation.is_team(doc)
+      team = h.add_team_perms(doc, req.userCtx)
+      out.push(team)
+    return JSON.stringify(out)
+
+exports.shows =
+  get_team: (doc, req) ->
+    team = h.add_team_perms(doc, req.userCtx)
+    return {body: JSON.stringify(team), "headers" : {"Content-Type" : "application/json"}}
 
 exports.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
-  log(newDoc)
-  log(oldDoc)
-  log(userCtx)
-  log(secObj)
-  require('lib/validation').validate_doc_update(newDoc, oldDoc, userCtx, secObj)
+  validation.validate_doc_update(newDoc, oldDoc, userCtx, secObj)
 
 exports.updates =
   do_action: (team, req) ->
-    _ = require('lib/underscore')
-    h = require('lib/helpers')
     if not team
       return [null, '{"status": "error", "msg": "team not found"}']
     body = JSON.parse(req.body)
@@ -75,10 +86,15 @@ exports.updates =
     return [team, JSON.stringify(team)]
 
 exports.rewrites = [
-  # {
-  #   from: "/teams",
-  #   to: "/_list/teams/by_type",
-  #   method: 'GET',
-  #   query: {include_docs: 'true'},
-  # },
+    {
+      from: "/teams",
+      to: "/_list/get_teams/by_type",
+      method: 'GET',
+      query: {include_docs: 'true'},
+    },
+    {
+      from: "/teams/:team_id",
+      to: "/_show/get_team/:team_id",
+      query: {},
+    }
 ]

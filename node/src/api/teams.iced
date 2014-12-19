@@ -25,15 +25,22 @@ teams.create_team = (req, resp) ->
     else
       couch_resp.pipe(resp)
   )
-  
+
+teams._get_team = (org_db, team_id, callback) ->
+  return couch_utils.rewrite(org_db, 'base', '/teams/team_' + team_id, callback)
+
 teams.get_team = (req, resp) ->
   org = 'org_' + req.params.org_id
-  team = 'team_' + req.params.team_id
-  couch_utils.nano_admin.use(org).get(team).pipe(resp)
+  org_db = req.couch.use(org)
+  teams._get_team(org_db, req.params.team_id).pipe(resp)
+
+teams._get_teams = (org_db, callback) ->
+  return couch_utils.rewrite(org_db, 'base', '/teams', callback)
 
 teams.get_teams = (req, resp) ->
   org = 'org_' + req.params.org_id
-  couch_utils.nano_admin.use(org).viewWithList('base', 'by_type', 'get_docs', {include_docs: true}).pipe(resp)
+  org_db = req.couch.use(org)
+  teams._get_teams(org_db).pipe(resp)
 
 teams.add_remove_member_asset = (action_type) ->
   (req, resp) ->

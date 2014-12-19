@@ -1,1 +1,2 @@
 root_dir: /vagrant
+is_virtualbox: yes
