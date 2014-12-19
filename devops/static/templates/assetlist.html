@@ -1,16 +1,32 @@
-<h1 class="slats-header">{{ ::heading }}</h1>
-<ul class="team-content_item slats">
+<div ng-if="editable"
+     class="team-content_item">
+    <div class="team-content_item">
+        <h2 class="slats-header slats-header__add">
+            Add new {{ ::heading | lowercase }}
+        </h2>
+        <div class="slats-type">
+            <input ng-model="newAssetName"
+                   type="text"
+                   class="slats-type_input"
+                   placeholder="...">
+        </div>
+    </div>
+    <button ng-click="add(newAssetName)"
+            class="team-content_item userlist_show-hide btn btn__block">
+        Add
+    </button>
+</div>
+
+<h1 class="slats-header team-content_item">{{ ::heading }}</h1>
+<ul class="slats">
     <li ng-if="total === 0"
         class="slats_item slat">
         <span class="slat_label">No {{ ::heading | lowercase }}</span>
     </li>
-    <li ng-repeat="asset in ::assets | orderBy:'name'"
+    <li ng-repeat="asset in assets"
         class="slats_item slat">
         <span class="slat_label">
-            {{ asset.name }}
+            {{ asset.name || asset.new }}
         </span>
     </li>
 </ul>
-<!-- <button class="btn btn__secondary btn__block team-content_item">
-    Add new {{ ::heading | lowercase }}
-</button> -->
