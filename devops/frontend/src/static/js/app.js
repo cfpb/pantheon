@@ -378,6 +378,7 @@
               data.name = data.new;
               scope.assets.unshift( data );
               scope.updateAssets();
+              element.find('.slats-type_input').val('');
             });
           })
           .error(function( msg ) {
