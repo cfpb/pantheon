@@ -1,3 +1,7 @@
+h = require('lib/helpers')
+_ = require('lib/underscore')
+auth = require('./auth/auth')
+
 module.exports = 
   views:
     by_resource_id:
@@ -31,12 +35,16 @@ module.exports =
         emit(doc.data?.contractor or false, doc.username)
   shows:
     get_user: (doc, req) ->
-      h = require('lib/helpers')
-      doc = h.sanitize_user(doc)
-      return {body: JSON.stringify(doc), "headers" : {"Content-Type" : "application/json"}}
+      user = h.sanitize_user(doc)
+      user.perms = {
+        team: {
+          add: auth.kratos.add_team(user)
+          remove: auth.kratos.remove_team(user)
+        }
+      }
+      return {body: JSON.stringify(user), "headers" : {"Content-Type" : "application/json"}}
   lists:
     get_users: (header, req) ->
-      h = require('lib/helpers')
       out = []
       while(row = getRow())
         doc = row.doc
@@ -44,7 +52,6 @@ module.exports =
         out.push(doc)
       return JSON.stringify(out)
     get_user: (header, req) ->
-      h = require('lib/helpers')
       row = getRow()
       if row
         doc = h.sanitize_user(row.doc)
@@ -53,8 +60,6 @@ module.exports =
         throw(['error', 'not_found', 'document matching query does not exist'])
   updates:
     do_action: (user, req) ->
-      _ = require('lib/underscore')
-      h = require('lib/helpers')
       if not user
         return [null, '{"status": "error", "msg": "user not found"}']
       body = JSON.parse(req.body)
