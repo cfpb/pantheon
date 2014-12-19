@@ -11,11 +11,10 @@
    # role directive
    # expandable directive
    # username filter
-   # userListArray filter
+   # removeUsers filter
    # toArray filter
    # prepTeamData filter
    # Cross Site Request Forgery protection
-   # getObjKeyByVal
    ========================================================================== */
 
 (function(){
@@ -29,18 +28,21 @@
 
   angular.module('OSWizardApp').factory( 'UserService', function() {
     var user = { id: '', name: '' };
-    var users = {};
-    var usersArray = [];
+    var users = [];
     return {
       user: user,
       users: users,
-      usersArray: usersArray,
+      getByID: function( id ) {
+        var requestedUser;
+        angular.forEach( this.users, function( user ) {
+          if ( user.name === id ) {
+            requestedUser = user;
+          }
+        });
+        return requestedUser;
+      },
       getName: function( id ) {
-        if ( this.users[id] ) {
-          return this.users[id].username;
-        } else {
-          return '';
-        }
+        return this.getByID( id ).username;
       },
       isTeamAdmin: function( permissions ) {
         if ( typeof permissions !== 'undefined' ) {
@@ -63,15 +65,49 @@
     $scope.user = UserService.user;
     $scope.users = UserService.users;
     $scope.teams = [];
+    $scope.$watch(
+      function() {
+        return UserService.users;
+      },
+      function ( newValue ) {
+        $scope.users = newValue;
+      }
+    );
+    // Functions
+    $scope.ready = function() {
+      if ( $scope.user.id === '' ) {
+        return false;
+      }
+      if ( $scope.user.name === '' ) {
+        return false;
+      }
+      if ( $scope.users.length === 0 ) {
+        return false;
+      }
+      if ( $scope.teams.length === 0 ) {
+        return false;
+      }
+      return true;
+    };
     // Data
+    $http.get('/kratos/user/').
+      success( function( response, status, headers, config ) {
+        var preppedResponse = $.parseJSON( JSON.stringify(response) );
+        UserService.user.name = preppedResponse.username;
+        UserService.user.id = preppedResponse.name;
+        console.log( 'User\n', UserService.user.name, UserService.user.id );
+      });
+    $http.get('/kratos/users/').
+      success( function( response, status, headers, config ) {
+        UserService.users = response;
+        // $scope.users = response;
+        console.log('Users\n', UserService.users);
+      });
     $http.get('/kratos/orgs/devdesign/teams/').
       success( function( response, status, headers, config ) {
-        // var preppedResponse = $filter('prepTeamData')( response.groups );
-        // UserService.users = response.users;
-        // UserService.usersArray = $filter('toArray')( UserService.users );
-        // UserService.user.id = response.user;
-        // UserService.user.name = UserService.getName( response.user );
-        // $scope.teams = preppedResponse;
+        var preppedResponse = $filter('prepTeamData')( response );
+        $scope.teams = preppedResponse;
+        console.log('Teams\n', preppedResponse);
       });
   });
 
@@ -126,15 +162,14 @@
       controller: function( $scope ) {
         $scope.toggle = function( show ) {
           $scope.teamModel.showAdmin = false;
-          $scope.teamModel.showWrite = false;
-          $scope.teamModel.showRead = false;
+          $scope.teamModel.showMember = false;
           $scope.show = !show;
         };
       },
       templateUrl: '/static/templates/repobutton.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.repos = scope.teamModel.repos;
+        scope.repos = scope.teamModel.rsrcs.gh.assets;
         if ( typeof scope.repos === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -175,8 +210,7 @@
         $scope.toggle = function( show ) {
           var toggledShow = !show;
           $scope.teamModel.showAdmin = false;
-          $scope.teamModel.showWrite = false;
-          $scope.teamModel.showRead = false;
+          $scope.teamModel.showMember = false;
           $scope.teamModel.showRepo = false;
           $scope.show = toggledShow;
         };
@@ -185,7 +219,7 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.users = scope.teamModel.permissions[scope.role.toLowerCase()];
+        scope.users = scope.teamModel.roles[scope.role.toLowerCase()];
         if ( typeof scope.users === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -227,19 +261,19 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.listPermissions = scope.teamModel.permissions[ scope.role.toLowerCase() ];
-        scope.isTeamAdmin = UserService.isTeamAdmin( scope.teamModel.permissions.admin );
+        scope.userIDs = scope.teamModel.roles[ scope.role.toLowerCase() ];
+        scope.isTeamAdmin = UserService.isTeamAdmin( scope.teamModel.roles.admin );
         scope.editable = scope.isTeamAdmin && scope.role !== 'Admin';
         scope.users = [];
         scope.showAllUsers = false;
-        angular.forEach( scope.listPermissions, function( value, key ) {
-          scope.users.push( UserService.users[value] );
+        angular.forEach( scope.userIDs, function( value, key ) {
+          scope.users.push( UserService.getByID( value ) );
         });
-        scope.requestURL = '/kratos/teams/' + scope.teamModel.name +
-                           '/members/' + scope.role.toLowerCase() + '/';
+        scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
+                           '/roles/' + scope.role.toLowerCase() + '/';
         // Functions
         scope.updateUsers = function() {
-          scope.allUsers = $filter('userListArray')( scope.users );
+          scope.allUsers = $filter('removeUsers')( scope.users );
           if ( typeof scope.users === 'undefined' ) {
             scope.total = 0;
           } else {
@@ -250,15 +284,14 @@
           return scope.users.indexOf( user ) > -1;
         };
         scope.add = function( user ) {
-          var user_id = getObjKeyByVal( UserService.users, user );
           $.ajax({
             type: 'PUT',
-            url: scope.requestURL + user_id
+            url: scope.requestURL + user.name
           })
           .done(function( msg ) {
             console.log( 'Data Saved:', msg );
             scope.$apply(function () {
-              scope.users.push( UserService.users[ user_id ] );
+              scope.users.push( user );
               scope.updateUsers();
             });
           })
@@ -267,15 +300,14 @@
           });
         };
         scope.remove = function( user ) {
-          var user_id = getObjKeyByVal( UserService.users, user );
           $.ajax({
             type: 'DELETE',
-            url: scope.requestURL + user_id
+            url: scope.requestURL + user.name
           })
           .done(function( msg ) {
             console.log( 'Data Saved:', msg );
             scope.$apply(function () {
-              var index = scope.users.indexOf( UserService.users[ user_id ] );
+              var index = scope.users.indexOf( user );
               scope.users.splice( index, 1 );
               scope.updateUsers();
             });
@@ -337,20 +369,15 @@
       templateUrl: '/static/templates/role.html',
       link: function( scope, element, attrs ) {
         // Properties
-        var permissions = scope.teamModel.permissions;
-        scope.role = 'read';
-        if ( permissions.read ) {
-          if ( permissions.read.indexOf( UserService.user.id * 1 ) > -1 ) {
-            scope.role = 'read';
+        var roles = scope.teamModel.roles;
+        scope.role = 'member';
+        if ( roles.member ) {
+          if ( roles.member.indexOf( UserService.user.id ) > -1 ) {
+            scope.role = 'member';
           }
         }
-        if ( permissions.write ) {
-          if ( permissions.write.indexOf( UserService.user.id * 1 ) > -1 ) {
-            scope.role = 'write';
-          }
-        }
-        if ( permissions.admin ) {
-          if ( permissions.admin.indexOf( UserService.user.id * 1 ) > -1 ) {
+        if ( roles.admin ) {
+          if ( roles.admin.indexOf( UserService.user.id ) > -1 ) {
             scope.role = 'admin';
           }
         }
@@ -389,6 +416,22 @@
   });
 
   /* ==========================================================================
+     # removeUsers filter
+     Filter a user list for use in a userlist.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'removeUsers', function( UserService ) {
+    return function( users ) {
+      var filteredUsers = [];
+      angular.forEach( UserService.users, function( user ) {
+        if ( users.indexOf( user ) === -1 ) {
+          filteredUsers.push( user );
+        }
+      });
+      return filteredUsers;
+    };
+  });
+
+  /* ==========================================================================
      # hasCurrentUser filter
      Figures out if the current user is in a team.
      ========================================================================== */
@@ -401,8 +444,8 @@
       }
       angular.forEach( teams, function( team ) {
         var inTeam = false;
-        angular.forEach( team.permissions, function( permission ) {
-          if ( permission.indexOf( UserService.user.id ) > -1 ) {
+        angular.forEach( team.roles, function( role ) {
+          if ( role.indexOf( UserService.user.id ) > -1 ) {
             inTeam = true;
           }
         });
@@ -417,22 +460,6 @@
         }
       });
       return newTeams;
-    };
-  });
-
-  /* ==========================================================================
-     # userListArray filter
-     Filter a user list for use in a userlist.
-     ========================================================================== */
-  angular.module('OSWizardApp').filter( 'userListArray', function( UserService ) {
-    return function( users ) {
-      var filteredUsers = [];
-      angular.forEach( UserService.usersArray, function( user ) {
-        if ( users.indexOf( user ) === -1 && user.stub === false ) {
-          filteredUsers.push( user );
-        }
-      });
-      return filteredUsers;
     };
   });
 
@@ -459,14 +486,8 @@
       var output = [];
       angular.forEach( teams, function( team ) {
         team.showAdmin = false;
-        team.showWrite = false;
-        team.showRead = false;
+        team.showMember = false;
         team.showRepo = false;
-        angular.forEach( team.repos, function( repo ) {
-          repo.showAdmin = false;
-          repo.showWrite = false;
-          repo.showRead = false;
-        });
         output.push( team );
       });
       return output;
@@ -521,19 +542,5 @@
       }
     }
   });
-
-  /* ==========================================================================
-     # getObjKeyByVal
-     http://stackoverflow.com/questions/9907419/javascript-object-get-key-by-value
-     ========================================================================== */
-  getObjKeyByVal = function( obj, value ) {
-    for( var prop in obj ) {
-      if( obj.hasOwnProperty( prop ) ) {
-         if( obj[ prop ] === value ) {
-           return prop;
-         }
-      }
-    }
-  };
 
 })();

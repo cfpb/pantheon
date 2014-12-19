@@ -101,7 +101,8 @@
       </div>
     </div>
     <div class="content_wrapper">
-        <div class="content_main">
+        <div ng-if="ready()"
+             class="content_main">
             <div id="my-teams">
                 <h1 class="u-visually-hidden">My teams</h1>
                 <div class="teams">
@@ -112,7 +113,7 @@
                     </section>
                 </div>
             </div>
-            <div class="expandable expandable__teams">
+            <div expandable class="expandable">
                 <button class="expandable_target btn__block">
                     <span class="btn btn__secondary btn__block">
                         <span class="expandable_cue-open">
@@ -125,7 +126,7 @@
                         </span>
                     </span>
                 </button>
-                <div class="expandable_content">
+                <div class="expandable_content expandable_content__teams">
                     <div id="other-teams">
                         <div class="teams">
                             <section team

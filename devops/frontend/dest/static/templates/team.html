@@ -12,12 +12,8 @@
                             show="data.showAdmin">
                 </userbutton>
                 <userbutton team-model="data"
-                            role="Write"
-                            show="data.showWrite">
-                </userbutton>
-                <userbutton team-model="data"
-                            role="Read"
-                            show="data.showRead">
+                            role="Member"
+                            show="data.showMember">
                 </userbutton>
             </div>
             <div class="expandable_header-right">
@@ -37,18 +33,12 @@
         <section userlist
                  class="team-content"
                  team-model="data"
-                 role="Write"
-                 ng-show="data.showWrite">
-        </section>
-        <section userlist
-                 class="team-content"
-                 team-model="data"
-                 role="Read"
-                 ng-show="data.showRead">
+                 role="Member"
+                 ng-show="data.showMember">
         </section>
         <div ng-show="data.showRepo"
              class="team-content">
-            <div assetlist assets="data.repos" heading="Repos"></div>
+            <div assetlist assets="data.rsrcs.gh.assets" heading="Repos"></div>
         </div>
     </div> <!-- END .expandable_content -->
 </div> <!-- END .expandable -->
