@@ -384,6 +384,29 @@
             console.log( 'Error:', msg );
           });
         };
+        scope.remove = function( assetToRemove ) {
+          var assetObj, index;
+          angular.forEach( scope.assets, function( asset ) {
+            if ( asset.name === assetToRemove.name || asset.new === assetToRemove.name ) {
+              assetObj = asset;
+            }
+          });
+          index = scope.assets.indexOf( assetObj );
+          $.ajax({
+            type: 'DELETE',
+            url: scope.requestURL + assetObj.id
+          })
+          .done(function( msg ) {
+            console.log( 'Data Saved:', msg );
+            scope.$apply(function () {
+              scope.assets.splice( index, 1 );
+              scope.updateAssets();
+            });
+          })
+          .error(function( msg ) {
+            console.log( 'Error:', msg );
+          });
+        };
         scope.updateAssets();
       }
     };
