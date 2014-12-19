@@ -15,6 +15,7 @@
    # toArray filter
    # prepTeamData filter
    # Cross Site Request Forgery protection
+   # Utility functions
    ========================================================================== */
 
 (function(){
@@ -169,9 +170,7 @@
       templateUrl: '/static/templates/repobutton.html',
       link: function( scope, element, attrs ) {
         // Properties
-        if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
-          scope.repos = scope.teamModel.rsrcs.gh.assets;
-        }
+        scope.repos = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
         if ( typeof scope.repos === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -221,9 +220,7 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        if ( scope.teamModel.roles[ scope.role.toLowerCase() ] ) {
-          scope.users = scope.teamModel.roles[ scope.role.toLowerCase() ].members;
-        }
+        scope.users = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'members' ] );
         if ( typeof scope.users === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -265,14 +262,8 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        if ( scope.teamModel.roles[ scope.role.toLowerCase() ] ) {
-          scope.userIDs = scope.teamModel.roles[ scope.role.toLowerCase() ].members;
-        }
-        if ( scope.teamModel.roles.admin ) {
-          scope.isTeamAdmin = UserService.isTeamAdmin( scope.teamModel.roles.admin.members );
-        } else {
-          scope.isTeamAdmin = false;
-        }
+        scope.userIDs = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'members' ] );
+        scope.isTeamAdmin = UserService.isTeamAdmin( getObj( scope.teamModel.roles, [ 'admin', 'members' ] ) );
         scope.editable = scope.isTeamAdmin && scope.role !== 'Admin';
         scope.users = [];
         scope.showAllUsers = false;
@@ -354,22 +345,16 @@
       templateUrl: '/static/templates/assetlist.html',
       link: function( scope, element, attrs ) {
         // Properties
-        if ( scope.teamModel.roles.admin ) {
-          scope.editable = UserService.isTeamAdmin( scope.teamModel.roles.admin.members );
-        } else {
-          scope.editable = false;
-        }
+        scope.editable = UserService.isTeamAdmin( getObj(scope.teamModel.roles, [ 'admin', 'members' ]) );
         scope.heading = attrs.heading;
         scope.assets = [];
-        if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
-          scope.assets = scope.teamModel.rsrcs.gh.assets;
-          angular.forEach( scope.assets, function( asset ) {
-            if ( asset.new ) {
-              asset.name = asset.new;
-            }
-          });
-          scope.assets = $filter( 'orderBy' )( scope.assets, 'name' );
-        }
+        scope.assets = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
+        angular.forEach( scope.assets, function( asset ) {
+          if ( asset.new ) {
+            asset.name = asset.new;
+          }
+        });
+        scope.assets = $filter( 'orderBy' )( scope.assets, 'name' );
         scope.total = scope.assets.length;
         scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
                            '/resources/' + 'gh' + '/';
@@ -622,5 +607,19 @@
       }
     }
   });
+
+  /* ==========================================================================
+     # Utility functions
+     ========================================================================== */
+  var getObj = function(obj, path) {
+      var key = path.shift();
+      obj = obj[key];
+      if (!obj) { return obj; }
+      if (path.length) {
+          return getObj(obj, path);
+      } else {
+          return obj;
+      }
+  };
 
 })();
