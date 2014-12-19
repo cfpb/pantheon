@@ -42,14 +42,14 @@ exports.updates =
     action = body.action
     key = body.key
     if action == 'u+'
-      container = h.mk_objs(team.roles, [key], [])
+      container = h.mk_objs(team.roles, [key, 'members'], [])
       if value in container
         return [null, JSON.stringify(team)]
       else
         container.push(value)
 
     else if action == 'u-'
-      container = h.mk_objs(team.roles, [key], [])
+      container = h.mk_objs(team.roles, [key, 'members'], [])
       if value not in container
         return [null, JSON.stringify(team)]
       else
