@@ -10,7 +10,37 @@
 
   teams = {};
 
-  teams.update_team = function(req, resp) {};
+  teams.create_team = function(req, resp) {
+    var now, org, org_db, team_doc, team_id, team_name, user;
+    now = +new Date();
+    user = req.session.user;
+    org = 'org_' + req.params.org_id;
+    team_name = req.params.team_id;
+    team_id = 'team_' + team_name;
+    team_doc = {
+      _id: team_id,
+      name: team_name,
+      rsrcs: {},
+      roles: {},
+      audit: [
+        {
+          u: user,
+          dt: now,
+          a: 't+',
+          id: uuid.v4()
+        }
+      ],
+      enforce: []
+    };
+    org_db = req.couch.use(org);
+    return org_db.insert(team_doc).on('response', function(couch_resp) {
+      if (couch_resp.statusCode < 400) {
+        return org_db.get(team_id).pipe(resp);
+      } else {
+        return couch_resp.pipe(resp);
+      }
+    });
+  };
 
   teams.get_team = function(req, resp) {
     var org, team;

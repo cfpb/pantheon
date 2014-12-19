@@ -5,7 +5,8 @@ user = require('./api/user')
 module.exports = (app) ->
     app.get('/kratos/orgs/:org_id/teams/', teams.get_teams)
     app.get('/kratos/orgs/:org_id/teams/:team_id', teams.get_team)
-    app.put('/kratos/orgs/:org_id/teams/:team_id', teams.update_team)
+    # add new team - no body
+    app.put('/kratos/orgs/:org_id/teams/:team_id', teams.create_team)
 
     app.get('/kratos/users', users.get_users)
     app.get('/kratos/users/:user_id', users.get_user)

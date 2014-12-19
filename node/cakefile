@@ -1,9 +1,11 @@
 # copyright David Greisen licensed under Apache License v 2.0
 # derived from code from ShareJS https://github.com/share/ShareJS (MIT)
-
+console.log(__dirname)
 {exec} = require 'child_process'
+path = require('path')
+fs = require('fs')
 
-
+DIR = __dirname
 
 task 'build', 'Build the .js files', (options) ->
   console.log('Compiling Coffee from lib to src')
@@ -26,21 +28,28 @@ task 'runtestserver', 'Run the server (port 5000); restart on change', (options)
   cp.stdout.on "data", (data) -> console.log(data)
   cp.stderr.on "data", (data) -> console.log(data)
 
-task 'runworker', 'Run the couchdb worker; restart on change', (options) ->
-  console.log('Running the couchdb worker; restarting on change')
-  cp = exec "iced --watch --output ./lib/ ./src/"
-  cp.stdout.on "data", (data) -> console.log(data)
-  cp.stderr.on "data", (data) -> console.log(data)
-  cp = exec "supervisor -w ./lib ./lib/worker.js"
+task 'runworker', 'Run the couchdb worker', (options) ->
+  console.log('Running the couchdb worker')
+  cp = exec "node ./lib/worker.js"
   cp.stdout.on "data", (data) -> console.log(data)
   cp.stderr.on "data", (data) -> console.log(data)
 
 option '-t', '--db_type [type]', 'db type to update'
 
 task 'sync_design_docs', 'sync all design docs with couchdb', (options) ->
-  db_type =  options.db_type or 'user'
-  console.log('Syncing couchdb ' + db_type + ' design docs ')
-  require('./lib/couch_utils').sync_all_db_design_docs(db_type)
+  if options.db_type
+    db_types = [options.db_type]
+  else
+    design_docs_dir = path.join(DIR, 'lib', 'design_docs')
+    design_docs = fs.readdirSync(design_docs_dir)
+    db_types = []
+    design_docs.forEach((file_name) ->
+      file_parts = file_name.split('.')
+      db_types.push(file_parts[0]) if file_parts[1] == 'js'
+    )
+  for db_type in db_types
+    console.log('Syncing couchdb ' + db_type + ' design docs ')
+    require('./lib/couch_utils').sync_all_db_design_docs(db_type)
 
 option '-n', '--db_name [name]', 'db name to import to'
 
@@ -55,6 +64,7 @@ task 'import_from_gh', 'Import from Github - not idempotent!!', (options) ->
 
 task 'import_teams_from_gh', 'Import teams from Github - not idempotent!!', (options) ->
   db_name = options.db_name
+
   console.log('importing teams from github to ' + db_name)
   await require('./lib/resources/gh').import_teams(db_name, 'admin', defer(err))
   if err

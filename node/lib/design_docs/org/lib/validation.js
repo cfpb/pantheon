@@ -36,7 +36,9 @@
         forbidden: 'User performing action (' + entry.u + ') does not match logged in user (' + user.username + ').'
       };
     }
-    if (entry.a === 'u+') {
+    if (entry.a === 't+') {
+      authorized = auth.kratos.add_team(user);
+    } else if (entry.a === 'u+') {
       authorized = auth.kratos.add_team_member(user, team, entry.k);
     } else if (entry.a === 'u-') {
       authorized = auth.kratos.add_team_member(user, team, entry.k);
