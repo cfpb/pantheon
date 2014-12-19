@@ -25,8 +25,14 @@
     </li>
     <li ng-repeat="asset in assets"
         class="slats_item slat">
+        <button ng-if="editable"
+                ng-click="remove(asset.name)"
+                class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
+            <span class="u-visually-hidden">Remove</span>
+            <span class="cf-icon cf-icon-minus-round"></span>
+        </button>
         <span class="slat_label">
-            {{ asset.name || asset.new }}
+            {{ asset.name }}
         </span>
     </li>
 </ul>
