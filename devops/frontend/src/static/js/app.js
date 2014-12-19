@@ -357,7 +357,7 @@
         scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
                            '/resources/' + 'gh' + '/';
         scope.add = function( name ) {
-          var data = { new: name };
+          var data = JSON.stringify( { new: name } );
           $.ajax({
             type: 'POST',
             url: scope.requestURL,
