@@ -262,9 +262,10 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
+        scope.canAdd = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'perms', 'add' ] );
+        scope.canRemove = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'perms', 'remove' ] );
+        scope.editable = scope.canAdd && scope.canRemove;
         scope.userIDs = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'members' ] );
-        scope.isTeamAdmin = UserService.isTeamAdmin( getObj( scope.teamModel.roles, [ 'admin', 'members' ] ) );
-        scope.editable = scope.isTeamAdmin && scope.role !== 'Admin';
         scope.users = [];
         scope.showAllUsers = false;
         angular.forEach( scope.userIDs, function( value, key ) {
@@ -345,7 +346,9 @@
       templateUrl: '/static/templates/assetlist.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.editable = UserService.isTeamAdmin( getObj(scope.teamModel.roles, [ 'admin', 'members' ]) );
+        scope.canAdd = getObj( scope.teamModel.rsrcs, [ 'gh', 'perms', 'add' ] );
+        scope.canRemove = getObj( scope.teamModel.rsrcs, [ 'gh', 'perms', 'remove' ] );
+        scope.editable = scope.canAdd && scope.canRemove;
         scope.heading = attrs.heading;
         scope.assets = [];
         scope.assets = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
@@ -375,6 +378,7 @@
               data.name = data.new;
               scope.assets.unshift( data );
               scope.updateAssets();
+              element.find('.slats-type_input').val('');
             });
           })
           .error(function( msg ) {
