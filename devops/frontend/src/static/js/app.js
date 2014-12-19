@@ -92,7 +92,7 @@
     // Data
     $http.get('/kratos/user/').
       success( function( response, status, headers, config ) {
-        var preppedResponse = $.parseJSON( JSON.stringify(response) );
+        var preppedResponse = response;
         UserService.user.name = preppedResponse.username;
         UserService.user.id = preppedResponse.name;
         console.log( 'User\n', UserService.user.name, UserService.user.id );
