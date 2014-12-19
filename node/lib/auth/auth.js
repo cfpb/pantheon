@@ -11,9 +11,9 @@
   };
 
   auth._has_team_role = function(user, team, role) {
-    var user_id;
+    var user_id, _ref;
     user_id = user.name;
-    return __indexOf.call(team.roles[role] || [], user_id) >= 0;
+    return __indexOf.call(((_ref = team.roles[role]) != null ? _ref.members : void 0) || [], user_id) >= 0;
   };
 
   auth._is_resource_admin = function(user, resource) {
