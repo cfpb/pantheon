@@ -336,7 +336,7 @@
         </div>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'assetlist', function( UserService ) {
+  angular.module('OSWizardApp').directive( 'assetlist', function( $filter, UserService ) {
     return {
       restrict: 'A',
       scope: {
@@ -348,33 +348,40 @@
         // Properties
         scope.editable = UserService.isTeamAdmin( scope.teamModel.roles.admin );
         scope.heading = attrs.heading;
-        if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
-          scope.assets = scope.teamModel.rsrcs.gh.assets;
-        } else {
-          scope.assets = [];
-        }
+        scope.assets = [];
         scope.total = scope.assets.length;
         scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
                            '/resources/' + 'gh' + '/';
+        scope.updateAssets = function( newAsset ) {
+          if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
+            scope.assets = $filter( 'orderBy', 'name' )( scope.teamModel.rsrcs.gh.assets );
+          } else {
+            scope.assets = [];
+          }
+          if ( typeof newAsset !== 'undefined' ) {
+            scope.assets.unshift( newAsset );
+          }
+          scope.total = scope.assets.length;
+        };
         scope.add = function( name ) {
-          var data = JSON.stringify( { new: name } );
+          var data = { new: name };
           $.ajax({
             type: 'POST',
             url: scope.requestURL,
-            data: data,
+            data: JSON.stringify( data ),
             contentType: 'application/json'
           })
           .done(function( msg ) {
             console.log( 'Data Saved:', msg );
             scope.$apply(function () {
-              scope.assets.push( name );
-              scope.total = scope.assets.length;
+              scope.updateAssets( data );
             });
           })
           .error(function( msg ) {
             console.log( 'Error:', msg );
           });
         };
+        scope.updateAssets();
       }
     };
   });

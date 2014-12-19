@@ -23,10 +23,10 @@
         class="slats_item slat">
         <span class="slat_label">No {{ ::heading | lowercase }}</span>
     </li>
-    <li ng-repeat="asset in ::assets | orderBy:'name'"
+    <li ng-repeat="asset in assets"
         class="slats_item slat">
         <span class="slat_label">
-            {{ asset.name }}
+            {{ asset.name || asset.new }}
         </span>
     </li>
 </ul>
