@@ -419,7 +419,7 @@
         <role teamModel="team"></role>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'role', function( UserService ) {
+  angular.module('OSWizardApp').directive( 'role', function( $filter, UserService ) {
     return {
       restrict: 'E',
       scope: {
@@ -429,23 +429,21 @@
       templateUrl: '/static/templates/role.html',
       link: function( scope, element, attrs ) {
         // Properties
-        var roles = scope.teamModel.roles;
-        scope.role = 'non-member';
-        if ( roles.member ) {
-          if ( roles.member.members.indexOf( UserService.user.id ) > -1 ) {
-            scope.role = 'member';
+        scope.roles = [];
+        angular.forEach( scope.teamModel.roles, function( role, key ) {
+          if ( role.members.indexOf( UserService.user.id ) > -1 ) {
+            scope.roles.push( key );
           }
-        }
-        if ( roles.admin ) {
-          if ( roles.admin.members.indexOf( UserService.user.id ) > -1 ) {
-            scope.role = 'admin';
-            element.addClass('role-icon__bg-green');
-          }
-        }
+        });
+        scope.roles = $filter('orderBy')( scope.roles );
         element.addClass('role-icon');
-        element.append( scope.role );
-        // Hide this if the role is 'non-member'.
-        if ( scope.role === 'non-member' ) {
+        element.append( scope.roles.join(', ') );
+        // Color this green if the role contains 'admin'.
+        if ( scope.roles.indexOf( 'admin' ) !== -1 ) {
+          element.addClass('role-icon__bg-green');
+        }
+        // Hide this if the role is empty.
+        if ( scope.roles.length === 0 ) {
           element.addClass('role-icon__hide');
         }
       }
