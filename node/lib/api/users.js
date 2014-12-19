@@ -14,6 +14,10 @@
     return String(parseInt(s)) === s;
   };
 
+  users._get_users = function(callback) {
+    return couch_utils.rewrite(user_db, 'base', '/users', callback);
+  };
+
   users.get_users = function(req, resp) {
     var resource, rsrcs_id, _ref;
     _ref = req.query;
@@ -30,7 +34,7 @@
         key: [resource, rsrcs_id]
       }).pipe(resp);
     } else {
-      return couch_utils.rewrite(user_db, 'base', '/users').pipe(resp);
+      return users._get_users().pipe(resp);
     }
   };
 

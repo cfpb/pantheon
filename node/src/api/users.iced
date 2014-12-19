@@ -6,6 +6,9 @@ uuid = require('node-uuid')
 isInt = (s) ->
   return String(parseInt(s)) == s
 
+users._get_users = (callback) ->
+  return couch_utils.rewrite(user_db, 'base', '/users', callback)
+
 users.get_users = (req, resp) ->
   for resource, rsrcs_id of req.query
     break
@@ -18,7 +21,7 @@ users.get_users = (req, resp) ->
                     {include_docs: true, key: [resource, rsrcs_id]})
       .pipe(resp)
   else
-    couch_utils.rewrite(user_db, 'base', '/users').pipe(resp)
+    users._get_users().pipe(resp)
 
 users._get_user = (user_id, callback) ->
   return couch_utils.rewrite(user_db, 'base', '/users/org.couchdb.user:' + user_id, callback)
