@@ -221,7 +221,9 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.users = scope.teamModel.roles[scope.role.toLowerCase()];
+        if ( scope.teamModel.roles[ scope.role.toLowerCase() ] ) {
+          scope.users = scope.teamModel.roles[ scope.role.toLowerCase() ].members;
+        }
         if ( typeof scope.users === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -263,8 +265,14 @@
       link: function( scope, element, attrs ) {
         // Properties
         scope.role = attrs.role;
-        scope.userIDs = scope.teamModel.roles[ scope.role.toLowerCase() ];
-        scope.isTeamAdmin = UserService.isTeamAdmin( scope.teamModel.roles.admin );
+        if ( scope.teamModel.roles[ scope.role.toLowerCase() ] ) {
+          scope.userIDs = scope.teamModel.roles[ scope.role.toLowerCase() ].members;
+        }
+        if ( scope.teamModel.roles.admin ) {
+          scope.isTeamAdmin = UserService.isTeamAdmin( scope.teamModel.roles.admin.members );
+        } else {
+          scope.isTeamAdmin = false;
+        }
         scope.editable = scope.isTeamAdmin && scope.role !== 'Admin';
         scope.users = [];
         scope.showAllUsers = false;
@@ -346,7 +354,11 @@
       templateUrl: '/static/templates/assetlist.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.editable = UserService.isTeamAdmin( scope.teamModel.roles.admin );
+        if ( scope.teamModel.roles.admin ) {
+          scope.editable = UserService.isTeamAdmin( scope.teamModel.roles.admin.members );
+        } else {
+          scope.editable = false;
+        }
         scope.heading = attrs.heading;
         scope.assets = [];
         if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
@@ -435,12 +447,12 @@
         var roles = scope.teamModel.roles;
         scope.role = 'non-member';
         if ( roles.member ) {
-          if ( roles.member.indexOf( UserService.user.id ) > -1 ) {
+          if ( roles.member.members.indexOf( UserService.user.id ) > -1 ) {
             scope.role = 'member';
           }
         }
         if ( roles.admin ) {
-          if ( roles.admin.indexOf( UserService.user.id ) > -1 ) {
+          if ( roles.admin.members.indexOf( UserService.user.id ) > -1 ) {
             scope.role = 'admin';
             element.addClass('role-icon__bg-green');
           }
@@ -513,7 +525,7 @@
       angular.forEach( teams, function( team ) {
         var inTeam = false;
         angular.forEach( team.roles, function( role ) {
-          if ( role.indexOf( UserService.user.id ) > -1 ) {
+          if ( role.members.indexOf( UserService.user.id ) > -1 ) {
             inTeam = true;
           }
         });
