@@ -39,7 +39,7 @@ describe 'get_new_audit_entries', () ->
     expect(actual).toEqual([1])
 
 admin_user = {name: 'xxxx', roles: ['gh|user']}
-team = {roles: {admin: ['xxxx']}}
+team = {roles: {admin: {members: ['xxxx']}}}
 regular_user = {name: 'yyyy'}
 super_admin_user = {name: 'admin'}
 role_entry = {

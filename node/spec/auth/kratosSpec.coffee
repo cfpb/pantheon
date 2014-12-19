@@ -6,7 +6,7 @@ user         = {name: 'thubsn24joa5gk', roles: []}
 kratos_admin = {name: 'nahubk_hpb49km', roles: ['kratos|admin']}
 both_admin   = {name: 'ahbksexortixvi', roles: ['kratos|admin']}
 
-team         = {roles: {admin: ['etkdg394hpmujn', 'ahbksexortixvi']}}
+team         = {roles: {admin: {members: ['etkdg394hpmujn', 'ahbksexortixvi']}}}
 
 describe 'add_team', () ->
   it 'allowed when user is a kratos admin', () ->

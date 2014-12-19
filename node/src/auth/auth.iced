@@ -3,7 +3,7 @@ auth._has_resource_role = (user, resource, role) ->
   return (resource + '|' + role) in user.roles
 auth._has_team_role = (user, team, role) ->
   user_id = user.name
-  return user_id in (team.roles[role] or [])
+  return user_id in (team.roles[role]?.members or [])
 auth._is_resource_admin = (user, resource) ->
   return auth._has_resource_role(user, resource, 'admin')
 auth._is_team_admin = (user, team) ->
