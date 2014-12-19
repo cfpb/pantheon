@@ -5,12 +5,12 @@
 
 # priorities
 
-- adding users
-- adding assets
+- polling
 
 # todos
 
 - re-code to make adding new resources/role automatic
+- implement <https://docs.angularjs.org/api/ngResource/service/$resource>
 
 # interface ideas
 
