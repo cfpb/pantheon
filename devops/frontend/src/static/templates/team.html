@@ -38,7 +38,10 @@
         </section>
         <div ng-show="data.showRepo"
              class="team-content">
-            <div assetlist assets="data.rsrcs.gh.assets" heading="Repos"></div>
+            <div assetlist
+                 team-model="data"
+                 heading="Repos">
+            </div>
         </div>
     </div> <!-- END .expandable_content -->
 </div> <!-- END .expandable -->

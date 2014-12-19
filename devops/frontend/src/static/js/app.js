@@ -169,7 +169,9 @@
       templateUrl: '/static/templates/repobutton.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.repos = scope.teamModel.rsrcs.gh.assets;
+        if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
+          scope.repos = scope.teamModel.rsrcs.gh.assets;
+        }
         if ( typeof scope.repos === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -338,13 +340,19 @@
     return {
       restrict: 'A',
       scope: {
-        assets: '=',
+        teamModel: '=',
         heading: '='
       },
       templateUrl: '/static/templates/assetlist.html',
       link: function( scope, element, attrs ) {
         // Properties
         scope.heading = attrs.heading;
+        if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
+          scope.assets = scope.teamModel.rsrcs.gh.assets;
+        } else {
+          scope.assets = [];
+        }
+        scope.total = scope.assets.length;
       }
     };
   });
