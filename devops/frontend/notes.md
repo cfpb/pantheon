@@ -24,3 +24,4 @@
 # learning
 
 - <http://stsc3000.github.io/blog/2013/10/26/a-tale-of-frankenstein-and-binding-to-service-values-in-angular-dot-js/>
+- <http://sravi-kiran.blogspot.com/2013/12/InvokingAngularJsFiltersFromController.html>
