@@ -346,7 +346,9 @@
     __iced_k = __iced_k_noop;
     ___iced_passed_deferral = iced.findDeferral(arguments);
     role_doc = {
-      member: []
+      member: {
+        members: []
+      }
     };
     members = [];
     err = [];
@@ -367,7 +369,7 @@
                 return __slot_3[__slot_4] = arguments[1];
               };
             })(err, i, members, i),
-            lineno: 125
+            lineno: 127
           }));
           i++;
         }
@@ -401,7 +403,7 @@
                 return user_rows = arguments[1];
               };
             })(),
-            lineno: 134
+            lineno: 136
           }));
           __iced_deferrals._fulfill();
         })(function() {
@@ -412,7 +414,7 @@
           _ref = user_rows.rows;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             user = _ref[_i];
-            role_doc.member.push(user.value);
+            role_doc.member.members.push(user.value);
           }
           return callback(null, role_doc);
         });
@@ -445,7 +447,7 @@
               return repos = arguments[1];
             };
           })(),
-          lineno: 149
+          lineno: 151
         }));
         __iced_deferrals._fulfill();
       });
@@ -489,7 +491,7 @@
               return resp = arguments[1];
             };
           })(),
-          lineno: 159
+          lineno: 161
         }));
         __iced_deferrals._fulfill();
       });
@@ -511,7 +513,7 @@
                 return resp = arguments[1];
               };
             })(),
-            lineno: 161
+            lineno: 163
           }));
           __iced_deferrals._fulfill();
         })(function() {

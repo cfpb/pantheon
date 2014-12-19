@@ -114,7 +114,9 @@ import_team = (teams, admin_id, callback) ->
 
 import_members = (teams, admin_id, callback) ->
   role_doc = {
-    member: []
+    member: {
+      members: []
+    }
   }
 
   members = []
@@ -136,7 +138,7 @@ import_members = (teams, admin_id, callback) ->
   return callback(err) if err
 
   for user in user_rows.rows
-    role_doc.member.push(user.value)
+    role_doc.member.members.push(user.value)
   return callback(null, role_doc)
 
 import_repos = (teams, admin_id, callback) ->

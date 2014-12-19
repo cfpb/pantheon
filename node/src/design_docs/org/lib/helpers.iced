@@ -1,3 +1,5 @@
+auth = require('./auth/auth')
+
 module.exports =
   make_audit_trail: (team, req, key, value) ->
     return {
@@ -24,3 +26,17 @@ module.exports =
     if not obj[last_key]
       obj[last_key] = val
     return obj[last_key]
+  add_team_perms: (original_team, user) ->
+    team = JSON.parse(JSON.stringify(original_team))
+    for rsrc_name, rsrc of team.rsrcs
+      rsrc_auth = auth[rsrc_name]
+      rsrc.perms = {
+        add: rsrc_auth.add_team_asset(user, team)
+        remove: rsrc_auth.remove_team_asset(user, team)
+      }
+    for role_name, role of team.roles
+      role.perms = {
+        add: auth.kratos.add_team_member(user, team, role_name)
+        remove: auth.kratos.remove_team_member(user, team, role_name)
+      }
+    return team

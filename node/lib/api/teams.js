@@ -42,19 +42,26 @@
     });
   };
 
+  teams._get_team = function(org_db, team_id, callback) {
+    return couch_utils.rewrite(org_db, 'base', '/teams/team_' + team_id, callback);
+  };
+
   teams.get_team = function(req, resp) {
-    var org, team;
+    var org, org_db;
     org = 'org_' + req.params.org_id;
-    team = 'team_' + req.params.team_id;
-    return couch_utils.nano_admin.use(org).get(team).pipe(resp);
+    org_db = req.couch.use(org);
+    return teams._get_team(org_db, req.params.team_id).pipe(resp);
+  };
+
+  teams._get_teams = function(org_db, callback) {
+    return couch_utils.rewrite(org_db, 'base', '/teams', callback);
   };
 
   teams.get_teams = function(req, resp) {
-    var org;
+    var org, org_db;
     org = 'org_' + req.params.org_id;
-    return couch_utils.nano_admin.use(org).viewWithList('base', 'by_type', 'get_docs', {
-      include_docs: true
-    }).pipe(resp);
+    org_db = req.couch.use(org);
+    return teams._get_teams(org_db).pipe(resp);
   };
 
   teams.add_remove_member_asset = function(action_type) {
