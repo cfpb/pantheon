@@ -92,7 +92,7 @@
     // Data
     $http.get('/kratos/user/').
       success( function( response, status, headers, config ) {
-        var preppedResponse = $.parseJSON( JSON.stringify(response) );
+        var preppedResponse = response;
         UserService.user.name = preppedResponse.username;
         UserService.user.id = preppedResponse.name;
         console.log( 'User\n', UserService.user.name, UserService.user.id );
@@ -169,7 +169,9 @@
       templateUrl: '/static/templates/repobutton.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.repos = scope.teamModel.rsrcs.gh.assets;
+        if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
+          scope.repos = scope.teamModel.rsrcs.gh.assets;
+        }
         if ( typeof scope.repos === 'undefined' ) {
           scope.total = 0;
         } else {
@@ -338,13 +340,19 @@
     return {
       restrict: 'A',
       scope: {
-        assets: '=',
+        teamModel: '=',
         heading: '='
       },
       templateUrl: '/static/templates/assetlist.html',
       link: function( scope, element, attrs ) {
         // Properties
         scope.heading = attrs.heading;
+        if ( scope.teamModel.rsrcs.gh && scope.teamModel.rsrcs.gh.assets ) {
+          scope.assets = scope.teamModel.rsrcs.gh.assets;
+        } else {
+          scope.assets = [];
+        }
+        scope.total = scope.assets.length;
       }
     };
   });
@@ -370,7 +378,7 @@
       link: function( scope, element, attrs ) {
         // Properties
         var roles = scope.teamModel.roles;
-        scope.role = 'member';
+        scope.role = 'non-member';
         if ( roles.member ) {
           if ( roles.member.indexOf( UserService.user.id ) > -1 ) {
             scope.role = 'member';
@@ -379,10 +387,15 @@
         if ( roles.admin ) {
           if ( roles.admin.indexOf( UserService.user.id ) > -1 ) {
             scope.role = 'admin';
+            element.addClass('role-icon__bg-green');
           }
         }
         element.addClass('role-icon');
-        element.addClass( 'role-icon__' + scope.role );
+        element.append( scope.role );
+        // Hide this if the role is 'non-member'.
+        if ( scope.role === 'non-member' ) {
+          element.addClass('role-icon__hide');
+        }
       }
     };
   });
