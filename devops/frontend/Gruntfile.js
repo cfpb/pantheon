@@ -269,12 +269,21 @@ module.exports = function(grunt) {
      * Add files to monitor below.
      */
     watch: {
-      main: {
-        files: ['src/static/css/app.less',
-                'src/static/js/app.js',
-                'src/static/templates/*.html',
-                'dest/static/angular.html'],
-        tasks: ['default']
+      app_css: {
+        files: ['src/static/css/app.less'],
+        tasks: ['cssdev', 'shell:manage_py']
+      },
+      app_js: {
+        files: ['src/static/js/app.js'],
+        tasks: ['jsdev', 'shell:manage_py']
+      },
+      angular_templates: {
+        files: ['src/static/templates/*.html'],
+        tasks: ['copy:templates', 'shell:manage_py']
+      },
+      angular_page: {
+        files: ['dest/static/angular.html'],
+        tasks: ['shell:manage_py']
       }
     }
   };
