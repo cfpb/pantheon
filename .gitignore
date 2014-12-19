@@ -4,6 +4,10 @@
 env-devops
 /devops/devops/settings_secret.py
 
+# Vagrant #
+###########
+.vagrant
+
 # Ansible #
 ###########
 /ansible/production_inventory
@@ -82,7 +86,3 @@ bower_components/
 /devops/frontend/dest/static/test-data.json
 /devops/frontend/dest/static/test-data.old.json
 # /devops/frontend/dest/static/vendor
-
-# Vagrant #
-###########
-.vagrant
