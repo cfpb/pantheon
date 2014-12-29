@@ -41,13 +41,12 @@
     } else if (entry.a === 'u+') {
       authorized = auth.kratos.add_team_member(user, team, entry.k);
     } else if (entry.a === 'u-') {
-      authorized = auth.kratos.add_team_member(user, team, entry.k);
+      authorized = auth.kratos.remove_team_member(user, team, entry.k);
     } else if (entry.a === 'a+') {
       authorized = ((_ref = auth[entry.k]) != null ? _ref.add_team_asset(user, team) : void 0) || false;
     } else if (entry.a === 'a-') {
       authorized = ((_ref1 = auth[entry.k]) != null ? _ref1.remove_team_asset(user, team) : void 0) || false;
     } else {
-      console.log('invalid!!');
       throw {
         forbidden: 'Invalid action: ' + entry.a + '.'
       };
@@ -60,12 +59,9 @@
   };
 
   v.validate_audit_entries = function(new_audit_entries, user, team) {
-    var user_id;
-    user_id = user.name;
-    new_audit_entries.forEach(function(entry) {
+    return new_audit_entries.forEach(function(entry) {
       return v.validate_audit_entry(entry, user, team);
     });
-    return _.every(new_audit_entries);
   };
 
   v.validate_doc_update = function(new_doc, old_doc, user_ctx, sec_obj) {

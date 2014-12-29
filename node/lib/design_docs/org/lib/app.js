@@ -9,28 +9,7 @@
 
   validation = require('lib/validation');
 
-  exports.views = {
-    by_type: {
-      map: function(doc) {
-        var team_data;
-        team_data = require('views/lib/team_data').parse(doc._id);
-        if (!team_data) {
-          return;
-        }
-        return emit([team_data.team, team_data.typ, team_data.name], 1);
-      }
-    }
-  };
-
   exports.lists = {
-    get_docs: function(header, req) {
-      var out, row;
-      out = [];
-      while ((row = getRow())) {
-        out.push(row.doc);
-      }
-      return JSON.stringify(out);
-    },
     get_teams: function(header, req) {
       var doc, out, row, team;
       out = [];
@@ -59,9 +38,7 @@
     }
   };
 
-  exports.validate_doc_update = function(newDoc, oldDoc, userCtx, secObj) {
-    return validation.validate_doc_update(newDoc, oldDoc, userCtx, secObj);
-  };
+  exports.validate_doc_update = validation.validate_doc_update;
 
   exports.updates = {
     do_action: function(team, req) {
@@ -76,14 +53,14 @@
       if (action === 'u+') {
         container = h.mk_objs(team.roles, [key, 'members'], []);
         if (__indexOf.call(container, value) >= 0) {
-          return [null, JSON.stringify(team)];
+          return [null, JSON.stringify(h.add_team_perms(doc, req.userCtx))];
         } else {
           container.push(value);
         }
       } else if (action === 'u-') {
         container = h.mk_objs(team.roles, [key, 'members'], []);
         if (__indexOf.call(container, value) < 0) {
-          return [null, JSON.stringify(team)];
+          return [null, JSON.stringify(h.add_team_perms(doc, req.userCtx))];
         } else {
           i = container.indexOf(value);
           container.splice(i, 1);
@@ -94,7 +71,7 @@
           return (item.id && (item.id === value.id || String(item.id) === value.id)) || (item["new"] && item["new"] === value["new"]);
         });
         if (item) {
-          return [null, JSON.stringify(team)];
+          return [null, JSON.stringify(h.add_team_perms(doc, req.userCtx))];
         } else {
           container.push(value);
         }
@@ -104,7 +81,7 @@
           return item.id === value || String(item.id) === value;
         });
         if (!item) {
-          return [null, JSON.stringify(team)];
+          return [null, JSON.stringify(h.add_team_perms(doc, req.userCtx))];
         } else {
           i = container.indexOf(item);
           container.splice(i, 1);
@@ -120,14 +97,14 @@
         v: value,
         id: body.uuid
       });
-      return [team, JSON.stringify(team)];
+      return [team, JSON.stringify(h.add_team_perms(doc, req.userCtx))];
     }
   };
 
   exports.rewrites = [
     {
       from: "/teams",
-      to: "/_list/get_teams/by_type",
+      to: "/_list/get_teams/_all_docs",
       method: 'GET',
       query: {
         include_docs: 'true'

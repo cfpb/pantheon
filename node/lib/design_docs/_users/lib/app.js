@@ -66,7 +66,7 @@
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             role = _ref[_i];
-            out = role.split('/');
+            out = role.split('|');
             out.push(doc.name);
             _results.push(emit(out));
           }
@@ -78,24 +78,6 @@
           var _ref;
           return emit(((_ref = doc.data) != null ? _ref.contractor : void 0) || false, doc.username);
         }
-      }
-    },
-    shows: {
-      get_user: function(doc, req) {
-        var user;
-        user = h.sanitize_user(doc);
-        user.perms = {
-          team: {
-            add: auth.kratos.add_team(user),
-            remove: auth.kratos.remove_team(user)
-          }
-        };
-        return {
-          body: JSON.stringify(user),
-          "headers": {
-            "Content-Type": "application/json"
-          }
-        };
       }
     },
     lists: {
@@ -120,6 +102,24 @@
         }
       }
     },
+    shows: {
+      get_user: function(doc, req) {
+        var user;
+        user = h.sanitize_user(doc);
+        user.perms = {
+          team: {
+            add: auth.kratos.add_team(user),
+            remove: auth.kratos.remove_team(user)
+          }
+        };
+        return {
+          body: JSON.stringify(user),
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        };
+      }
+    },
     updates: {
       do_action: function(user, req) {
         var acting_user, action, body, container, i, key, role, value;
@@ -130,7 +130,7 @@
         value = body.value;
         action = body.action;
         key = body.key;
-        acting_user = body.user || req.userCtx.name;
+        acting_user = req.userCtx.name;
         if (action === 'r+') {
           container = user.roles;
           role = key + '|' + value;

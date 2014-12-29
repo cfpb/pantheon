@@ -32,6 +32,8 @@
     }
   };
 
+  auth.resources = ['gh'];
+
   if (typeof window !== "undefined" && window !== null) {
     window.kratos = {
       auth: auth

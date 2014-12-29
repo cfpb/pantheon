@@ -18,6 +18,10 @@ auth.roles =
     kratos: ['admin'],
     gh: ['user'],
   }
+auth.resources = [
+  'gh'
+]
+
 if window?
   window.kratos = {auth: auth}
 else if exports?

@@ -27,22 +27,12 @@ module.exports =
     by_auth:
       map: (doc) ->
         for role in doc.roles
-          out = role.split('/')
+          out = role.split('|')
           out.push(doc.name)
           emit(out)
     contractors:
       map: (doc) ->
         emit(doc.data?.contractor or false, doc.username)
-  shows:
-    get_user: (doc, req) ->
-      user = h.sanitize_user(doc)
-      user.perms = {
-        team: {
-          add: auth.kratos.add_team(user)
-          remove: auth.kratos.remove_team(user)
-        }
-      }
-      return {body: JSON.stringify(user), "headers" : {"Content-Type" : "application/json"}}
   lists:
     get_users: (header, req) ->
       out = []
@@ -58,6 +48,16 @@ module.exports =
         return JSON.stringify(doc)
       else
         throw(['error', 'not_found', 'document matching query does not exist'])
+  shows:
+    get_user: (doc, req) ->
+      user = h.sanitize_user(doc)
+      user.perms = {
+        team: {
+          add: auth.kratos.add_team(user)
+          remove: auth.kratos.remove_team(user)
+        }
+      }
+      return {body: JSON.stringify(user), "headers" : {"Content-Type" : "application/json"}}
   updates:
     do_action: (user, req) ->
       if not user
@@ -66,7 +66,7 @@ module.exports =
       value = body.value
       action = body.action
       key = body.key
-      acting_user = body.user or req.userCtx.name
+      acting_user = req.userCtx.name
 
       if action == 'r+'
         container = user.roles

@@ -2,6 +2,7 @@ try
   _ = require('underscore')
 catch err
   _ = require('lib/underscore')
+
 auth = require('./auth/auth')
 v = {}
 
@@ -25,22 +26,19 @@ v.validate_audit_entry = (entry, user, team) ->
   else if entry.a == 'u+'
     authorized = auth.kratos.add_team_member(user, team, entry.k)
   else if entry.a == 'u-'
-    authorized = auth.kratos.add_team_member(user, team, entry.k)
+    authorized = auth.kratos.remove_team_member(user, team, entry.k)
   else if entry.a == 'a+'
     authorized = auth[entry.k]?.add_team_asset(user, team) or false
   else if entry.a == 'a-'
     authorized = auth[entry.k]?.remove_team_asset(user, team) or false
   else
-    console.log('invalid!!')
     throw({ forbidden: 'Invalid action: ' + entry.a + '.' })
 
   if not authorized
     throw({ unauthorized: 'You do not have the privileges necessary to perform the action.' });
 
 v.validate_audit_entries = (new_audit_entries, user, team) ->
-  user_id = user.name
   new_audit_entries.forEach((entry) -> v.validate_audit_entry(entry, user, team))
-  _.every(new_audit_entries)
 
 v.validate_doc_update = (new_doc, old_doc, user_ctx, sec_obj) ->
   if not v.is_team(new_doc) or v.is_super_admin(user_ctx)
