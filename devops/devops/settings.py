@@ -89,7 +89,7 @@ SOCIAL_AUTH_GITHUB_ENTERPRISE_HOST = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_H
 SOCIAL_AUTH_GITHUB_ENTERPRISE_USER_FIELDS = ('first_name', 'last_name', 'username', 'email', 'contractor',)
 SOCIAL_AUTH_GITHUB_KEY = get_secret('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = get_secret('SOCIAL_AUTH_GITHUB_SECRET')
-SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'repo', 'admin:repo_hook', 'write:org', 'write:public_key']
+SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'write:org', 'write:public_key']
 
 # ids of all orgs belonging to the entity
 GH_ORG_IDS = get_secret('GH_ORG_IDS', (1071563,))

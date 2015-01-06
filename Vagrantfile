@@ -15,6 +15,9 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8000
   config.vm.network :forwarded_port, guest: 5984, host: 5984
 
+  # shared folders
+  config.vm.synced_folder "../kratos", "/opt/kratos"
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ansible/playbook.yml"
     ansible.groups = {

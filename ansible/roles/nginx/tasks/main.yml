@@ -4,10 +4,6 @@
 - name: install nginx
   yum: name=nginx
 
-# can't do a perm addition in 1.7
-- name: ensure all users can traverse the project directory
-  shell: chmod -R a+rx {{ root_dir }}
-
 - name: load conf files
   template: src={{ item }}.conf.j2 dest=/etc/nginx/conf.d/{{ item }}.conf
   with_items:

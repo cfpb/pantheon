@@ -2,6 +2,9 @@
   yum: name=git
 
 - name: ensure the repo is up-to-date
-  git: repo=https://github.com/dgreisen-cfpb/open-source-wizard.git dest={{ root_dir }} version=node force=yes
+  git: repo=https://github.com/cfpb/open-source-wizard.git dest={{ root_dir }} force=yes
+
+- name: ensure kratos is installed and up-to-date
+  git: repo=https://github.com/cfpb/kratos.git dest={{ kratos_dir }} force=yes
 
 # todo handle migrations

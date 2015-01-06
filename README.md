@@ -8,18 +8,19 @@ Prerequisites:
   * [Vagrant](https://www.vagrantup.com/)
   * [Virtualbox](https://www.vagrantup.com/)
   * [Ansible](http://www.ansible.com/) (if using mac w/o root install with `brew install ansible`, otherwise use pip)
+  * you will need to check out both this repo and the cfpb/kratos repo as siblings in the filesystem.
 
-1. add Node secret setting to `/vagrant/node/src/config_secret.iced`
+1. add Node secret setting to `/opt/kratos/src/config_secret.iced`
 1. add Django secret settings to `/vagrant/devops/devops/settings_secret.py`
 1. `vagrant up`
 1. `vagrant ssh`
 1. load data from github:
-  1. `cd /vagrant/node`
+  1. `cd /opt/kratos`
   1. `icake -n devdesign import_from_gh`
 1. start the django server
   1. `/vagrant/devops/manage.py runserver 0.0.0.0:8000`
 1. start the node server
-  1. `cd /vagrant/node`
+  1. `cd /opt/kratos`
   1. `icake runtestserver`
 
 Development
