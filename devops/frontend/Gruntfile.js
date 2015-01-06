@@ -203,6 +203,17 @@ module.exports = function(grunt) {
           }
         ]
       },
+      js: {
+        files:
+        [
+          {
+            expand: false,
+            cwd: '',
+            src: 'src/static/js/main.js',
+            dest: 'dest/static/js/main.js'
+          }
+        ]
+      },
       templates: {
         files: [{
           expand: true,
@@ -311,7 +322,7 @@ module.exports = function(grunt) {
   grunt.registerTask('vendor', ['bower:install', 'concat:cf-less']);
   grunt.registerTask('vendor-to-static', ['copy:vendor']);
   grunt.registerTask('cssdev', ['less', 'autoprefixer', 'cssmin', 'usebanner:css']);
-  grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates']);
+  grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates', 'copy:js']);
   grunt.registerTask('default', ['cssdev', 'jsdev', 'shell:manage_py']);
   grunt.registerTask('test', ['jshint']);
 

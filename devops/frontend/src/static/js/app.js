@@ -435,7 +435,8 @@
         // Properties
         scope.roles = [];
         angular.forEach( scope.teamModel.roles, function( role, key ) {
-          if ( role.members.indexOf( UserService.user.id ) > -1 ) {
+          var members = getObj( role, [ 'members' ] ) || [];
+          if ( members.indexOf( UserService.user.id ) > -1 ) {
             scope.roles.push( key );
           }
         });
@@ -512,7 +513,8 @@
       angular.forEach( teams, function( team ) {
         var inTeam = false;
         angular.forEach( team.roles, function( role ) {
-          if ( role.members.indexOf( UserService.user.id ) > -1 ) {
+          var members = getObj( role, [ 'members' ] ) || [];
+          if ( members.indexOf( UserService.user.id ) > -1 ) {
             inTeam = true;
           }
         });
