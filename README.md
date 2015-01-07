@@ -10,8 +10,8 @@ Prerequisites:
   * [Ansible](http://www.ansible.com/) (if using mac w/o root install with `brew install ansible`, otherwise use pip)
   * you will need to check out both this repo and the cfpb/kratos repo as siblings in the filesystem.
 
-1. add Node secret setting to `/opt/kratos/src/config_secret.iced`
-1. add Django secret settings to `/vagrant/devops/devops/settings_secret.py`
+1. add Node secret setting to `../kratos/src/config_secret.iced`
+1. add Django secret settings to `./devops/devops/settings_secret.py`
 1. `vagrant up`
 1. `vagrant ssh`
 1. load data from github:
