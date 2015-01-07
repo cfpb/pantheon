@@ -4,7 +4,7 @@
    # UserService service
    # TeamsCtrl controller
    # team directive
-   # repobutton directive
+   # assetbutton directive
    # userbutton directive
    # userlist directive
    # assetlist directive
@@ -171,18 +171,16 @@
   });
 
   /* ==========================================================================
-     # repobutton directive
-     Creates a button to toggle a list of repos on and off.
+     # assetbutton directive
+     Creates a button to toggle a list of assets on and off.
 
      team-model: A reference to a team model.
 
      Example:
-        <repobutton team-model="team"></repobutton>
-
-     TODO: Merge with userbutton since they do almost the exact same thing.
+        <assetbutton team-model="team"></assetbutton>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'repobutton', function() {
+  angular.module('OSWizardApp').directive( 'assetbutton', function() {
     return {
       restrict: 'E',
       scope: {
@@ -196,15 +194,15 @@
           $scope.show = !show;
         };
       },
-      templateUrl: '/static/templates/repobutton.html',
+      templateUrl: '/static/templates/assetbutton.html',
       link: function( scope, element, attrs ) {
         // Properties
         scope.heading = attrs.heading;
-        scope.repos = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
-        if ( typeof scope.repos === 'undefined' ) {
+        scope.assets = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
+        if ( typeof scope.assets === 'undefined' ) {
           scope.total = 0;
         } else {
-          scope.total = scope.repos.length;
+          scope.total = scope.assets.length;
         }
         // Events
         element.on( 'click', function() {
@@ -230,7 +228,7 @@
      Example:
         <userbutton team-model="team"></userbutton>
 
-     TODO: Merge with repobutton since they do almost the exact same thing.
+     TODO: Merge with assetbutton since they do almost the exact same thing.
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'userbutton', function() {
