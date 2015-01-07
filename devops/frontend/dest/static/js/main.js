@@ -36535,6 +36535,7 @@ var styleDirective = valueFn({
    # username filter
    # removeUsers filter
    # toArray filter
+   # prepUserData filter
    # prepTeamData filter
    # Cross Site Request Forgery protection
    # Utility functions
@@ -36550,11 +36551,22 @@ var styleDirective = valueFn({
      ========================================================================== */
 
   angular.module('OSWizardApp').factory( 'UserService', function() {
-    var user = { id: '', name: '' };
+    // The logged in user
+    var user = { id: '', name: '', roles: [], isGHUser: true };
+    // All users of dash
     var users = [];
     return {
       user: user,
       users: users,
+      // Logged in user functions
+      isTeamAdmin: function( permissions ) {
+        if ( typeof permissions !== 'undefined' ) {
+          return permissions.indexOf( this.user.id ) > -1;
+        } else {
+          return false;
+        }
+      },
+      // Functions for all users of dash
       getByID: function( id ) {
         var requestedUser;
         angular.forEach( this.users, function( user ) {
@@ -36566,13 +36578,6 @@ var styleDirective = valueFn({
       },
       getName: function( id ) {
         return this.getByID( id ).username;
-      },
-      isTeamAdmin: function( permissions ) {
-        if ( typeof permissions !== 'undefined' ) {
-          return permissions.indexOf( this.user.id ) > -1;
-        } else {
-          return false;
-        }
       }
     };
   });
@@ -36585,6 +36590,7 @@ var styleDirective = valueFn({
 
   angular.module('OSWizardApp').controller( 'TeamsCtrl', function( $scope, $http, $filter, UserService ) {
     // Properties
+    $scope.loggedIn = true;
     $scope.user = UserService.user;
     $scope.users = UserService.users;
     $scope.teams = [];
@@ -36612,25 +36618,39 @@ var styleDirective = valueFn({
       }
       return true;
     };
+    $scope.testStatus = function( status ) {
+      if ( status === 401 ) {
+        $scope.loggedIn = false;
+      } else {
+        $scope.loggedIn = true;
+      }
+    };
     // Data
-    $http.get('/kratos/user/').
-      success( function( response, status, headers, config ) {
-        var preppedResponse = response;
-        UserService.user.name = preppedResponse.username;
-        UserService.user.id = preppedResponse.name;
-        console.log( 'User\n', UserService.user.name, UserService.user.id );
+    $http.get('/kratos/user/')
+      .success( function( response, status, headers, config ) {
+        var preppedResponse = $filter('prepUserData')( response );
+        angular.copy( preppedResponse, UserService.user );
+        console.log( 'User\n', UserService.user );
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
-    $http.get('/kratos/users/').
-      success( function( response, status, headers, config ) {
+    $http.get('/kratos/users/')
+      .success( function( response, status, headers, config ) {
         UserService.users = response;
-        // $scope.users = response;
         console.log('Users\n', UserService.users);
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
-    $http.get('/kratos/orgs/devdesign/teams/').
-      success( function( response, status, headers, config ) {
+    $http.get('/kratos/orgs/devdesign/teams/')
+      .success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepTeamData')( response );
         $scope.teams = preppedResponse;
         console.log('Teams\n', preppedResponse);
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
   });
 
@@ -37065,6 +37085,27 @@ var styleDirective = valueFn({
         array.push( obj_prop );
       });
       return array;
+    };
+  });
+
+  /* ==========================================================================
+     # prepUserData filter
+     Tweak some properties to the user data before using it.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'prepUserData', function() {
+    return function( user ) {
+      var output = { id: user.name, name: user.username, roles: [], isGHUser: true };
+      var isGHUser = false;
+      angular.forEach( user.roles, function( role ) {
+        output.roles.push( { resource: role.split('|')[0], role: role.split('|')[1] } );
+      });
+      angular.forEach( output.roles, function( role ) {
+        if ( role.resource === 'gh' ) {
+          isGHUser = true;
+        }
+      });
+      output.isGHUser = isGHUser;
+      return output;
     };
   });
 

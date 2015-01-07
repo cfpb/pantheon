@@ -139,24 +139,43 @@
    ========================================================================== */
 
 .user-meta {
+    text-align: right;
     &_name {
         .h4();
         margin: 0;
-        .cf-icon {
-            margin-right: unit(4px / @font-size, em);
-        }
     }
     &_employee {
         .webfont-regular();
         font-size: unit(12px / @base-font-size-px, em);
     }
+    &_roles {
+        line-height: 1;
+    }
+    &_role {
+        .webfont-regular();
+        font-size: unit(12px / @base-font-size-px, em);
+        & + & {
+            margin-left: unit(8px / 12px, em);
+        }
+    }
     &_item {
         display: inline-block;
+        margin: 0;
+        padding: 0 unit(16px / @base-font-size-px, em);
+        border-left: 1px solid @gray-20;
+        border-right: 1px solid @gray-20;
+        vertical-align: middle;
     }
     &_item + &_item {
-        margin-left: unit(12px / @base-font-size-px, em);
-        padding-left: unit(16px / @base-font-size-px, em);
-        border-left: 1px solid @gray-20;
+        margin-left: unit(-5px / @base-font-size-px, em);
+    }
+    &_item__first {
+        padding-left: 0;
+        border-left: 0;
+    }
+    &_item__last {
+        padding-right: 0;
+        border-right: 0;
     }
 }
 
