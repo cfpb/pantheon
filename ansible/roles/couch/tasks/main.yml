@@ -21,19 +21,17 @@
 - stat: path=/usr/local/bin/couchdb
   register: couch_bin
 
+- name: create couch user
+  user: name=couchdb createhome=no
+
 - name: get couchdb tar
   get_url: url=http://download.nextag.com/apache/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz dest={{ root_dir }}/couchdb.tar.gz
 
 - name: unzip couchdb
-  shell: tar xvfz {{ root_dir }}/couchdb.tar.gz chdir={{ root_dir }}
-  when: not couch_bin.stat.exists
-
-- name: create couch user
-  user: name=couchdb createhome=no
-
+  unarchive: src={{ root_dir }}/couchdb.tar.gz dest=/usr/local/src copy=no owner=couchdb
 
 - name: configure
-  shell: '{{ root_dir}}/apache-couchdb-1.6.1/configure --with-erlang=/usr/lib64/erlang/usr/include/'
+  shell: '/usr/local/src/apache-couchdb-1.6.1/configure --with-erlang=/usr/lib64/erlang/usr/include/'
   register: configure_result
   when: not couch_bin.stat.exists
   failed_when: configure_result.stderr and 'directory already configured' not in configure_result.stderr
@@ -48,6 +46,14 @@
 - name: install couch
   shell: 'make install chdir={{ root_dir}}/apache-couchdb-1.6.1/'
   when: not couch_bin.stat.exists
+
+- name: change install permissions/ownership
+  file: path=/usr/local/{{ item }}/couchdb state=directory mode=0770 owner=couchdb recurse=yes
+  with_items:
+    - var/lib
+    - var/log
+    - var/run
+    - etc
 
 - name: add service to init.d
   file: path=/etc/init.d/couchdb state=link src=/usr/local/etc/rc.d/couchdb
