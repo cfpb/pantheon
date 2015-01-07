@@ -36679,7 +36679,16 @@ var styleDirective = valueFn({
       scope: {
         data: '='
       },
-      templateUrl: '/static/templates/team.html'
+      templateUrl: '/static/templates/team.html',
+      link: function( scope, element, attrs ) {
+        // Events
+        scope.$on( 'userlistUpdated', function( event, data ) {
+          scope.$broadcast( data.role.toLowerCase() + 'UserlistUpdated', data.users );
+        });
+        scope.$on( 'assetlistUpdated', function( event, data ) {
+          scope.$broadcast( data.type.toLowerCase() + 'AssetlistUpdated', data.assets );
+        });
+      }
     };
   });
 
@@ -36712,6 +36721,7 @@ var styleDirective = valueFn({
       templateUrl: '/static/templates/repobutton.html',
       link: function( scope, element, attrs ) {
         // Properties
+        scope.heading = attrs.heading;
         scope.repos = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
         if ( typeof scope.repos === 'undefined' ) {
           scope.total = 0;
@@ -36725,6 +36735,9 @@ var styleDirective = valueFn({
           } else {
             element.parents('.expandable')[0].collapse();
           }
+        });
+        scope.$on( scope.heading.toLowerCase() + 'AssetlistUpdated', function( event, data ) {
+          scope.total = data.length;
         });
       }
     };
@@ -36776,6 +36789,9 @@ var styleDirective = valueFn({
             element.parents('.expandable')[0].collapse();
           }
         });
+        scope.$on( scope.role.toLowerCase() + 'UserlistUpdated', function( event, data ) {
+          scope.total = data.length;
+        });
       }
     };
   });
@@ -36823,6 +36839,9 @@ var styleDirective = valueFn({
           } else {
             scope.total = scope.users.length;
           }
+          // Emit an event that the userlist has been updated. Send the role along with the list of users so
+          // that we can match up which userbutton button to update.
+          scope.$emit( 'userlistUpdated', { role: scope.role, users: scope.users } );
         };
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
@@ -36870,7 +36889,7 @@ var styleDirective = valueFn({
      # assetlist directive
      Creates a list of assets for a resource.
 
-     heading: The heading to show above the list of assets, should be plural.
+     heading: The heading to show above the list of assets, should be unique.
 
      Example:
         <div assetlist assets="[{name: 'Assets 1'}, {name: 'Assets 2'}]"
@@ -36905,6 +36924,8 @@ var styleDirective = valueFn({
                            '/resources/' + 'gh' + '/';
         scope.updateAssets = function() {
           scope.total = scope.assets.length;
+          // Emit an event that the assetlist has been updated.
+          scope.$emit( 'assetlistUpdated', { type: scope.heading, assets: scope.assets } );
         };
         scope.add = function( name ) {
           var data = { new: name };
