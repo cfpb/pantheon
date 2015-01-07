@@ -30,7 +30,7 @@
 
   angular.module('OSWizardApp').factory( 'UserService', function() {
     // The logged in user
-    var user = { id: '', name: '', roles: [] };
+    var user = { id: '', name: '', roles: [], isGHUser: true };
     // All users of dash
     var users = [];
     return {
@@ -572,10 +572,17 @@
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepUserData', function() {
     return function( user ) {
-      var output = { id: user.name, name: user.username, roles: [] };
+      var output = { id: user.name, name: user.username, roles: [], isGHUser: true };
+      var isGHUser = false;
       angular.forEach( user.roles, function( role ) {
         output.roles.push( { resource: role.split('|')[0], role: role.split('|')[1] } );
       });
+      angular.forEach( output.roles, function( role ) {
+        if ( role.resource === 'gh' ) {
+          isGHUser = true;
+        }
+      });
+      output.isGHUser = isGHUser;
       return output;
     };
   });

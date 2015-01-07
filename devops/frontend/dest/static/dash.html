@@ -108,9 +108,13 @@
             </li>
             <li class="breadcrumbs_item">My teams</li>
         </ul>
-        <!-- <div class="meta_right">
-            <button class="btn btn__secondary meta_btn">Add new team</button>
-        </div> -->
+        <div class="meta_right">
+            <a ng-if="!user.isGHUser"
+               href="/login/github?next=/static/dash.html" class="btn btn__secondary meta_btn">
+                Request org membership
+            </a>
+            <!-- <button class="btn btn__secondary meta_btn">Add new team</button> -->
+        </div>
       </div>
     </div>
     <div class="content_wrapper">
