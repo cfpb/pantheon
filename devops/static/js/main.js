@@ -36535,6 +36535,7 @@ var styleDirective = valueFn({
    # username filter
    # removeUsers filter
    # toArray filter
+   # prepUserData filter
    # prepTeamData filter
    # Cross Site Request Forgery protection
    # Utility functions
@@ -36550,11 +36551,22 @@ var styleDirective = valueFn({
      ========================================================================== */
 
   angular.module('OSWizardApp').factory( 'UserService', function() {
-    var user = { id: '', name: '' };
+    // The logged in user
+    var user = { id: '', name: '', roles: [] };
+    // All users of dash
     var users = [];
     return {
       user: user,
       users: users,
+      // Logged in user functions
+      isTeamAdmin: function( permissions ) {
+        if ( typeof permissions !== 'undefined' ) {
+          return permissions.indexOf( this.user.id ) > -1;
+        } else {
+          return false;
+        }
+      },
+      // Functions for all users of dash
       getByID: function( id ) {
         var requestedUser;
         angular.forEach( this.users, function( user ) {
@@ -36566,13 +36578,6 @@ var styleDirective = valueFn({
       },
       getName: function( id ) {
         return this.getByID( id ).username;
-      },
-      isTeamAdmin: function( permissions ) {
-        if ( typeof permissions !== 'undefined' ) {
-          return permissions.indexOf( this.user.id ) > -1;
-        } else {
-          return false;
-        }
       }
     };
   });
@@ -36597,7 +36602,6 @@ var styleDirective = valueFn({
       }
     );
     // Functions
-    // This ready function is in preparation for polling but is currently not used.
     $scope.ready = function() {
       if ( $scope.user.id === '' ) {
         return false;
@@ -36616,10 +36620,9 @@ var styleDirective = valueFn({
     // Data
     $http.get('/kratos/user/').
       success( function( response, status, headers, config ) {
-        var preppedResponse = response;
-        UserService.user.name = preppedResponse.username;
-        UserService.user.id = preppedResponse.name;
-        console.log( 'User\n', UserService.user.name, UserService.user.id );
+        var preppedResponse = $filter('prepUserData')( response );
+        angular.copy( preppedResponse, UserService.user );
+        console.log( 'User\n', UserService.user );
       });
     $http.get('/kratos/users/').
       success( function( response, status, headers, config ) {
@@ -37065,6 +37068,20 @@ var styleDirective = valueFn({
         array.push( obj_prop );
       });
       return array;
+    };
+  });
+
+  /* ==========================================================================
+     # prepUserData filter
+     Tweak some properties to the user data before using it.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'prepUserData', function() {
+    return function( user ) {
+      var output = { id: user.name, name: user.username, roles: [] };
+      angular.forEach( user.roles, function( role ) {
+        output.roles.push( { resource: role.split('|')[0], role: role.split('|')[1] } );
+      });
+      return output;
     };
   });
 

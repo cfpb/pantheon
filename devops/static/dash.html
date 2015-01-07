@@ -74,12 +74,15 @@
     </h1>
     <div class="masthead_user user-meta">
         <span class="user-meta_name">
-          <span class="cf-icon cf-icon-user"></span>
-          {{ user.name }}
+            <span class="cf-icon cf-icon-user"></span>
+            {{ user.name }}
         </span>
-        <!-- <span class="user-meta_employee">
-          (employee)
-        </span> -->
+        <div class="user-meta_roles">
+            <span ng-repeat="role in user.roles"
+                  class="user-meta_role">
+                {{ role.resource }}: {{ role.role }}
+            </span>
+        </div>
     </div>
 </header>
 

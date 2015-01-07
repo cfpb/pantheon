@@ -141,7 +141,8 @@
 .user-meta {
     &_name {
         .h4();
-        margin: 0;
+        padding: 0 0 unit(3px / @font-size, em);
+        border-bottom: 1px solid @gray;
         .cf-icon {
             margin-right: unit(4px / @font-size, em);
         }
@@ -149,6 +150,16 @@
     &_employee {
         .webfont-regular();
         font-size: unit(12px / @base-font-size-px, em);
+    }
+    &_roles {
+        margin: unit(2px / @base-font-size-px, em) 0 0;
+    }
+    &_role {
+        .webfont-regular();
+        font-size: unit(12px / @base-font-size-px, em);
+        & + & {
+            margin-left: unit(8px / 12px, em);
+        }
     }
     &_item {
         display: inline-block;
