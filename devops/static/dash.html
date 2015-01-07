@@ -72,17 +72,27 @@
         <span class="cf-icon cf-icon-web-round"></span>
         DevDash
     </h1>
-    <div class="masthead_user user-meta">
-        <span class="user-meta_name">
-            <span class="cf-icon cf-icon-user"></span>
-            {{ user.name }}
-        </span>
-        <div class="user-meta_roles">
-            <span ng-repeat="role in user.roles"
-                  class="user-meta_role">
-                <b>{{ role.resource }}:</b> {{ role.role }}
+    <div ng-if="loggedIn" class="masthead_user user-meta">
+        <span class="user-meta_item user-meta_item__first">
+            <span class="user-meta_name">
+                <span class="cf-icon cf-icon-user"></span>
+                {{ user.name }}
             </span>
-        </div>
+            <div class="user-meta_roles">
+                <span ng-repeat="role in user.roles"
+                      class="user-meta_role">
+                    <b>{{ role.resource }}:</b> {{ role.role }}
+                </span>
+            </div>
+        </span>
+        <span class="user-meta_item user-meta_item__last">
+          <a class="btn btn__link btn__warning" href="/logout">logout</a>
+        </span>
+    </div>
+    <div ng-if="!loggedIn" class="masthead_user user-meta">
+        <a href="/login/github-enterprise?next=/static/dash.html" class="btn btn__link btn__secondary">
+            login
+        </a>
     </div>
 </header>
 

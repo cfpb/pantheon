@@ -36590,6 +36590,7 @@ var styleDirective = valueFn({
 
   angular.module('OSWizardApp').controller( 'TeamsCtrl', function( $scope, $http, $filter, UserService ) {
     // Properties
+    $scope.loggedIn = true;
     $scope.user = UserService.user;
     $scope.users = UserService.users;
     $scope.teams = [];
@@ -36617,23 +36618,39 @@ var styleDirective = valueFn({
       }
       return true;
     };
+    $scope.testStatus = function( status ) {
+      if ( status === 401 ) {
+        $scope.loggedIn = false;
+      } else {
+        $scope.loggedIn = true;
+      }
+    };
     // Data
-    $http.get('/kratos/user/').
-      success( function( response, status, headers, config ) {
+    $http.get('/kratos/user/')
+      .success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepUserData')( response );
         angular.copy( preppedResponse, UserService.user );
         console.log( 'User\n', UserService.user );
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
-    $http.get('/kratos/users/').
-      success( function( response, status, headers, config ) {
+    $http.get('/kratos/users/')
+      .success( function( response, status, headers, config ) {
         UserService.users = response;
         console.log('Users\n', UserService.users);
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
-    $http.get('/kratos/orgs/devdesign/teams/').
-      success( function( response, status, headers, config ) {
+    $http.get('/kratos/orgs/devdesign/teams/')
+      .success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepTeamData')( response );
         $scope.teams = preppedResponse;
         console.log('Teams\n', preppedResponse);
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
   });
 
