@@ -36543,6 +36543,8 @@ var styleDirective = valueFn({
 
 (function(){
 
+  logging = false;
+
   angular.module( 'OSWizardApp', [] );
 
   /* ==========================================================================
@@ -36630,7 +36632,7 @@ var styleDirective = valueFn({
       .success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepUserData')( response );
         angular.copy( preppedResponse, UserService.user );
-        console.log( 'User\n', UserService.user );
+        if ( logging ) console.log( 'User\n', UserService.user );
       })
       .error( function( response, status ) {
         $scope.testStatus( status );
@@ -36638,7 +36640,7 @@ var styleDirective = valueFn({
     $http.get('/kratos/users/')
       .success( function( response, status, headers, config ) {
         UserService.users = response;
-        console.log('Users\n', UserService.users);
+        if ( logging ) console.log('Users\n', UserService.users);
       })
       .error( function( response, status ) {
         $scope.testStatus( status );
@@ -36647,7 +36649,7 @@ var styleDirective = valueFn({
       .success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepTeamData')( response );
         $scope.teams = preppedResponse;
-        console.log('Teams\n', preppedResponse);
+        if ( logging ) console.log('Teams\n', preppedResponse);
       })
       .error( function( response, status ) {
         $scope.testStatus( status );
@@ -36850,14 +36852,14 @@ var styleDirective = valueFn({
             url: scope.requestURL + user.name
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            if ( logging ) console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               scope.users.push( user );
               scope.updateUsers();
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            if ( logging ) console.log( 'Error:', msg );
           });
         };
         scope.remove = function( user ) {
@@ -36866,7 +36868,7 @@ var styleDirective = valueFn({
             url: scope.requestURL + user.name
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            if ( logging ) console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               var index = scope.users.indexOf( user );
               scope.users.splice( index, 1 );
@@ -36874,7 +36876,7 @@ var styleDirective = valueFn({
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            if ( logging ) console.log( 'Error:', msg );
           });
         };
         // Init
@@ -36934,7 +36936,7 @@ var styleDirective = valueFn({
             contentType: 'application/json'
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            if ( logging ) console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               data.name = data.new;
               scope.assets.unshift( data );
@@ -36943,7 +36945,7 @@ var styleDirective = valueFn({
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            if ( logging ) console.log( 'Error:', msg );
           });
         };
         scope.remove = function( assetToRemove ) {
@@ -36959,14 +36961,14 @@ var styleDirective = valueFn({
             url: scope.requestURL + assetObj.id
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            if ( logging ) console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               scope.assets.splice( index, 1 );
               scope.updateAssets();
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            if ( logging ) console.log( 'Error:', msg );
           });
         };
         scope.updateAssets();
