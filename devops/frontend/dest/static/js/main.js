@@ -36597,6 +36597,7 @@ var styleDirective = valueFn({
       }
     );
     // Functions
+    // This ready function is in preparation for polling but is currently not used.
     $scope.ready = function() {
       if ( $scope.user.id === '' ) {
         return false;
@@ -36623,7 +36624,6 @@ var styleDirective = valueFn({
     $http.get('/kratos/users/').
       success( function( response, status, headers, config ) {
         UserService.users = response;
-        // $scope.users = response;
         console.log('Users\n', UserService.users);
       });
     $http.get('/kratos/orgs/devdesign/teams/').
