@@ -292,8 +292,8 @@ module.exports = function(grunt) {
         files: ['src/static/templates/*.html'],
         tasks: ['copy:templates', 'shell:manage_py']
       },
-      angular_page: {
-        files: ['dest/static/angular.html'],
+      dash_page: {
+        files: ['dest/static/dash.html'],
         tasks: ['shell:manage_py']
       }
     }
@@ -323,7 +323,6 @@ module.exports = function(grunt) {
   grunt.registerTask('vendor-to-static', ['copy:vendor']);
   grunt.registerTask('cssdev', ['less', 'autoprefixer', 'cssmin', 'usebanner:css']);
   grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates', 'copy:js']);
-  grunt.registerTask('default', ['cssdev', 'jsdev', 'shell:manage_py']);
-  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('default', ['cssdev', 'jsdev', 'copy:templates', 'shell:manage_py']);
 
 };

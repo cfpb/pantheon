@@ -68,7 +68,7 @@
       </h1>
       <div class="masthead_user user-meta">
         {% if user.is_authenticated %}
-          <span class="user-meta_item">
+          <span class="user-meta_item user-meta_item__first">
             <span class="user-meta_name">
               <span class="cf-icon cf-icon-user"></span>
               {{ user.username }}
@@ -77,11 +77,11 @@
               ({% if user.contractor %}contractor{% else %}employee{% endif %})
             </span>
           </span>
-          <span class="user-meta_item">
+          <span class="user-meta_item user-meta_item__last">
             <a class="btn btn__link btn__warning" href="/logout">logout</a>
           </span>
         {% else %}
-          <a href="/login/github-enterprise" class="btn btn__link btn__secondary">login</a>
+          <a href="/login" class="btn btn__link btn__secondary">login</a>
         {% endif %}
       </div>
       {% if messages %}
@@ -115,7 +115,7 @@
         {% block unauthed_content %}
         <div class="intro">
           <p class="intro_text">Tools for starting, building, testing, deploying and maintaining code</p>
-          <a href="/login/github-enterprise" class="btn btn__super intro_btn">
+          <a href="/login" class="btn btn__super intro_btn">
             <span class="btn_icon__left cf-icon cf-icon-github"></span>
             Login
           </a>

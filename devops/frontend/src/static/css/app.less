@@ -12,9 +12,10 @@
    # .meta
    # .intro
    # .tile
+   # .user-role
    # .btn__block
    # Expandables
-   # .role-icon
+   # .corner-badge
    # Slats
    ## .slats
    ## .slats-header
@@ -22,7 +23,7 @@
    ## .slat
    # .teams
    # Directives
-   ## userbutton, repobutton
+   ## userbutton, assetbutton
    ## userlist
    ========================================================================== */
 
@@ -139,12 +140,10 @@
    ========================================================================== */
 
 .user-meta {
+    text-align: right;
     &_name {
         .h4();
         margin: 0;
-        .cf-icon {
-            margin-right: unit(4px / @font-size, em);
-        }
     }
     &_employee {
         .webfont-regular();
@@ -152,11 +151,22 @@
     }
     &_item {
         display: inline-block;
+        margin: 0;
+        padding: 0 unit(16px / @base-font-size-px, em);
+        border-left: 1px solid @gray-20;
+        border-right: 1px solid @gray-20;
+        vertical-align: middle;
     }
     &_item + &_item {
-        margin-left: unit(12px / @base-font-size-px, em);
-        padding-left: unit(16px / @base-font-size-px, em);
-        border-left: 1px solid @gray-20;
+        margin-left: unit(-5px / @base-font-size-px, em);
+    }
+    &_item__first {
+        padding-left: 0;
+        border-left: 0;
+    }
+    &_item__last {
+        padding-right: 0;
+        border-right: 0;
     }
 }
 
@@ -224,6 +234,27 @@
             .grid_column(6);
         }
     });
+}
+
+
+/* ==========================================================================
+   # .user-role
+   ========================================================================== */
+
+.user-role {
+    display: inline-block;
+    font-size: unit(12px / @base-font-size-px, em);
+    line-height: 1;
+
+    & + & {
+        margin-left: unit(8px / 12px, em);
+    }
+    &_resource {
+        .webfont-medium();
+    }
+    &_role {
+        .webfont-regular();
+    }
 }
 
 
@@ -299,32 +330,32 @@
 
 
 /* ==========================================================================
-   # .role-icon
+   # .corner-badge
    ========================================================================== */
 
-.role-icon {
+.corner-badge {
     display: inline-block;
-    padding: 4px 6px;
+    padding: unit(4px / @base-font-size-px, em) unit(6px / @base-font-size-px, em);
     border-bottom-left-radius: 4px;
     background: @gray-20;
     color: @black;
     .webfont-regular();
-    font-size: unit(12px / @base-font-size-px, em);
     line-height: 1;
 
-    &:before {
-        // cf-icon-favorite
+    &__user:before {
+        // cf-icon-user
         .cf-icon();
         content: "\e600";
         margin-right: unit(4px / 12px, em);
     }
-
     &__hide {
         display: none;
     }
-
     &__bg-green {
         background-color: @green-midtone;
+    }
+    &_label {
+        font-size: unit(12px / @base-font-size-px, em);
     }
 }
 
@@ -411,13 +442,28 @@
     .u-clearfix();
     padding: unit(@padding / @base-font-size-px, em);
 
+    &__has-roles {
+        position: relative;
+    }
+
+    &_roles {
+        position: absolute;
+        top: -1px;
+        right: 0;
+    }
+
     &_label {
         .webfont-medium();
         font-size: unit(18px / @base-font-size-px, em);
         line-height: 1;
     }
 
+    &_label + &_label {
+        margin-left: unit(8px / 18px, em);
+    }
+
     &_small {
+        color: @gray;
         .webfont-regular();
         font-size: unit(12px / 18px, em);
         line-height: 1;
@@ -498,13 +544,19 @@
     &_item {
         .respond-to-min(768px, {
             .grid_column(6);
-            group& {
+            // ng-repeat does not add whitespace between items so we need to remove the default
+            // `margin-right: -4px` added by .grid_column().
+            [ng-repeat]& {
                 margin-right: 0;
             }
         });
         .respond-to-min(1024px, {
             .grid_column(4);
-            margin-right: 0;
+            // ng-repeat does not add whitespace between items so we need to remove the default
+            // `margin-right: -4px` added by .grid_column().
+            [ng-repeat]& {
+                margin-right: 0;
+            }
         });
     }
 }
@@ -524,12 +576,12 @@
    ========================================================================== */
 
 
-/* ## userbutton, repobutton
+/* ## userbutton, assetbutton
    ========================================================================== */
 
 // .btn overrides.
 .userbutton,
-.repobutton {
+.assetbutton {
     margin: 0;
 }
 

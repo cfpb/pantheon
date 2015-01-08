@@ -4,7 +4,7 @@
    # UserService service
    # TeamsCtrl controller
    # team directive
-   # repobutton directive
+   # assetbutton directive
    # userbutton directive
    # userlist directive
    # assetlist directive
@@ -13,12 +13,22 @@
    # username filter
    # removeUsers filter
    # toArray filter
+   # prepUserData filter
+   # prepUsersData filter
    # prepTeamData filter
    # Cross Site Request Forgery protection
    # Utility functions
    ========================================================================== */
 
 (function(){
+
+  window.kratosResponse = {
+    user: '',
+    users: [],
+    teams: [],
+    // You can use the log when adding/removing things.
+    log: []
+  };
 
   angular.module( 'OSWizardApp', [] );
 
@@ -28,11 +38,22 @@
      ========================================================================== */
 
   angular.module('OSWizardApp').factory( 'UserService', function() {
-    var user = { id: '', name: '' };
+    // The logged in user
+    var user = { id: '', name: '', parsedRoles: [], isGHUser: true };
+    // All users of dash
     var users = [];
     return {
       user: user,
       users: users,
+      // Logged in user functions
+      isTeamAdmin: function( permissions ) {
+        if ( typeof permissions !== 'undefined' ) {
+          return permissions.indexOf( this.user.id ) > -1;
+        } else {
+          return false;
+        }
+      },
+      // Functions for all users of dash
       getByID: function( id ) {
         var requestedUser;
         angular.forEach( this.users, function( user ) {
@@ -43,14 +64,11 @@
         return requestedUser;
       },
       getName: function( id ) {
-        return this.getByID( id ).username;
+        return this.getByID( id ).data.username;
       },
-      isTeamAdmin: function( permissions ) {
-        if ( typeof permissions !== 'undefined' ) {
-          return permissions.indexOf( this.user.id ) > -1;
-        } else {
-          return false;
-        }
+      // Generic user and users functions
+      parseRole: function( role ) {
+        return { resource: role.split('|')[0], role: role.split('|')[1] };
       }
     };
   });
@@ -63,6 +81,7 @@
 
   angular.module('OSWizardApp').controller( 'TeamsCtrl', function( $scope, $http, $filter, UserService ) {
     // Properties
+    $scope.loggedIn = true;
     $scope.user = UserService.user;
     $scope.users = UserService.users;
     $scope.teams = [];
@@ -90,25 +109,40 @@
       }
       return true;
     };
+    $scope.testStatus = function( status ) {
+      if ( status === 401 ) {
+        $scope.loggedIn = false;
+      } else {
+        $scope.loggedIn = true;
+      }
+    };
     // Data
-    $http.get('/kratos/user/').
-      success( function( response, status, headers, config ) {
-        var preppedResponse = response;
-        UserService.user.name = preppedResponse.username;
-        UserService.user.id = preppedResponse.name;
-        console.log( 'User\n', UserService.user.name, UserService.user.id );
+    $http.get('/kratos/user/')
+      .success( function( response, status, headers, config ) {
+        var preppedResponse = $filter('prepUserData')( response );
+        angular.copy( preppedResponse, UserService.user );
+        window.kratosResponse.user = UserService.user;
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
-    $http.get('/kratos/users/').
-      success( function( response, status, headers, config ) {
-        UserService.users = response;
-        // $scope.users = response;
-        console.log('Users\n', UserService.users);
+    $http.get('/kratos/users/')
+      .success( function( response, status, headers, config ) {
+        var preppedResponse = $filter('prepUsersData')( response );
+        angular.copy( preppedResponse, UserService.users );
+        window.kratosResponse.users = UserService.users;
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
-    $http.get('/kratos/orgs/devdesign/teams/').
-      success( function( response, status, headers, config ) {
+    $http.get('/kratos/orgs/devdesign/teams/')
+      .success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepTeamData')( response );
         $scope.teams = preppedResponse;
-        console.log('Teams\n', preppedResponse);
+        window.kratosResponse.teams = preppedResponse;
+      })
+      .error( function( response, status ) {
+        $scope.testStatus( status );
       });
   });
 
@@ -137,23 +171,30 @@
       scope: {
         data: '='
       },
-      templateUrl: '/static/templates/team.html'
+      templateUrl: '/static/templates/team.html',
+      link: function( scope, element, attrs ) {
+        // Events
+        scope.$on( 'userlistUpdated', function( event, data ) {
+          scope.$broadcast( data.role.toLowerCase() + 'UserlistUpdated', data.users );
+        });
+        scope.$on( 'assetlistUpdated', function( event, data ) {
+          scope.$broadcast( data.type.toLowerCase() + 'AssetlistUpdated', data.assets );
+        });
+      }
     };
   });
 
   /* ==========================================================================
-     # repobutton directive
-     Creates a button to toggle a list of repos on and off.
+     # assetbutton directive
+     Creates a button to toggle a list of assets on and off.
 
      team-model: A reference to a team model.
 
      Example:
-        <repobutton team-model="team"></repobutton>
-
-     TODO: Merge with userbutton since they do almost the exact same thing.
+        <assetbutton team-model="team"></assetbutton>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'repobutton', function() {
+  angular.module('OSWizardApp').directive( 'assetbutton', function() {
     return {
       restrict: 'E',
       scope: {
@@ -167,14 +208,15 @@
           $scope.show = !show;
         };
       },
-      templateUrl: '/static/templates/repobutton.html',
+      templateUrl: '/static/templates/assetbutton.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.repos = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
-        if ( typeof scope.repos === 'undefined' ) {
+        scope.heading = attrs.heading;
+        scope.assets = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
+        if ( typeof scope.assets === 'undefined' ) {
           scope.total = 0;
         } else {
-          scope.total = scope.repos.length;
+          scope.total = scope.assets.length;
         }
         // Events
         element.on( 'click', function() {
@@ -183,6 +225,9 @@
           } else {
             element.parents('.expandable')[0].collapse();
           }
+        });
+        scope.$on( scope.heading.toLowerCase() + 'AssetlistUpdated', function( event, data ) {
+          scope.total = data.length;
         });
       }
     };
@@ -197,7 +242,7 @@
      Example:
         <userbutton team-model="team"></userbutton>
 
-     TODO: Merge with repobutton since they do almost the exact same thing.
+     TODO: Merge with assetbutton since they do almost the exact same thing.
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'userbutton', function() {
@@ -234,6 +279,9 @@
             element.parents('.expandable')[0].collapse();
           }
         });
+        scope.$on( scope.role.toLowerCase() + 'UserlistUpdated', function( event, data ) {
+          scope.total = data.length;
+        });
       }
     };
   });
@@ -250,7 +298,7 @@
         <section userlist team-model="team" role="Admin"></section>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
+  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, $timeout, UserService ) {
     return {
       restrict: 'A',
       scope: {
@@ -261,6 +309,7 @@
       templateUrl: '/static/templates/userlist.html',
       link: function( scope, element, attrs ) {
         // Properties
+        scope.listFilter = '';
         scope.role = attrs.role;
         scope.canAdd = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'perms', 'add' ] );
         scope.canRemove = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'perms', 'remove' ] );
@@ -281,6 +330,9 @@
           } else {
             scope.total = scope.users.length;
           }
+          // Emit an event that the userlist has been updated. Send the role along with the list of users so
+          // that we can match up which userbutton button to update.
+          scope.$emit( 'userlistUpdated', { role: scope.role, users: scope.users } );
         };
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
@@ -291,14 +343,14 @@
             url: scope.requestURL + user.name
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            window.kratosResponse.log.push({ done: angular.fromJson(msg) });
             scope.$apply(function () {
               scope.users.push( user );
               scope.updateUsers();
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            window.kratosResponse.log.push({ error: angular.fromJson(msg) });
           });
         };
         scope.remove = function( user ) {
@@ -307,7 +359,7 @@
             url: scope.requestURL + user.name
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            window.kratosResponse.log.push({ done: angular.fromJson(msg) });
             scope.$apply(function () {
               var index = scope.users.indexOf( user );
               scope.users.splice( index, 1 );
@@ -315,7 +367,7 @@
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            window.kratosResponse.log.push({ error: angular.fromJson(msg) });
           });
         };
         // Init
@@ -328,7 +380,7 @@
      # assetlist directive
      Creates a list of assets for a resource.
 
-     heading: The heading to show above the list of assets, should be plural.
+     heading: The heading to show above the list of assets, should be unique.
 
      Example:
         <div assetlist assets="[{name: 'Assets 1'}, {name: 'Assets 2'}]"
@@ -363,6 +415,8 @@
                            '/resources/' + 'gh' + '/';
         scope.updateAssets = function() {
           scope.total = scope.assets.length;
+          // Emit an event that the assetlist has been updated.
+          scope.$emit( 'assetlistUpdated', { type: scope.heading, assets: scope.assets } );
         };
         scope.add = function( name ) {
           var data = { new: name };
@@ -373,7 +427,7 @@
             contentType: 'application/json'
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            window.kratosResponse.log.push({ done: angular.fromJson(msg) });
             scope.$apply(function () {
               data.name = data.new;
               scope.assets.unshift( data );
@@ -382,7 +436,7 @@
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            window.kratosResponse.log.push({ error: angular.fromJson(msg) });
           });
         };
         scope.remove = function( assetToRemove ) {
@@ -398,14 +452,14 @@
             url: scope.requestURL + assetObj.id
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            window.kratosResponse.log.push({ done: angular.fromJson(msg) });
             scope.$apply(function () {
               scope.assets.splice( index, 1 );
               scope.updateAssets();
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            window.kratosResponse.log.push({ error: angular.fromJson(msg) });
           });
         };
         scope.updateAssets();
@@ -421,6 +475,8 @@
 
      Example:
         <role teamModel="team"></role>
+
+     TODO: Rename this to "teamrole".
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'role', function( $filter, UserService ) {
@@ -441,15 +497,15 @@
           }
         });
         scope.roles = $filter('orderBy')( scope.roles );
-        element.addClass('role-icon');
-        element.append( scope.roles.join(', ') );
+        element.addClass('corner-badge corner-badge__user');
+        element.append( '<span class="corner-badge_label">' + scope.roles.join(', ') + '</span>' );
         // Color this green if the role contains 'admin'.
         if ( scope.roles.indexOf( 'admin' ) !== -1 ) {
-          element.addClass('role-icon__bg-green');
+          element.addClass('corner-badge__bg-green');
         }
         // Hide this if the role is empty.
         if ( scope.roles.length === 0 ) {
-          element.addClass('role-icon__hide');
+          element.addClass('corner-badge__hide');
         }
       }
     };
@@ -543,6 +599,45 @@
         array.push( obj_prop );
       });
       return array;
+    };
+  });
+
+  /* ==========================================================================
+     # prepUserData filter
+     Tweak some properties to the user data before using it.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'prepUserData', function( UserService ) {
+    return function( user ) {
+      var output = { id: user.name, name: user.data.username, parsedRoles: [], isGHUser: true };
+      var isGHUser = false;
+      angular.forEach( user.roles, function( role ) {
+        output.parsedRoles.push( UserService.parseRole( role ) );
+      });
+      angular.forEach( output.roles, function( role ) {
+        if ( role.resource === 'gh' ) {
+          isGHUser = true;
+        }
+      });
+      output.isGHUser = isGHUser;
+      return output;
+    };
+  });
+
+  /* ==========================================================================
+     # prepUsersData filter
+     Tweak some properties to the users data before using it.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'prepUsersData', function( UserService ) {
+    return function( users ) {
+      var output = [];
+      angular.forEach( users, function( user ) {
+        user.parsedRoles = [];
+        angular.forEach( user.roles, function( role ) {
+          user.parsedRoles.push( UserService.parseRole( role ) );
+        });
+        output.push( user );
+      });
+      return output;
     };
   });
 

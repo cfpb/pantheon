@@ -1,11 +1,11 @@
-<h1 class="slats-header">{{ ::role }}</h1>
+<h1 class="slats-header">{{ ::role }} list</h1>
 <ul class="team-content_item slats">
     <li ng-if="total === 0"
         class="slats_item slat">
         <span class="slat_label">No {{ ::role | lowercase }} users</span>
     </li>
     <li ng-repeat="user in users | orderBy:'username'"
-        class="slats_item slat">
+        class="slats_item slat slat__has-roles">
         <button ng-if="editable"
                 ng-click="remove(user)"
                 class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
@@ -13,11 +13,19 @@
             <span class="cf-icon cf-icon-minus-round"></span>
         </button>
         <span class="slat_label">
-            {{ user.username }}
+            {{ user.data.username }}
         </span>
-        <span ng-if="user.stub"
-              class="slat_small">
-            stub
+        <span ng-if="user.parsedRoles.length > 0"
+              class="corner-badge slat_roles">
+            <span ng-repeat="role in user.parsedRoles"
+                  class="user-role">
+                <span class="user-role_resource">
+                    {{ role.resource }}:
+                </span>
+                <span class="user-role_role">
+                    {{ role.role }}
+                </span>
+            </span>
         </span>
     </li>
 </ul>
@@ -39,38 +47,27 @@
             Add new {{ ::role }} users
         </h2>
         <div class="slats-type">
-            <input ng-model="filter"
+            <input ng-model="listFilter"
                    type="text"
                    class="slats-type_input"
                    placeholder="Type to filter by username">
         </div>
         <ul class="slats">
-            <li ng-if="(allUsers | filter:filter).length === 0"
+            <li ng-if="(allUsers | filter:listFilter).length === 0"
                 class="slats_item slat">
                 <span class="slat_label">
-                    Sorry, there's no user named &ldquo;{{ filter }}&rdquo;
+                    Sorry, there's no user named &ldquo;{{ listFilter }}&rdquo;
                 </span>
             </li>
-            <li ng-repeat="user in allUsers | filter:filter"
+            <li ng-repeat="user in allUsers | filter:listFilter"
                 class="slats_item slat">
-                <button ng-if="!inUserList(user)"
-                        ng-click="add(user)"
+                <button ng-click="add(user)"
                         class="slat_icon-btn slat_icon-btn__add slat_icon-btn__first">
                     <span class="u-visually-hidden">Add</span>
                     <span class="cf-icon cf-icon-plus-round"></span>
                 </button>
-                <button ng-if="inUserList(user)"
-                        ng-click="remove(user)"
-                        class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
-                    <span class="u-visually-hidden">Remove</span>
-                    <span class="cf-icon cf-icon-minus-round"></span>
-                </button>
                 <span class="slat_label">
-                    {{ user.username }}
-                    <span ng-if="user.stub"
-                          class="slat_small">
-                        stub
-                    </span>
+                    {{ user.data.username }}
                 </span>
             </li>
         </ul>

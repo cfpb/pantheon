@@ -72,20 +72,38 @@
         <span class="cf-icon cf-icon-web-round"></span>
         DevDash
     </h1>
-    <div class="masthead_user user-meta">
-        <span class="user-meta_name">
-          <span class="cf-icon cf-icon-user"></span>
-          {{ user.name }}
+    <div ng-if="loggedIn" class="masthead_user user-meta">
+        <span class="user-meta_item user-meta_item__first">
+            <span class="user-meta_name">
+                <span class="cf-icon cf-icon-user"></span>
+                {{ user.name }}
+            </span>
+            <div ng-if="user.parsedRoles.length > 0">
+                <span ng-repeat="role in user.parsedRoles"
+                      class="user-role">
+                    <span class="user-role_resource">
+                        {{ role.resource }}:
+                    </span>
+                    <span class="user-role_role">
+                        {{ role.role }}
+                    </span>
+                </span>
+            </div>
         </span>
-        <!-- <span class="user-meta_employee">
-          (employee)
-        </span> -->
+        <span class="user-meta_item user-meta_item__last">
+          <a class="btn btn__link btn__warning" href="/logout">logout</a>
+        </span>
+    </div>
+    <div ng-if="!loggedIn" class="masthead_user user-meta">
+        <a href="/login?next=/static/dash.html" class="btn btn__link btn__secondary">
+            login
+        </a>
     </div>
 </header>
 
 <main class="content" id="main" role="main">
     <div class="content_bar"></div>
-    <div class="meta">
+    <!-- <div class="meta">
       <div class="wrapper wrapper__match-content">
         <ul class="meta_left meta_breadcrumbs breadcrumbs">
             <li class="breadcrumbs_item">
@@ -95,11 +113,11 @@
             </li>
             <li class="breadcrumbs_item">My teams</li>
         </ul>
-        <!-- <div class="meta_right">
+        <div class="meta_right">
             <button class="btn btn__secondary meta_btn">Add new team</button>
-        </div> -->
+        </div>
       </div>
-    </div>
+    </div> -->
     <div class="content_wrapper">
         <div ng-if="ready()"
              class="content_main">
@@ -107,8 +125,8 @@
                 <h1 class="u-visually-hidden">My teams</h1>
                 <div class="teams">
                     <section team
-                             data="team"
                              ng-repeat="team in teams | hasCurrentUser"
+                             data="team"
                              class="teams_item">
                     </section>
                 </div>

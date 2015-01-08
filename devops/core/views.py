@@ -20,6 +20,7 @@ def sync(request):
 
 
 def home(request):
+    return HttpResponseRedirect('/static/dash.html')
     context = RequestContext(request)
 
     if request.user.is_authenticated():
@@ -30,4 +31,20 @@ def home(request):
 
 def logout_view(request):
     logout(request)
+    return redirect('/static/dash.html')
     return redirect('/')
+
+def login(request):
+    user = request.user
+    if user.is_authenticated():
+        logout(request)
+    return HttpResponseRedirect('/login/github-enterprise/?next=/login_continue')
+
+def login_continue(request):
+    user = request.user
+    try:
+        user.social_auth.get(provider='github')
+    except user.social_auth.model.DoesNotExist:
+        return HttpResponseRedirect('/login/github/?next=/static/dash.html')
+    else:
+        return HttpResponseRedirect('/static/dash.html')
