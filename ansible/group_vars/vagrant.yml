@@ -1,1 +1,3 @@
 root_dir: /vagrant
+is_virtualbox: yes
+kratos_dir: /opt/kratos

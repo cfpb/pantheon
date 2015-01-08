@@ -1,0 +1,20 @@
+- name: add nginx yum repo
+  copy: src=nginx.repo dest=/etc/yum.repos.d/nginx.repo
+
+- name: install nginx
+  yum: name=nginx
+
+- name: load conf files
+  template: src={{ item }}.conf.j2 dest=/etc/nginx/conf.d/{{ item }}.conf
+  with_items:
+    - node
+  notify: 
+    - restart nginx
+
+- name: remove default conf
+  file: path=/etc/nginx/conf.d/default.conf state=absent
+  notify: 
+    - restart nginx
+
+- name: start nginx; ensure start on boot
+  service: name=nginx state=started enabled=true

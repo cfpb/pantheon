@@ -79,6 +79,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
     'core.pipeline.sync',
+    'kratos.pipeline.register_kratos',
 )
 
 SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY')
@@ -88,7 +89,7 @@ SOCIAL_AUTH_GITHUB_ENTERPRISE_HOST = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_H
 SOCIAL_AUTH_GITHUB_ENTERPRISE_USER_FIELDS = ('first_name', 'last_name', 'username', 'email', 'contractor',)
 SOCIAL_AUTH_GITHUB_KEY = get_secret('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = get_secret('SOCIAL_AUTH_GITHUB_SECRET')
-SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'repo', 'admin:repo_hook', 'write:org', 'write:public_key']
+SOCIAL_AUTH_GITHUB_SCOPE = ['user', 'write:org', 'write:public_key']
 
 # ids of all orgs belonging to the entity
 GH_ORG_IDS = get_secret('GH_ORG_IDS', (1071563,))
@@ -102,6 +103,7 @@ GH_ADMIN_CREDENTIALS = get_secret('GH_ADMIN_CREDENTIALS') # A requests.auth.HTTP
 # READ ONLY CREDENTIALS
 GHE_ADMIN_CREDENTIALS = get_secret('GHE_ADMIN_CREDENTIALS') # A requests.auth.HTTPBasicAuth object
 
+KRATOS_ADMIN_PWD = get_secret('KRATOS_ADMIN_PWD')
 KRATOS_ENFORCE_GH_ORGS = GH_ORG_IDS
 KRATOS_ENFORCE_GHE = True
 
@@ -137,6 +139,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'core.express_auth.SetExpressAuthentication',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -157,6 +160,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+KRATOS_URL = 'http://localhost/kratos'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -176,3 +180,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

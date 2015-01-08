@@ -203,6 +203,17 @@ module.exports = function(grunt) {
           }
         ]
       },
+      js: {
+        files:
+        [
+          {
+            expand: false,
+            cwd: '',
+            src: 'src/static/js/main.js',
+            dest: 'dest/static/js/main.js'
+          }
+        ]
+      },
       templates: {
         files: [{
           expand: true,
@@ -250,6 +261,18 @@ module.exports = function(grunt) {
       all: ['src/static/js/main.js']
     },
 
+    shell: {
+      manage_py: {
+        command: './manage.py collectstatic --noinput',
+        options: {
+          stderr: false,
+          execOptions: {
+            cwd: '..'
+          }
+        }
+      }
+    },
+
     /**
      * Watch: https://github.com/gruntjs/grunt-contrib-watch
      * 
@@ -257,9 +280,21 @@ module.exports = function(grunt) {
      * Add files to monitor below.
      */
     watch: {
-      main: {
-        files: ['src/static/css/app.less', 'src/static/js/app.js', 'src/static/templates/*.html'],
-        tasks: ['default']
+      app_css: {
+        files: ['src/static/css/app.less'],
+        tasks: ['cssdev', 'shell:manage_py']
+      },
+      app_js: {
+        files: ['src/static/js/app.js'],
+        tasks: ['jsdev', 'shell:manage_py']
+      },
+      angular_templates: {
+        files: ['src/static/templates/*.html'],
+        tasks: ['copy:templates', 'shell:manage_py']
+      },
+      angular_page: {
+        files: ['dest/static/angular.html'],
+        tasks: ['shell:manage_py']
       }
     }
   };
@@ -279,6 +314,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-shell');
 
   /**
    * Create custom task aliases and combinations
@@ -286,8 +322,8 @@ module.exports = function(grunt) {
   grunt.registerTask('vendor', ['bower:install', 'concat:cf-less']);
   grunt.registerTask('vendor-to-static', ['copy:vendor']);
   grunt.registerTask('cssdev', ['less', 'autoprefixer', 'cssmin', 'usebanner:css']);
-  grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates']);
-  grunt.registerTask('default', ['cssdev', 'jsdev']);
+  grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates', 'copy:js']);
+  grunt.registerTask('default', ['cssdev', 'jsdev', 'shell:manage_py']);
   grunt.registerTask('test', ['jshint']);
 
 };

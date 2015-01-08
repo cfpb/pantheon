@@ -1,0 +1,20 @@
+- stat: path=/usr/bin/node
+  register: node_bin
+- name: install node lib
+  shell: curl -sL https://rpm.nodesource.com/setup | bash -
+  when: not node_bin.stat.exists
+- name: install node rpm
+  yum: name=nodejs
+  when: not node_bin.stat.exists
+- name: install global libs
+  npm: name={{ item.name }} version={{ item.version }} global=yes
+  with_items:
+    - {name: 'iced-coffee-script', version: '1.8.0-c'}
+    - {name: 'jasmine-node', version: '1.14.5'}
+    - {name: 'supervisor', version: '0.6.0'}
+    - {name: 'kanso', version: '0.4.0'}
+    - {name: 'forever', version: '0.13.0'}
+- name: install node application package
+  npm: path={{ kratos_dir }}
+- name: build all iced coffeescript
+  shell: icake build chdir={{ kratos_dir }}

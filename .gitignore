@@ -4,10 +4,18 @@
 env-devops
 /devops/devops/settings_secret.py
 
+# Vagrant #
+###########
+.vagrant
+
 # Ansible #
 ###########
 /ansible/production_inventory
 /ansible/group_vars/production.yml
+
+# CouchDB #
+###########
+/apache-couchdb-1.6.1/
 
 # Compiled source #
 ###################
@@ -55,7 +63,7 @@ Thumbs.db
 # Grunt.js #
 ############
 .grunt/
-node_modules/
+/devops/frontend/node_modules/
 
 # Bower packages #
 ##################
@@ -73,7 +81,4 @@ bower_components/
 /devops/frontend/dest/static/test-data.json
 /devops/frontend/dest/static/test-data.old.json
 # /devops/frontend/dest/static/vendor
-
-# Vagrant #
-###########
-.vagrant
+/devops/static/test-data.old.json
