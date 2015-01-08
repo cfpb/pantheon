@@ -78,10 +78,15 @@
                 <span class="cf-icon cf-icon-user"></span>
                 {{ user.name }}
             </span>
-            <div class="user-meta_roles">
+            <div ng-if="user.parsedRoles.length > 0">
                 <span ng-repeat="role in user.parsedRoles"
-                      class="user-meta_role">
-                    <b>{{ role.resource }}:</b> {{ role.role }}
+                      class="user-role">
+                    <span class="user-role_resource">
+                        {{ role.resource }}:
+                    </span>
+                    <span class="user-role_role">
+                        {{ role.role }}
+                    </span>
                 </span>
             </div>
         </span>

@@ -490,15 +490,15 @@
           }
         });
         scope.roles = $filter('orderBy')( scope.roles );
-        element.addClass('roles roles__user');
-        element.append( scope.roles.join(', ') );
+        element.addClass('corner-badge corner-badge__user');
+        element.append( '<span class="corner-badge_label">' + scope.roles.join(', ') + '</span>' );
         // Color this green if the role contains 'admin'.
         if ( scope.roles.indexOf( 'admin' ) !== -1 ) {
-          element.addClass('roles__bg-green');
+          element.addClass('corner-badge__bg-green');
         }
         // Hide this if the role is empty.
         if ( scope.roles.length === 0 ) {
-          element.addClass('roles__hide');
+          element.addClass('corner-badge__hide');
         }
       }
     };

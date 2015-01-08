@@ -16,9 +16,15 @@
             {{ user.username }}
         </span>
         <span ng-if="user.parsedRoles.length > 0"
-              class="roles slat_roles">
-            <span ng-repeat="role in user.parsedRoles">
-                <b>{{ role.resource }}:</b> {{ role.role }}
+              class="corner-badge slat_roles">
+            <span ng-repeat="role in user.parsedRoles"
+                  class="user-role">
+                <span class="user-role_resource">
+                    {{ role.resource }}:
+                </span>
+                <span class="user-role_role">
+                    {{ role.role }}
+                </span>
             </span>
         </span>
     </li>

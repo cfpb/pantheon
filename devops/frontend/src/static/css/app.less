@@ -12,9 +12,10 @@
    # .meta
    # .intro
    # .tile
+   # .user-role
    # .btn__block
    # Expandables
-   # .roles
+   # .corner-badge
    # Slats
    ## .slats
    ## .slats-header
@@ -148,16 +149,6 @@
         .webfont-regular();
         font-size: unit(12px / @base-font-size-px, em);
     }
-    &_roles {
-        line-height: 1;
-    }
-    &_role {
-        .webfont-regular();
-        font-size: unit(12px / @base-font-size-px, em);
-        & + & {
-            margin-left: unit(8px / 12px, em);
-        }
-    }
     &_item {
         display: inline-block;
         margin: 0;
@@ -247,6 +238,27 @@
 
 
 /* ==========================================================================
+   # .user-role
+   ========================================================================== */
+
+.user-role {
+    display: inline-block;
+    font-size: unit(12px / @base-font-size-px, em);
+    line-height: 1;
+
+    & + & {
+        margin-left: unit(8px / 12px, em);
+    }
+    &_resource {
+        .webfont-medium();
+    }
+    &_role {
+        .webfont-regular();
+    }
+}
+
+
+/* ==========================================================================
    # .btn__block
    ========================================================================== */
 
@@ -318,17 +330,16 @@
 
 
 /* ==========================================================================
-   # .roles
+   # .corner-badge
    ========================================================================== */
 
-.roles {
+.corner-badge {
     display: inline-block;
-    padding: 4px 6px;
+    padding: unit(4px / @base-font-size-px, em) unit(6px / @base-font-size-px, em);
     border-bottom-left-radius: 4px;
     background: @gray-20;
     color: @black;
     .webfont-regular();
-    font-size: unit(12px / @base-font-size-px, em);
     line-height: 1;
 
     &__user:before {
@@ -337,13 +348,14 @@
         content: "\e600";
         margin-right: unit(4px / 12px, em);
     }
-
     &__hide {
         display: none;
     }
-
     &__bg-green {
         background-color: @green-midtone;
+    }
+    &_label {
+        font-size: unit(12px / @base-font-size-px, em);
     }
 }
 
