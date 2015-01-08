@@ -36990,6 +36990,8 @@ var styleDirective = valueFn({
 
      Example:
         <role teamModel="team"></role>
+
+     TODO: Rename this to "teamrole".
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'role', function( $filter, UserService ) {
@@ -37010,15 +37012,15 @@ var styleDirective = valueFn({
           }
         });
         scope.roles = $filter('orderBy')( scope.roles );
-        element.addClass('role-icon');
+        element.addClass('roles roles__user');
         element.append( scope.roles.join(', ') );
         // Color this green if the role contains 'admin'.
         if ( scope.roles.indexOf( 'admin' ) !== -1 ) {
-          element.addClass('role-icon__bg-green');
+          element.addClass('roles__bg-green');
         }
         // Hide this if the role is empty.
         if ( scope.roles.length === 0 ) {
-          element.addClass('role-icon__hide');
+          element.addClass('roles__hide');
         }
       }
     };

@@ -5,7 +5,7 @@
         <span class="slat_label">No {{ ::role | lowercase }} users</span>
     </li>
     <li ng-repeat="user in users | orderBy:'username'"
-        class="slats_item slat">
+        class="slats_item slat slat__has-roles">
         <button ng-if="editable"
                 ng-click="remove(user)"
                 class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
@@ -15,9 +15,9 @@
         <span class="slat_label">
             {{ user.username }}
         </span>
-        <span ng-repeat="role in user.parsedRoles"
-              class="slat_label">
-            <span class="slat_small">
+        <span ng-if="user.parsedRoles.length > 0"
+              class="roles slat_roles">
+            <span ng-repeat="role in user.parsedRoles">
                 <b>{{ role.resource }}:</b> {{ role.role }}
             </span>
         </span>
