@@ -78,7 +78,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    'core.pipeline.sync',
+    # # We are not currently using any of the dash functionality, so we don't want to spend time syncing
+    # 'core.pipeline.sync',
     'kratos.pipeline.register_kratos',
 )
 
