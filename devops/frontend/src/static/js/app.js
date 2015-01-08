@@ -21,7 +21,7 @@
 
 (function(){
 
-  logging = false;
+  logging = true;
 
   angular.module( 'OSWizardApp', [] );
 
@@ -58,6 +58,10 @@
       },
       getName: function( id ) {
         return this.getByID( id ).username;
+      },
+      // Generic user and users functions
+      parseRole: function( role ) {
+        return { resource: role.split('|')[0], role: role.split('|')[1] };
       }
     };
   });
@@ -591,12 +595,12 @@
      # prepUserData filter
      Tweak some properties to the user data before using it.
      ========================================================================== */
-  angular.module('OSWizardApp').filter( 'prepUserData', function() {
+  angular.module('OSWizardApp').filter( 'prepUserData', function( UserService ) {
     return function( user ) {
       var output = { id: user.name, name: user.username, roles: [], isGHUser: true };
       var isGHUser = false;
       angular.forEach( user.roles, function( role ) {
-        output.roles.push( { resource: role.split('|')[0], role: role.split('|')[1] } );
+        output.roles.push( UserService.parseRole( role ) );
       });
       angular.forEach( output.roles, function( role ) {
         if ( role.resource === 'gh' ) {
