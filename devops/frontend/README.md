@@ -42,4 +42,14 @@
     options into `main.js`.
   - Minifies `main.js` to `main.min.js`.
   - Adds a banner to `main.min.js`
-- `grunt` - The default Grunt task simply runs both `grunt cssdev` and `grunt jsdev`.
+- `grunt` - The default Grunt task runs both `grunt cssdev` and `grunt jsdev` as well
+  as `shell:manage_py`, which is needed to copy files from the `devops/frontend/dest`
+  to `devops/static/`.
+- `grunt watch`
+  - In an effort to minimize the amount of time waiting for grunt tasks to run while
+    developing, `grunt watch` has been split into several sub tasks. Running `grunt watch`
+    will run all of these sub tasks and will run only the tasks that are needed. Just
+    remember that while using `grunt watch` you should be careful about modifiying files
+    before the grunt task completes, or else it might not detect the change.
+
+

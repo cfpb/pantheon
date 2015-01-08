@@ -324,6 +324,5 @@ module.exports = function(grunt) {
   grunt.registerTask('cssdev', ['less', 'autoprefixer', 'cssmin', 'usebanner:css']);
   grunt.registerTask('jsdev', ['concat:bodyScripts', 'uglify', 'usebanner:js', 'copy:templates', 'copy:js']);
   grunt.registerTask('default', ['cssdev', 'jsdev', 'shell:manage_py']);
-  grunt.registerTask('test', ['jshint']);
 
 };

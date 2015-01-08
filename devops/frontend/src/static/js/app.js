@@ -4,7 +4,7 @@
    # UserService service
    # TeamsCtrl controller
    # team directive
-   # repobutton directive
+   # assetbutton directive
    # userbutton directive
    # userlist directive
    # assetlist directive
@@ -20,6 +20,8 @@
    ========================================================================== */
 
 (function(){
+
+  logging = false;
 
   angular.module( 'OSWizardApp', [] );
 
@@ -108,7 +110,7 @@
       .success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepUserData')( response );
         angular.copy( preppedResponse, UserService.user );
-        console.log( 'User\n', UserService.user );
+        if ( logging ) console.log( 'User\n', UserService.user );
       })
       .error( function( response, status ) {
         $scope.testStatus( status );
@@ -116,7 +118,7 @@
     $http.get('/kratos/users/')
       .success( function( response, status, headers, config ) {
         UserService.users = response;
-        console.log('Users\n', UserService.users);
+        if ( logging ) console.log('Users\n', UserService.users);
       })
       .error( function( response, status ) {
         $scope.testStatus( status );
@@ -125,7 +127,7 @@
       .success( function( response, status, headers, config ) {
         var preppedResponse = $filter('prepTeamData')( response );
         $scope.teams = preppedResponse;
-        console.log('Teams\n', preppedResponse);
+        if ( logging ) console.log('Teams\n', preppedResponse);
       })
       .error( function( response, status ) {
         $scope.testStatus( status );
@@ -157,23 +159,30 @@
       scope: {
         data: '='
       },
-      templateUrl: '/static/templates/team.html'
+      templateUrl: '/static/templates/team.html',
+      link: function( scope, element, attrs ) {
+        // Events
+        scope.$on( 'userlistUpdated', function( event, data ) {
+          scope.$broadcast( data.role.toLowerCase() + 'UserlistUpdated', data.users );
+        });
+        scope.$on( 'assetlistUpdated', function( event, data ) {
+          scope.$broadcast( data.type.toLowerCase() + 'AssetlistUpdated', data.assets );
+        });
+      }
     };
   });
 
   /* ==========================================================================
-     # repobutton directive
-     Creates a button to toggle a list of repos on and off.
+     # assetbutton directive
+     Creates a button to toggle a list of assets on and off.
 
      team-model: A reference to a team model.
 
      Example:
-        <repobutton team-model="team"></repobutton>
-
-     TODO: Merge with userbutton since they do almost the exact same thing.
+        <assetbutton team-model="team"></assetbutton>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'repobutton', function() {
+  angular.module('OSWizardApp').directive( 'assetbutton', function() {
     return {
       restrict: 'E',
       scope: {
@@ -187,14 +196,15 @@
           $scope.show = !show;
         };
       },
-      templateUrl: '/static/templates/repobutton.html',
+      templateUrl: '/static/templates/assetbutton.html',
       link: function( scope, element, attrs ) {
         // Properties
-        scope.repos = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
-        if ( typeof scope.repos === 'undefined' ) {
+        scope.heading = attrs.heading;
+        scope.assets = getObj( scope.teamModel.rsrcs, [ 'gh', 'assets' ] );
+        if ( typeof scope.assets === 'undefined' ) {
           scope.total = 0;
         } else {
-          scope.total = scope.repos.length;
+          scope.total = scope.assets.length;
         }
         // Events
         element.on( 'click', function() {
@@ -203,6 +213,9 @@
           } else {
             element.parents('.expandable')[0].collapse();
           }
+        });
+        scope.$on( scope.heading.toLowerCase() + 'AssetlistUpdated', function( event, data ) {
+          scope.total = data.length;
         });
       }
     };
@@ -217,7 +230,7 @@
      Example:
         <userbutton team-model="team"></userbutton>
 
-     TODO: Merge with repobutton since they do almost the exact same thing.
+     TODO: Merge with assetbutton since they do almost the exact same thing.
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'userbutton', function() {
@@ -253,6 +266,9 @@
           } else {
             element.parents('.expandable')[0].collapse();
           }
+        });
+        scope.$on( scope.role.toLowerCase() + 'UserlistUpdated', function( event, data ) {
+          scope.total = data.length;
         });
       }
     };
@@ -301,6 +317,9 @@
           } else {
             scope.total = scope.users.length;
           }
+          // Emit an event that the userlist has been updated. Send the role along with the list of users so
+          // that we can match up which userbutton button to update.
+          scope.$emit( 'userlistUpdated', { role: scope.role, users: scope.users } );
         };
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
@@ -311,14 +330,14 @@
             url: scope.requestURL + user.name
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            if ( logging ) console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               scope.users.push( user );
               scope.updateUsers();
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            if ( logging ) console.log( 'Error:', msg );
           });
         };
         scope.remove = function( user ) {
@@ -327,7 +346,7 @@
             url: scope.requestURL + user.name
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            if ( logging ) console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               var index = scope.users.indexOf( user );
               scope.users.splice( index, 1 );
@@ -335,7 +354,7 @@
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            if ( logging ) console.log( 'Error:', msg );
           });
         };
         // Init
@@ -348,7 +367,7 @@
      # assetlist directive
      Creates a list of assets for a resource.
 
-     heading: The heading to show above the list of assets, should be plural.
+     heading: The heading to show above the list of assets, should be unique.
 
      Example:
         <div assetlist assets="[{name: 'Assets 1'}, {name: 'Assets 2'}]"
@@ -383,6 +402,8 @@
                            '/resources/' + 'gh' + '/';
         scope.updateAssets = function() {
           scope.total = scope.assets.length;
+          // Emit an event that the assetlist has been updated.
+          scope.$emit( 'assetlistUpdated', { type: scope.heading, assets: scope.assets } );
         };
         scope.add = function( name ) {
           var data = { new: name };
@@ -393,7 +414,7 @@
             contentType: 'application/json'
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            if ( logging ) console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               data.name = data.new;
               scope.assets.unshift( data );
@@ -402,7 +423,7 @@
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            if ( logging ) console.log( 'Error:', msg );
           });
         };
         scope.remove = function( assetToRemove ) {
@@ -418,14 +439,14 @@
             url: scope.requestURL + assetObj.id
           })
           .done(function( msg ) {
-            console.log( 'Data Saved:', msg );
+            if ( logging ) console.log( 'Data Saved:', msg );
             scope.$apply(function () {
               scope.assets.splice( index, 1 );
               scope.updateAssets();
             });
           })
           .error(function( msg ) {
-            console.log( 'Error:', msg );
+            if ( logging ) console.log( 'Error:', msg );
           });
         };
         scope.updateAssets();
