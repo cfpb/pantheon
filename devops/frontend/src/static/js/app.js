@@ -14,6 +14,7 @@
    # removeUsers filter
    # toArray filter
    # prepUserData filter
+   # prepUsersData filter
    # prepTeamData filter
    # Cross Site Request Forgery protection
    # Utility functions
@@ -21,7 +22,7 @@
 
 (function(){
 
-  logging = false;
+  logging = true;
 
   angular.module( 'OSWizardApp', [] );
 
@@ -32,7 +33,7 @@
 
   angular.module('OSWizardApp').factory( 'UserService', function() {
     // The logged in user
-    var user = { id: '', name: '', roles: [], isGHUser: true };
+    var user = { id: '', name: '', parsedRoles: [], isGHUser: true };
     // All users of dash
     var users = [];
     return {
@@ -58,6 +59,10 @@
       },
       getName: function( id ) {
         return this.getByID( id ).username;
+      },
+      // Generic user and users functions
+      parseRole: function( role ) {
+        return { resource: role.split('|')[0], role: role.split('|')[1] };
       }
     };
   });
@@ -117,7 +122,8 @@
       });
     $http.get('/kratos/users/')
       .success( function( response, status, headers, config ) {
-        UserService.users = response;
+        var preppedResponse = $filter('prepUsersData')( response );
+        angular.copy( preppedResponse, UserService.users );
         if ( logging ) console.log('Users\n', UserService.users);
       })
       .error( function( response, status ) {
@@ -462,6 +468,8 @@
 
      Example:
         <role teamModel="team"></role>
+
+     TODO: Rename this to "teamrole".
      ========================================================================== */
 
   angular.module('OSWizardApp').directive( 'role', function( $filter, UserService ) {
@@ -482,15 +490,15 @@
           }
         });
         scope.roles = $filter('orderBy')( scope.roles );
-        element.addClass('role-icon');
+        element.addClass('roles roles__user');
         element.append( scope.roles.join(', ') );
         // Color this green if the role contains 'admin'.
         if ( scope.roles.indexOf( 'admin' ) !== -1 ) {
-          element.addClass('role-icon__bg-green');
+          element.addClass('roles__bg-green');
         }
         // Hide this if the role is empty.
         if ( scope.roles.length === 0 ) {
-          element.addClass('role-icon__hide');
+          element.addClass('roles__hide');
         }
       }
     };
@@ -591,12 +599,12 @@
      # prepUserData filter
      Tweak some properties to the user data before using it.
      ========================================================================== */
-  angular.module('OSWizardApp').filter( 'prepUserData', function() {
+  angular.module('OSWizardApp').filter( 'prepUserData', function( UserService ) {
     return function( user ) {
-      var output = { id: user.name, name: user.username, roles: [], isGHUser: true };
+      var output = { id: user.name, name: user.username, parsedRoles: [], isGHUser: true };
       var isGHUser = false;
       angular.forEach( user.roles, function( role ) {
-        output.roles.push( { resource: role.split('|')[0], role: role.split('|')[1] } );
+        output.parsedRoles.push( UserService.parseRole( role ) );
       });
       angular.forEach( output.roles, function( role ) {
         if ( role.resource === 'gh' ) {
@@ -604,6 +612,24 @@
         }
       });
       output.isGHUser = isGHUser;
+      return output;
+    };
+  });
+
+  /* ==========================================================================
+     # prepUsersData filter
+     Tweak some properties to the users data before using it.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'prepUsersData', function( UserService ) {
+    return function( users ) {
+      var output = [];
+      angular.forEach( users, function( user ) {
+        user.parsedRoles = [];
+        angular.forEach( user.roles, function( role ) {
+          user.parsedRoles.push( UserService.parseRole( role ) );
+        });
+        output.push( user );
+      });
       return output;
     };
   });

@@ -79,7 +79,7 @@
                 {{ user.name }}
             </span>
             <div class="user-meta_roles">
-                <span ng-repeat="role in user.roles"
+                <span ng-repeat="role in user.parsedRoles"
                       class="user-meta_role">
                     <b>{{ role.resource }}:</b> {{ role.role }}
                 </span>
@@ -124,8 +124,8 @@
                 <h1 class="u-visually-hidden">My teams</h1>
                 <div class="teams">
                     <section team
-                             data="team"
                              ng-repeat="team in teams | hasCurrentUser"
+                             data="team"
                              class="teams_item">
                     </section>
                 </div>
