@@ -544,13 +544,19 @@
     &_item {
         .respond-to-min(768px, {
             .grid_column(6);
-            group& {
+            // ng-repeat does not add whitespace between items so we need to remove the default
+            // `margin-right: -4px` added by .grid_column().
+            [ng-repeat]& {
                 margin-right: 0;
             }
         });
         .respond-to-min(1024px, {
             .grid_column(4);
-            margin-right: 0;
+            // ng-repeat does not add whitespace between items so we need to remove the default
+            // `margin-right: -4px` added by .grid_column().
+            [ng-repeat]& {
+                margin-right: 0;
+            }
         });
     }
 }
