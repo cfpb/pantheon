@@ -64,7 +64,7 @@
         return requestedUser;
       },
       getName: function( id ) {
-        return this.getByID( id ).username;
+        return this.getByID( id ).data.username;
       },
       // Generic user and users functions
       parseRole: function( role ) {
@@ -608,7 +608,7 @@
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepUserData', function( UserService ) {
     return function( user ) {
-      var output = { id: user.name, name: user.username, parsedRoles: [], isGHUser: true };
+      var output = { id: user.name, name: user.data.username, parsedRoles: [], isGHUser: true };
       var isGHUser = false;
       angular.forEach( user.roles, function( role ) {
         output.parsedRoles.push( UserService.parseRole( role ) );

@@ -13,7 +13,7 @@
             <span class="cf-icon cf-icon-minus-round"></span>
         </button>
         <span class="slat_label">
-            {{ user.username }}
+            {{ user.data.username }}
         </span>
         <span ng-if="user.parsedRoles.length > 0"
               class="corner-badge slat_roles">
@@ -67,7 +67,7 @@
                     <span class="cf-icon cf-icon-plus-round"></span>
                 </button>
                 <span class="slat_label">
-                    {{ user.username }}
+                    {{ user.data.username }}
                 </span>
             </li>
         </ul>
