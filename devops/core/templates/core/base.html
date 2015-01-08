@@ -68,7 +68,7 @@
       </h1>
       <div class="masthead_user user-meta">
         {% if user.is_authenticated %}
-          <span class="user-meta_item">
+          <span class="user-meta_item user-meta_item__first">
             <span class="user-meta_name">
               <span class="cf-icon cf-icon-user"></span>
               {{ user.username }}
@@ -77,7 +77,7 @@
               ({% if user.contractor %}contractor{% else %}employee{% endif %})
             </span>
           </span>
-          <span class="user-meta_item">
+          <span class="user-meta_item user-meta_item__last">
             <a class="btn btn__link btn__warning" href="/logout">logout</a>
           </span>
         {% else %}
