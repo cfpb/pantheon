@@ -298,7 +298,7 @@
         <section userlist team-model="team" role="Admin"></section>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
+  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, $timeout, UserService ) {
     return {
       restrict: 'A',
       scope: {
@@ -309,6 +309,7 @@
       templateUrl: '/static/templates/userlist.html',
       link: function( scope, element, attrs ) {
         // Properties
+        scope.listFilter = '';
         scope.role = attrs.role;
         scope.canAdd = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'perms', 'add' ] );
         scope.canRemove = getObj( scope.teamModel.roles, [ scope.role.toLowerCase(), 'perms', 'remove' ] );
