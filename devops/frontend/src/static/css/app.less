@@ -436,7 +436,12 @@
         line-height: 1;
     }
 
+    &_label + &_label {
+        margin-left: unit(8px / 18px, em);
+    }
+
     &_small {
+        color: @gray;
         .webfont-regular();
         font-size: unit(12px / 18px, em);
         line-height: 1;

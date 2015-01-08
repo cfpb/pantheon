@@ -15,9 +15,11 @@
         <span class="slat_label">
             {{ user.username }}
         </span>
-        <span ng-if="user.stub"
-              class="slat_small">
-            stub
+        <span ng-repeat="role in user.parsedRoles"
+              class="slat_label">
+            <span class="slat_small">
+                <b>{{ role.resource }}:</b> {{ role.role }}
+            </span>
         </span>
     </li>
 </ul>

@@ -36536,6 +36536,7 @@ var styleDirective = valueFn({
    # removeUsers filter
    # toArray filter
    # prepUserData filter
+   # prepUsersData filter
    # prepTeamData filter
    # Cross Site Request Forgery protection
    # Utility functions
@@ -36554,7 +36555,7 @@ var styleDirective = valueFn({
 
   angular.module('OSWizardApp').factory( 'UserService', function() {
     // The logged in user
-    var user = { id: '', name: '', roles: [], isGHUser: true };
+    var user = { id: '', name: '', parsedRoles: [], isGHUser: true };
     // All users of dash
     var users = [];
     return {
@@ -36643,7 +36644,8 @@ var styleDirective = valueFn({
       });
     $http.get('/kratos/users/')
       .success( function( response, status, headers, config ) {
-        UserService.users = response;
+        var preppedResponse = $filter('prepUsersData')( response );
+        angular.copy( preppedResponse, UserService.users );
         if ( logging ) console.log('Users\n', UserService.users);
       })
       .error( function( response, status ) {
@@ -37119,10 +37121,10 @@ var styleDirective = valueFn({
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepUserData', function( UserService ) {
     return function( user ) {
-      var output = { id: user.name, name: user.username, roles: [], isGHUser: true };
+      var output = { id: user.name, name: user.username, parsedRoles: [], isGHUser: true };
       var isGHUser = false;
       angular.forEach( user.roles, function( role ) {
-        output.roles.push( UserService.parseRole( role ) );
+        output.parsedRoles.push( UserService.parseRole( role ) );
       });
       angular.forEach( output.roles, function( role ) {
         if ( role.resource === 'gh' ) {
@@ -37130,6 +37132,24 @@ var styleDirective = valueFn({
         }
       });
       output.isGHUser = isGHUser;
+      return output;
+    };
+  });
+
+  /* ==========================================================================
+     # prepUsersData filter
+     Tweak some properties to the users data before using it.
+     ========================================================================== */
+  angular.module('OSWizardApp').filter( 'prepUsersData', function( UserService ) {
+    return function( users ) {
+      var output = [];
+      angular.forEach( users, function( user ) {
+        user.parsedRoles = [];
+        angular.forEach( user.roles, function( role ) {
+          user.parsedRoles.push( UserService.parseRole( role ) );
+        });
+        output.push( user );
+      });
       return output;
     };
   });
