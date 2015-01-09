@@ -325,6 +325,9 @@
         // Functions
         scope.updateUsers = function() {
           scope.allUsers = $filter('removeUsers')( scope.users );
+          angular.forEach( scope.allUsers, function( user ) {
+            user.showConfirmRemove = false;
+          });
           if ( typeof scope.users === 'undefined' ) {
             scope.total = 0;
           } else {
@@ -336,6 +339,12 @@
         };
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
+        };
+        scope.confirmRemove = function( user ) {
+          user.showConfirmRemove = true;
+        };
+        scope.abortRemove = function( user ) {
+          user.showConfirmRemove = false;
         };
         scope.add = function( user ) {
           $.ajax({

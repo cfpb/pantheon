@@ -26,3 +26,4 @@
 - <http://sravi-kiran.blogspot.com/2013/12/InvokingAngularJsFiltersFromController.html>
 - <http://stackoverflow.com/questions/18396279/angular-js-angular-foreach-how-to-get-key-of-the-object>
 - <http://toddmotto.com/all-about-angulars-emit-broadcast-on-publish-subscribing/>
+- <http://stackoverflow.com/questions/12761834/select-new-dom-elements-created-by-angularjs-ng-repeat>
