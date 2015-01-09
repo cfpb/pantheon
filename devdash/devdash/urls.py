@@ -7,7 +7,7 @@ from tiles.urls import load_namespaced_urls
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'devops.views.home', name='home'),
+    # url(r'^$', 'devdash.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$', 'core.views.home', name='home'),
     url(r'^login$', 'core.views.login', name='login_start'),

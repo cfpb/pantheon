@@ -1,5 +1,5 @@
-open-source-wizard
-==================o
+DevDash
+=======
 Installation
 ------------
 The easiest way to run the system is to use vagrant.
@@ -11,14 +11,14 @@ Prerequisites:
   * you will need to check out both this repo and the cfpb/kratos repo as siblings in the filesystem.
 
 1. add Node secret setting to `../kratos/src/config_secret.iced`
-1. add Django secret settings to `./devops/devops/settings_secret.py`
+1. add Django secret settings to `./devdash/devdash/settings_secret.py`
 1. `vagrant up`
 1. `vagrant ssh`
 1. load data from github:
   1. `cd /opt/kratos`
   1. `icake -n devdesign import_from_gh`
 1. start the django server
-  1. `/vagrant/devops/manage.py runserver 0.0.0.0:8000`
+  1. `/vagrant/devdash/manage.py runserver 0.0.0.0:8000`
 1. start the node server
   1. `cd /opt/kratos`
   1. `icake runtestserver`
@@ -26,7 +26,7 @@ Prerequisites:
 Development
 -----------
 * Commit all node dependencies
-* run `/vagrant/devops/manage.py collectstatic` prior to any commits that change static files
+* run `/vagrant/devdash/manage.py collectstatic` prior to any commits that change static files
 
 
 Pluggable
