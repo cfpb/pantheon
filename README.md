@@ -17,17 +17,17 @@ Prerequisites:
 1. load data from github:
   1. `cd /opt/kratos`
   1. `icake -n devdesign import_from_gh`
-1. start the django server
-  1. `/vagrant/devdash/manage.py runserver 0.0.0.0:8000`
-1. start the node server
+1. You can start the worker but **starting the worker will propagate all changes to the resources!**:
   1. `cd /opt/kratos`
-  1. `icake runtestserver`
+  1. `icake runworker`
+1. visit the website in your browser: `localhost:8000`
+1. visit the database in your browser: `localhost:5984`
 
 Development
 -----------
 * Commit all node dependencies
 * run `/vagrant/devdash/manage.py collectstatic` prior to any commits that change static files
-
+* see `devdash/frontend/README.md` for front-end instructions
 
 Pluggable
 ---------
