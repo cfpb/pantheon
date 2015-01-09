@@ -36946,8 +36946,17 @@ var styleDirective = valueFn({
                            '/resources/' + 'gh' + '/';
         scope.updateAssets = function() {
           scope.total = scope.assets.length;
+          angular.forEach( scope.assets, function( asset ) {
+            asset.showConfirmRemove = false;
+          });
           // Emit an event that the assetlist has been updated.
           scope.$emit( 'assetlistUpdated', { type: scope.heading, assets: scope.assets } );
+        };
+        scope.confirmRemove = function( asset ) {
+          asset.showConfirmRemove = true;
+        };
+        scope.abortRemove = function( asset ) {
+          asset.showConfirmRemove = false;
         };
         scope.add = function( name ) {
           var data = { new: name };
