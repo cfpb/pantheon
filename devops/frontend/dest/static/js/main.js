@@ -36820,7 +36820,7 @@ var styleDirective = valueFn({
         <section userlist team-model="team" role="Admin"></section>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, $timeout, UserService ) {
+  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
     return {
       restrict: 'A',
       scope: {
@@ -36919,7 +36919,7 @@ var styleDirective = valueFn({
         </div>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'assetlist', function( $filter, UserService ) {
+  angular.module('OSWizardApp').directive( 'assetlist', function( $filter, $timeout, UserService ) {
     return {
       restrict: 'A',
       scope: {
@@ -36942,6 +36942,10 @@ var styleDirective = valueFn({
         });
         scope.assets = $filter( 'orderBy' )( scope.assets, 'name' );
         scope.total = scope.assets.length;
+        scope.waiting = false;
+        scope.confirmMessage = {
+          show: false
+        };
         scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
                            '/resources/' + 'gh' + '/';
         scope.updateAssets = function() {
@@ -36960,6 +36964,7 @@ var styleDirective = valueFn({
         };
         scope.add = function( name ) {
           var data = { new: name };
+          scope.waiting = true;
           $.ajax({
             type: 'POST',
             url: scope.requestURL,
@@ -36973,10 +36978,26 @@ var styleDirective = valueFn({
               scope.assets.unshift( data );
               scope.updateAssets();
               element.find('.slats-type_input').val('');
+              scope.waiting = false;
+              scope.confirmMessage.show = true;
+              scope.confirmMessage.message = "Added";
+              scope.confirmMessage.assetName = data.name;
+              $timeout( function() {
+                scope.confirmMessage.show = false;
+              }, 4000);
             });
           })
           .error(function( msg ) {
             window.kratosResponse.log.push({ error: angular.fromJson(msg) });
+            scope.$apply(function () {
+              scope.waiting = false;
+              scope.confirmMessage.show = true;
+              scope.confirmMessage.message = "There was a problem adding";
+              scope.confirmMessage.assetName = data.name;
+              $timeout( function() {
+                scope.confirmMessage.show = false;
+              }, 4000);
+            });
           });
         };
         scope.remove = function( assetToRemove ) {

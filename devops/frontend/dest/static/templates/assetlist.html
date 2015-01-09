@@ -4,11 +4,29 @@
         <h2 class="slats-header slats-header__add">
             Add a new {{ ::heading | lowercase }}
         </h2>
-        <div class="slats-type">
+        <div ng-show="!waiting"
+             class="slats-type">
             <input ng-model="newAssetName"
                    type="text"
                    class="slats-type_input"
                    placeholder="...">
+        </div>
+        <div ng-show="waiting"
+             class="slats">
+            <div class="slats_item slat slat__bg-info">
+                <span class="slat_label-regular">
+                    Adding <b>{{ newAssetName }}</b>, please wait...
+                </span>
+            </div>
+        </div>
+        <div ng-model="confirmMessage"
+             ng-show="confirmMessage.show"
+             class="slats">
+            <div class="slats_item slat slat__bg-info">
+                <span class="slat_label-regular">
+                    {{ confirmMessage.message }} <b>{{ confirmMessage.assetName }}</b>.
+                </span>
+            </div>
         </div>
     </div>
     <!-- <div class="team-content_item u-mb0 alert alert__danger" role="alert">
@@ -17,6 +35,7 @@
         <button class="btn btn__link btn__warning alert_btn">Close this message</button>
     </div> -->
     <button ng-click="add(newAssetName)"
+            ng-show="!waiting"
             class="team-content_item userlist_show-hide btn btn__block">
         Add
     </button>
