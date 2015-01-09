@@ -10,7 +10,7 @@
 ;max_document_size = 4294967296 ; bytes
 
 [httpd]
-bind_address=0.0.0.0
+bind_address={{ couch_listen_address }}
 ;port = 5984
 ;bind_address = 127.0.0.1
 ; Options for the MochiWeb HTTP server.
