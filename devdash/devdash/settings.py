@@ -53,7 +53,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'kratos.User'
+AUTH_USER_MODEL = 'core.User'
 
 LOGIN_REDIRECT_URL = '/'
 
