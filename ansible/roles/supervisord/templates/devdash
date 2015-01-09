@@ -1,5 +1,5 @@
 [program:devdash]
-directory={{ root_dir }}/devops
+directory={{ root_dir }}/devdash
 command= {{ devdash_cmd }}
 user=web
 autostart=true

@@ -1,5 +1,5 @@
 """
-Django settings for devops project.
+Django settings for devdash project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -24,7 +24,7 @@ def get_secret(secret, default=None):
     """
     return the secret setting stored on the local machine,
     outside of version control. Currently, this is done in
-    a file called ./devops/settings_secret.py.
+    a file called ./devdash/settings_secret.py.
     However, we can convert to env variables at any time.
 
     will return default if doesn't exist in secret_settings
@@ -145,9 +145,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'devops.urls'
+ROOT_URLCONF = 'devdash.urls'
 
-WSGI_APPLICATION = 'devops.wsgi.application'
+WSGI_APPLICATION = 'devdash.wsgi.application'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'frontend', 'dest', 'static'),
