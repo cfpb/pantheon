@@ -1,32 +1,58 @@
 <h1 class="slats-header">{{ ::role }} list</h1>
-<ul class="team-content_item slats">
+<ul ng-init="initCurrentUser()"
+    class="team-content_item slats">
     <li ng-if="total === 0"
         class="slats_item slat">
         <span class="slat_label">No {{ ::role | lowercase }} users</span>
     </li>
-    <li ng-repeat="user in users | orderBy:'username'"
-        class="slats_item slat slat__has-roles">
-        <button ng-if="editable"
-                ng-click="remove(user)"
-                class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
-            <span class="u-visually-hidden">Remove</span>
-            <span class="cf-icon cf-icon-minus-round"></span>
-        </button>
-        <span class="slat_label">
-            {{ user.data.username }}
-        </span>
-        <span ng-if="user.parsedRoles.length > 0"
-              class="corner-badge slat_roles">
-            <span ng-repeat="role in user.parsedRoles"
-                  class="user-role">
-                <span class="user-role_resource">
-                    {{ role.resource }}:
-                </span>
-                <span class="user-role_role">
-                    {{ role.role }}
+    <li ng-repeat="user in users | orderBy:'data.username'"
+        class="slats_item">
+        <div ng-show="!user.showConfirmRemove"
+             class="slat slat__has-roles userlist_name">
+            <button ng-if="editable"
+                    ng-click="confirmRemove(user)"
+                    class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
+                <span class="u-visually-hidden">Remove</span>
+                <span class="cf-icon cf-icon-minus-round"></span>
+            </button>
+            <span class="slat_label">
+                {{ ::user.data.username }}
+            </span>
+            <span ng-if="user.parsedRoles.length > 0"
+                  class="corner-badge slat_roles">
+                <span ng-repeat="role in user.parsedRoles"
+                      class="user-role">
+                    <span class="user-role_resource">
+                        {{ role.resource }}:
+                    </span>
+                    <span class="user-role_role">
+                        {{ role.role }}
+                    </span>
                 </span>
             </span>
-        </span>
+        </div>
+        <div ng-show="user.showConfirmRemove"
+             class="slat slat__bg-warning">
+            <div class="slat-l">
+                <div class="slat_label-regular slat-l_col-2-3">
+                    Remove <b>{{ ::user.data.username }}</b> from the {{ ::role }} list?
+                </div>
+                <div class="slat-l_col-1-3">
+                    <div class="slat_right">
+                        <button ng-if="editable"
+                                ng-click="abortRemove(user)"
+                                class="slat_btn__link btn btn__link">
+                            No
+                        </button>
+                        <button ng-if="editable"
+                                ng-click="remove(user)"
+                                class="slat_btn__link btn btn__link btn__warning">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </li>
 </ul>
 <div ng-if="editable"

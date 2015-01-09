@@ -298,7 +298,7 @@
         <section userlist team-model="team" role="Admin"></section>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, $timeout, UserService ) {
+  angular.module('OSWizardApp').directive( 'userlist', function( $compile, $filter, UserService ) {
     return {
       restrict: 'A',
       scope: {
@@ -325,6 +325,9 @@
         // Functions
         scope.updateUsers = function() {
           scope.allUsers = $filter('removeUsers')( scope.users );
+          angular.forEach( scope.allUsers, function( user ) {
+            user.showConfirmRemove = false;
+          });
           if ( typeof scope.users === 'undefined' ) {
             scope.total = 0;
           } else {
@@ -336,6 +339,12 @@
         };
         scope.inUserList = function( user ) {
           return scope.users.indexOf( user ) > -1;
+        };
+        scope.confirmRemove = function( user ) {
+          user.showConfirmRemove = true;
+        };
+        scope.abortRemove = function( user ) {
+          user.showConfirmRemove = false;
         };
         scope.add = function( user ) {
           $.ajax({
@@ -388,7 +397,7 @@
         </div>
      ========================================================================== */
 
-  angular.module('OSWizardApp').directive( 'assetlist', function( $filter, UserService ) {
+  angular.module('OSWizardApp').directive( 'assetlist', function( $filter, $timeout, UserService ) {
     return {
       restrict: 'A',
       scope: {
@@ -411,15 +420,29 @@
         });
         scope.assets = $filter( 'orderBy' )( scope.assets, 'name' );
         scope.total = scope.assets.length;
+        scope.waiting = false;
+        scope.confirmMessage = {
+          show: false
+        };
         scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
                            '/resources/' + 'gh' + '/';
         scope.updateAssets = function() {
           scope.total = scope.assets.length;
+          angular.forEach( scope.assets, function( asset ) {
+            asset.showConfirmRemove = false;
+          });
           // Emit an event that the assetlist has been updated.
           scope.$emit( 'assetlistUpdated', { type: scope.heading, assets: scope.assets } );
         };
+        scope.confirmRemove = function( asset ) {
+          asset.showConfirmRemove = true;
+        };
+        scope.abortRemove = function( asset ) {
+          asset.showConfirmRemove = false;
+        };
         scope.add = function( name ) {
           var data = { new: name };
+          scope.waiting = true;
           $.ajax({
             type: 'POST',
             url: scope.requestURL,
@@ -433,10 +456,26 @@
               scope.assets.unshift( data );
               scope.updateAssets();
               element.find('.slats-type_input').val('');
+              scope.waiting = false;
+              scope.confirmMessage.show = true;
+              scope.confirmMessage.message = "Added";
+              scope.confirmMessage.assetName = data.name;
+              $timeout( function() {
+                scope.confirmMessage.show = false;
+              }, 4000);
             });
           })
           .error(function( msg ) {
             window.kratosResponse.log.push({ error: angular.fromJson(msg) });
+            scope.$apply(function () {
+              scope.waiting = false;
+              scope.confirmMessage.show = true;
+              scope.confirmMessage.message = "There was a problem adding";
+              scope.confirmMessage.assetName = data.name;
+              $timeout( function() {
+                scope.confirmMessage.show = false;
+              }, 4000);
+            });
           });
         };
         scope.remove = function( assetToRemove ) {

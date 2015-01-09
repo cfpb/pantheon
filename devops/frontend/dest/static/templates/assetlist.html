@@ -4,11 +4,29 @@
         <h2 class="slats-header slats-header__add">
             Add a new {{ ::heading | lowercase }}
         </h2>
-        <div class="slats-type">
+        <div ng-show="!waiting"
+             class="slats-type">
             <input ng-model="newAssetName"
                    type="text"
                    class="slats-type_input"
                    placeholder="...">
+        </div>
+        <div ng-show="waiting"
+             class="slats">
+            <div class="slats_item slat slat__bg-info">
+                <span class="slat_label-regular">
+                    Adding <b>{{ newAssetName }}</b>, please wait...
+                </span>
+            </div>
+        </div>
+        <div ng-model="confirmMessage"
+             ng-show="confirmMessage.show"
+             class="slats">
+            <div class="slats_item slat slat__bg-info">
+                <span class="slat_label-regular">
+                    {{ confirmMessage.message }} <b>{{ confirmMessage.assetName }}</b>.
+                </span>
+            </div>
         </div>
     </div>
     <!-- <div class="team-content_item u-mb0 alert alert__danger" role="alert">
@@ -17,6 +35,7 @@
         <button class="btn btn__link btn__warning alert_btn">Close this message</button>
     </div> -->
     <button ng-click="add(newAssetName)"
+            ng-show="!waiting"
             class="team-content_item userlist_show-hide btn btn__block">
         Add
     </button>
@@ -29,15 +48,40 @@
         <span class="slat_label">No {{ ::heading | lowercase }}</span>
     </li>
     <li ng-repeat="asset in assets"
-        class="slats_item slat">
-        <button ng-if="editable"
-                ng-click="remove(asset)"
-                class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
-            <span class="u-visually-hidden">Remove</span>
-            <span class="cf-icon cf-icon-minus-round"></span>
-        </button>
-        <span class="slat_label">
-            {{ asset.name }}
-        </span>
+        class="slats_item">
+        <div ng-show="!asset.showConfirmRemove"
+             class="slat">
+            <button ng-if="editable"
+                    ng-click="confirmRemove(asset)"
+                    class="slat_icon-btn slat_icon-btn__remove slat_icon-btn__first">
+                <span class="u-visually-hidden">Remove</span>
+                <span class="cf-icon cf-icon-minus-round"></span>
+            </button>
+            <span class="slat_label">
+                {{ asset.name }}
+            </span>
+        </div>
+        <div ng-show="asset.showConfirmRemove"
+             class="slat slat__bg-warning">
+            <div class="slat-l">
+                <div class="slat_label-regular slat-l_col-2-3">
+                    Remove <b>{{ ::asset.name }}</b>?
+                </div>
+                <div class="slat-l_col-1-3">
+                    <div class="slat_right">
+                        <button ng-if="editable"
+                                ng-click="abortRemove(asset)"
+                                class="slat_btn__link btn btn__link">
+                            No
+                        </button>
+                        <button ng-if="editable"
+                                ng-click="remove(asset)"
+                                class="slat_btn__link btn btn__link btn__warning">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </li>
 </ul>
