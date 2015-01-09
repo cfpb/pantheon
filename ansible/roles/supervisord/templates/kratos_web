@@ -1,7 +1,7 @@
 [program:kratos_web]
 directory={{ kratos_dir }}/lib
 command= {{ kratos_web_cmd }}
-user=web
+user={{ web_user }}
 autostart=true
 autorestart=true
 stdout_logfile = /var/log/supervisord/kratos_web-stdout.log

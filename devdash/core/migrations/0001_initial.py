@@ -3,14 +3,12 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import django.utils.timezone
-from django.conf import settings
 import django.core.validators
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('github', '0001_initial'),
         ('auth', '0001_initial'),
     ]
 
@@ -31,6 +29,7 @@ class Migration(migrations.Migration):
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
                 ('gh_id', models.IntegerField(null=True, blank=True)),
                 ('ghe_id', models.IntegerField(null=True, blank=True)),
+                ('kratos_id', models.CharField(max_length=32, null=True, blank=True)),
                 ('stub', models.BooleanField(default=False)),
                 ('contractor', models.BooleanField(default=True)),
                 ('groups', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of his/her group.', verbose_name='groups')),
@@ -42,65 +41,5 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'users',
             },
             bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='Perm',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=100)),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='RepoExtension',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('repo', models.OneToOneField(related_name='kratos_extension', to='github.Repo')),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='Team',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=100)),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='UserPermRepo',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('perm', models.ForeignKey(related_name='user_repos', to='kratos.Perm')),
-                ('repo', models.ForeignKey(related_name='user_perms', to='github.Repo')),
-                ('user', models.ForeignKey(related_name='perm_repos', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='UserPermTeam',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('perm', models.ForeignKey(related_name='user_teams', to='kratos.Perm')),
-                ('team', models.ForeignKey(related_name='user_perms', to='kratos.Team')),
-                ('user', models.ForeignKey(related_name='perm_teams', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='repoextension',
-            name='team',
-            field=models.ForeignKey(related_name='repos', to='kratos.Team'),
-            preserve_default=True,
         ),
     ]

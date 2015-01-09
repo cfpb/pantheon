@@ -98,7 +98,6 @@ def gh_details(request):
             'gh_pub_keys': [key['title'] for key in gh_details['gh_pub_keys']],
         })
         if context['publicize_form'] is None and context['name_form'] is None and context['pub_key_form'] is None:
-            models.UserExtension.objects.create(user=request.user)
             messages.success(request, 'Welcome to our org.')
             request.session.pop('gh_details', None)
             return HttpResponseRedirect('/complete/github')
@@ -146,7 +145,6 @@ def gh_details(request):
                 messages.success(request, "Enterprise public key added as '{}'".format(pub_key_data['key_name']))
         
 
-        models.UserExtension.objects.create(user=request.user)
         messages.success(request, 'Welcome to our org.')
         request.session.pop('gh_details', None)
         return HttpResponseRedirect('/complete/github')

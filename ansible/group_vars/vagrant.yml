@@ -7,3 +7,4 @@ devdash_cmd: '{{ root_dir }}/devdash/manage.py runserver'
 supervisord_cmds:
   - devdash
   - kratos_web
+web_user: vagrant

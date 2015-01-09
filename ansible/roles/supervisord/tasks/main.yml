@@ -1,17 +1,20 @@
 - name: create web user
-  user: name=web system=yes createhome=no
+  user: name={{ web_user }} system=yes createhome=no
+
+- name: chown db to web user
+  file: 'path={{ root_dir }}/devdash/db.sqlite3 state=file owner={{ web_user }}'
 
 - name: install supervisor
   pip: name=supervisor
 
 - name: create directories
-  file: path={{ item }} state=directory owner=web
+  file: path={{ item }} state=directory owner={{ web_user }}
   with_items:
     - /etc/supervisor.d
     - /var/log/supervisord
 
 - name: create conf file
-  copy: src=supervisord.conf dest=/etc/supervisord.conf owner=web
+  copy: src=supervisord.conf dest=/etc/supervisord.conf owner={{ web_user }}
 
 - name: create init file
   copy: src=supervisord_init.sh dest=/etc/init.d/supervisord owner=root group=root mode=755
