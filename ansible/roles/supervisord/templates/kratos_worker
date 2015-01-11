@@ -1,0 +1,8 @@
+[program:kratos_worker]
+directory={{ kratos_dir }}/lib
+command=/usr/bin/node worker.js
+user={{ web_user }}
+autostart=true
+autorestart=true
+stdout_logfile = /var/log/supervisord/kratos_worker-stdout.log
+redirect_stderr=True

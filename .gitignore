@@ -1,8 +1,7 @@
 # Django #
 ##########
 *.pyc
-env-devops
-/devops/devops/settings_secret.py
+/devdash/devdash/settings_secret.py
 
 # Vagrant #
 ###########
@@ -26,8 +25,8 @@ env-devops
 *.o
 *.so
 _site/
-devops/frontend/src/static/css/main.css
-devops/frontend/src/static/js/main.js
+devdash/frontend/src/static/css/main.css
+devdash/frontend/src/static/js/main.js
 
 # Packages #
 ############
@@ -63,22 +62,22 @@ Thumbs.db
 # Grunt.js #
 ############
 .grunt/
-/devops/frontend/node_modules/
+/devdash/frontend/node_modules/
 
 # Bower packages #
 ##################
 bower_components/
-/devops/frontend/vendor
+/devdash/frontend/vendor
 
 # Project stuff #
 #################
-/devops/corec
-/devops/db.sqlite3
-# /devops/frontend/dest/static/css
-# /devops/frontend/dest/static/fonts
-# /devops/frontend/dest/static/js
-# /devops/frontend/dest/static/templates
-/devops/frontend/dest/static/test-data.json
-/devops/frontend/dest/static/test-data.old.json
-# /devops/frontend/dest/static/vendor
-/devops/static/test-data.old.json
+/devdash/corec
+/devdash/db.sqlite3
+# /devdash/frontend/dest/static/css
+# /devdash/frontend/dest/static/fonts
+# /devdash/frontend/dest/static/js
+# /devdash/frontend/dest/static/templates
+/devdash/frontend/dest/static/test-data.json
+/devdash/frontend/dest/static/test-data.old.json
+# /devdash/frontend/dest/static/vendor
+/devdash/static/test-data.old.json

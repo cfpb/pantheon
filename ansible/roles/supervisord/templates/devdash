@@ -1,0 +1,8 @@
+[program:devdash]
+directory={{ root_dir }}/devdash
+command= {{ devdash_cmd }}
+user={{ web_user }}
+autostart=true
+autorestart=true
+stdout_logfile = /var/log/supervisord/devdash-stdout.log
+redirect_stderr=True

@@ -20,3 +20,5 @@
       sudo: yes
     - role: nginx
       sudo: yes
+    - role: supervisord
+      sudo: yes

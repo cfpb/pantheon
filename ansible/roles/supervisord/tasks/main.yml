@@ -1,0 +1,32 @@
+- name: create web user
+  user: name={{ web_user }} system=yes createhome=no
+
+- name: chown db to web user
+  file: 'path={{ root_dir }}/devdash/db.sqlite3 state=file owner={{ web_user }}'
+
+- name: install supervisor
+  pip: name=supervisor
+
+- name: create directories
+  file: path={{ item }} state=directory owner={{ web_user }}
+  with_items:
+    - /etc/supervisor.d
+    - /var/log/supervisord
+
+- name: create conf file
+  copy: src=supervisord.conf dest=/etc/supervisord.conf owner={{ web_user }}
+
+- name: create init file
+  copy: src=supervisord_init.sh dest=/etc/init.d/supervisord owner=root group=root mode=755
+
+- name: add supervisord scripts
+  template: src={{ item }} dest=/etc/supervisor.d/{{ item }}
+  with_items: '{{ supervisord_cmds }}'
+
+- name: start supervisord on boot
+  service: name=supervisord enabled=yes state=restarted
+  ignore_errors: yes
+
+- name: start supervised progs
+  supervisorctl: name={{ item }} state=restarted
+  with_items: '{{ supervisord_cmds }}'
