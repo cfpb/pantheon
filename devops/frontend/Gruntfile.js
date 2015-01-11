@@ -292,8 +292,8 @@ module.exports = function(grunt) {
         files: ['src/static/templates/*.html'],
         tasks: ['copy:templates', 'shell:manage_py']
       },
-      dash_page: {
-        files: ['dest/static/dash.html'],
+      static_pages: {
+        files: ['dest/static/*.html'],
         tasks: ['shell:manage_py']
       }
     }
