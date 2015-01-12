@@ -72,7 +72,17 @@
         & + .helptext {
             margin-top: unit(5px / 14px, em);
         }
-        .error & {
+    }
+
+    .error {
+        input[type="text"],
+        input[type="search"],
+        input[type="email"],
+        input[type="url"],
+        input[type="tel"],
+        input[type="number"],
+        textarea,
+        select {
             &:extend(input[type="text"].error);
         }
     }
