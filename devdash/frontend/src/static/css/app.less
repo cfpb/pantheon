@@ -3,6 +3,7 @@
    App-specific styles
 
    # Base
+   # .django-forms
    # .extra-icon
    # Code demo stuff
    ## .code-demo-group
@@ -39,6 +40,48 @@
 
 [role="contentinfo"] {
     margin-top: unit(45px / @base-font-size-px, em);
+}
+
+
+/* ==========================================================================
+   # Base
+   ========================================================================== */
+
+.django-forms {
+    label {
+        display: inline-block;
+        margin-right: unit(5px / @base-font-size-px, em);
+    }
+
+    input[type="text"],
+    select {
+        display: block;
+    }
+
+    .helptext {
+        display: block;
+        .webfont-regular();
+        font-size: unit(14px / @base-font-size-px, em);
+        font-style: italic;
+    }
+
+    input[type="text"] + .helptext,
+    select + .helptext {
+        margin-top: unit(5px / 14px, em);
+    }
+
+    .error input[type="text"] {
+        &:extend(input[type="text"].error);
+    }
+
+    .errorlist {
+        margin: 0 0 unit(5px / @base-font-size-px, em);
+        padding: 0;
+        list-style-type: none;
+        color: @redorange;
+        .webfont-regular();
+        font-style: italic;
+    }
 }
 
 
@@ -347,6 +390,7 @@
         .cf-icon();
         content: "\e600";
         margin-right: unit(4px / 12px, em);
+        font-size: unit(14px / @base-font-size-px, em);
     }
     &__hide {
         display: none;
