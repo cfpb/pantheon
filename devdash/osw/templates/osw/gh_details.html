@@ -7,12 +7,12 @@
   <li class="breadcrumbs_item">Confirm Profile</li>
 {% endblock breadcrumbs %}
 {% block content %}
-    <form action="{% url "osw:gh_details" %}" method="post">
+    <form action="{% url "osw:gh_details" %}" method="post" class="django-forms">
         {% csrf_token %}
-        {% if name_form %}{{ name_form }}{% endif %}
-        {% if publicize_form %}{{ publicize_form }}{% endif %}
+        {% if name_form %}{{ name_form.as_p }}{% endif %}
+        {% if publicize_form %}{{ publicize_form.as_p }}{% endif %}
         {% if pub_key_form %}
-            {{ pub_key_form }}
+            {{ pub_key_form.as_p }}
             <p>Existing github.com public keys:
                 <ul>
                     {% for key in gh_pub_keys %}
@@ -21,7 +21,7 @@
                 </ul>
             </p>
         {% endif %}
-        {% if two_fa_form %}{{ two_fa_form }}{% endif %}
+        {% if two_fa_form %}{{ two_fa_form.as_p }}{% endif %}
         <input type="submit" class="btn" value="Continue" />
     </form>
 {% endblock content %}

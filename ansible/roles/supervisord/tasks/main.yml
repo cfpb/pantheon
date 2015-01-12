@@ -1,8 +1,8 @@
 - name: create web user
   user: name={{ web_user }} system=yes createhome=no
 
-- name: chown db to web user
-  file: 'path={{ root_dir }}/devdash/db.sqlite3 state=file owner={{ web_user }}'
+- name: chown web code to web user
+  file: path={{ root_dir }}/devdash state=file owner={{ web_user }} recurse=yes
 
 - name: install supervisor
   pip: name=supervisor
@@ -21,7 +21,7 @@
 
 - name: add supervisord scripts
   template: src={{ item }} dest=/etc/supervisor.d/{{ item }}
-  with_items: '{{ supervisord_cmds }}'
+  with_items: supervisord_cmds
 
 - name: start supervisord on boot
   service: name=supervisord enabled=yes state=restarted
@@ -29,4 +29,4 @@
 
 - name: start supervised progs
   supervisorctl: name={{ item }} state=restarted
-  with_items: '{{ supervisord_cmds }}'
+  with_items: supervisord_cmds

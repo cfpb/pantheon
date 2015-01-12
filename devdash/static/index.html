@@ -81,93 +81,153 @@
 
             <div class="code-demo-group">
 
-                <section class="code-demo-group_item">
-                    <h1 class="slats-header">Users</h1>
-                    <div class="slats-type">
-                        <input class="slats-type_input" type="text" placeholder="Placeholder text">
-                    </div>
-                    <ul class="slats">
-                        <li class="slats_item slat">
-                            <span class="slat_label">Name/label</span>
-                            <small class="slat_label-small">Small</small>
-                        </li>
-                        <li class="slats_item slat">
-                            <span class="slat_label-regular">Regular-sized label</span>
-                        </li>
-                        <li class="slats_item slat">
-                            <span class="slat_label">Name/label</span>
-                            <div class="slat_right">
-                                <button class="btn btn__link slat_btn__link">Edit</button>
-                            </div>
-                        </li>
-                        <li class="slats_item slat">
-                            <span class="slat_label">Name/label</span>
-                            <div class="slat_right">
-                                <button class="slat_icon-btn slat_icon-btn__remove">
-                                    <span class="u-visually-hidden">Remove</span>
-                                    <span class="cf-icon cf-icon-minus-round"></span>
-                                </button>
-                                <button class="slat_icon-btn slat_icon-btn__add slat_icon-btn__last">
-                                    <span class="u-visually-hidden">Add</span>
-                                    <span class="cf-icon cf-icon-plus-round"></span>
-                                </button>
-                            </div>
-                        </li>
-                        <li class="slats_item slat">
-                            <button class="slat_icon-btn slat_icon-btn__add slat_icon-btn__first">
-                                <span class="u-visually-hidden">Add</span>
-                                <span class="cf-icon cf-icon-plus-round"></span>
-                            </button>
-                            <span class="slat_label">Name/label</span>
-                        </li>
-                        <li class="slats_item slat">
-                            <span class="slat_label">Slat grid</span>
-                            <div class="slat-l">
-                                <div class="slat-l_col-1-3">
-                                    <div style="background:black; height:1em;"></div>
-                                </div>
-                                <div class="slat-l_col-2-3">
-                                    <div style="background:black; height:1em;"></div>
-                                </div>
-                                <div class="slat-l_col-2-3">
-                                    <div style="background:black; height:1em;"></div>
-                                </div>
-                                <div class="slat-l_col-1-3">
-                                    <div style="background:black; height:1em;"></div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="slats_item slat slat__bg-info">
-                            <span class="slat_label">Info bg</span>
-                        </li>
-                        <li class="slats_item slat slat__bg-warning">
-                            <span class="slat_label">Warning bg</span>
-                        </li>
+                <section class="code-demo-group_item django-forms">
+                    <h1>Django forms</h1>
+                    <ul class="errorlist">
+                        <li>This is a form-wide error.</li>
                     </ul>
-                </section>
-
-                <section class="code-demo-group_item">
-                    <h1 class="slats-header slats-header__add">Add a user</h1>
-                    <div class="slats-type">
-                        <input class="slats-type_input" type="text" placeholder="Placeholder text">
-                    </div>
-                    <ul class="slats">
-                        <li class="slats_item slat">
-                            <button class="slat_icon-btn slat_icon-btn__add slat_icon-btn__first">
-                                <span class="u-visually-hidden">Add</span>
-                                <span class="cf-icon cf-icon-plus-round"></span>
-                            </button>
-                            <span class="slat_label">Name/label</span>
-                        </li>
+                    <p>
+                        <label for="id_valid_boolean">Valid boolean:</label>
+                        <input id="id_valid_boolean" name="valid_boolean" type="checkbox" />
+                        <span class="helptext">It's valid!</span>
+                    </p>
+                    <ul class="errorlist">
+                        <li>This field is required.</li>
                     </ul>
+                    <p class="error">
+                        <label for="id_invalid_boolean">Invalid boolean:</label>
+                        <input id="id_invalid_boolean" name="invalid_boolean" type="checkbox" />
+                        <span class="helptext">It's invalid!</span>
+                    </p>
+                    <p>
+                        <label for="id_valid_charfield">Valid charfield:</label>
+                        <input id="id_valid_charfield" maxlength="10" name="valid_charfield" type="text" />
+                        <span class="helptext">It's valid!</span>
+                    </p>
+                    <p>
+                        <label for="id_valid_email_field">Valid email field:</label>
+                        <input id="id_valid_email_field" maxlength="10" name="valid_email_field" type="email" />
+                        <span class="helptext">It's valid!</span>
+                    </p>
+                    <ul class="errorlist">
+                        <li>This field is required.</li>
+                    </ul>
+                    <p class="error">
+                        <label for="id_invalid_charfield">Invalid charfield:</label>
+                        <input id="id_invalid_charfield" maxlength="10" name="invalid_charfield" type="text" />
+                        <span class="helptext">It's invalid!</span>
+                    </p>
+                    <p>
+                        <label for="id_valid_choice_field">Valid choice field:</label>
+                        <select id="id_valid_choice_field" name="valid_choice_field">
+                            <option value="1">one</option>
+                            <option value="2">two</option>
+                            <option value="3">three</option>
+                        </select>
+                        <span class="helptext">It's valid!</span>
+                    </p>
+                    <ul class="errorlist">
+                        <li>This field is required.</li>
+                    </ul>
+                    <p class="error">
+                        <label for="id_invalid_choice_field">Invalid choice field:</label>
+                        <select id="id_invalid_choice_field" name="invalid_choice_field">
+                            <option value="1">one</option>
+                            <option value="2">two</option>
+                            <option value="3">three</option>
+                        </select>
+                        <span class="helptext">It's invalid!</span>
+                    </p>
                 </section>
 
                 <section class="code-demo-group_item">
-                    <button class="btn btn__secondary btn__block">Block button</button>
-                </section>
-
-                <section class="code-demo-group_item">
-                    <a href="#" class="btn btn__secondary btn__block">Block button link</a>
+                    <div class="team-content">
+                        <div class="team-content_item">
+                            <h1 class="slats-header">Users</h1>
+                            <div class="slats-type">
+                                <input class="slats-type_input" type="text" placeholder="Placeholder text">
+                            </div>
+                            <ul class="slats">
+                                <li class="slats_item slat">
+                                    <span class="slat_label">Name/label</span>
+                                    <small class="slat_label-small">Small</small>
+                                </li>
+                                <li class="slats_item slat">
+                                    <span class="slat_label-regular">Regular-sized label</span>
+                                </li>
+                                <li class="slats_item slat">
+                                    <span class="slat_label">Name/label</span>
+                                    <div class="slat_right">
+                                        <button class="btn btn__link slat_btn__link">Edit</button>
+                                    </div>
+                                </li>
+                                <li class="slats_item slat">
+                                    <span class="slat_label">Name/label</span>
+                                    <div class="slat_right">
+                                        <button class="slat_icon-btn slat_icon-btn__remove">
+                                            <span class="u-visually-hidden">Remove</span>
+                                            <span class="cf-icon cf-icon-minus-round"></span>
+                                        </button>
+                                        <button class="slat_icon-btn slat_icon-btn__add slat_icon-btn__last">
+                                            <span class="u-visually-hidden">Add</span>
+                                            <span class="cf-icon cf-icon-plus-round"></span>
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="slats_item slat">
+                                    <button class="slat_icon-btn slat_icon-btn__add slat_icon-btn__first">
+                                        <span class="u-visually-hidden">Add</span>
+                                        <span class="cf-icon cf-icon-plus-round"></span>
+                                    </button>
+                                    <span class="slat_label">Name/label</span>
+                                </li>
+                                <li class="slats_item slat">
+                                    <span class="slat_label">Slat grid</span>
+                                    <div class="slat-l">
+                                        <div class="slat-l_col-1-3">
+                                            <div style="background:black; height:1em;"></div>
+                                        </div>
+                                        <div class="slat-l_col-2-3">
+                                            <div style="background:black; height:1em;"></div>
+                                        </div>
+                                        <div class="slat-l_col-2-3">
+                                            <div style="background:black; height:1em;"></div>
+                                        </div>
+                                        <div class="slat-l_col-1-3">
+                                            <div style="background:black; height:1em;"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="slats_item slat slat__bg-info">
+                                    <span class="slat_label">Info bg</span>
+                                </li>
+                                <li class="slats_item slat slat__bg-warning">
+                                    <span class="slat_label">Warning bg</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="team-content_item">
+                            <h1 class="slats-header slats-header__add">Add a user</h1>
+                            <div class="slats-type">
+                                <input class="slats-type_input" type="text" placeholder="Placeholder text">
+                            </div>
+                            <ul class="slats">
+                                <li class="slats_item slat">
+                                    <button class="slat_icon-btn slat_icon-btn__add slat_icon-btn__first">
+                                        <span class="u-visually-hidden">Add</span>
+                                        <span class="cf-icon cf-icon-plus-round"></span>
+                                    </button>
+                                    <span class="slat_label">Name/label</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="team-content_item">
+                            <button class="btn btn__secondary btn__block">Block button</button>
+                        </div>
+                        <div class="team-content_item">
+                            <a href="#" class="btn btn__secondary btn__block">Block button link</a>
+                        </div>
+                    </div>
                 </section>
 
             </div><!-- END .code-demo-group -->

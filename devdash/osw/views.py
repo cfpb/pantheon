@@ -126,7 +126,9 @@ def gh_details(request):
         if name_form:
             name_data = name_form.cleaned_data
             if name_data['update_public_name']:
-                gh.user.patch(data={'name': name_data['updated_name']})
+                resp = gh.user.patch(data={'name': name_data['updated_name']})
+                print resp
+                print resp.json()
                 messages.success(request, 'Public GitHub name updated.')
 
         # publicize org membership
@@ -141,7 +143,9 @@ def gh_details(request):
             if pub_key_data['add_public_key']:
                 pub_key = [key for key in gh_details['ghe_pub_keys'] if key['title'] == pub_key_data['key_to_add']][0]
                 pub_key_req = {'title': pub_key_data['key_name'], 'key': pub_key['key']}
-                gh.user.keys.POST(data=pub_key_req)
+                resp = gh.user.keys.POST(data=pub_key_req)
+                print resp
+                print resp.json()
                 messages.success(request, "Enterprise public key added as '{}'".format(pub_key_data['key_name']))
         
 
