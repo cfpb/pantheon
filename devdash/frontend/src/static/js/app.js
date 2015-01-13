@@ -79,7 +79,7 @@
      and sets two main properties used throughout the app.
      ========================================================================== */
 
-  angular.module('OSWizardApp').controller( 'TeamsCtrl', function( $scope, $http, $filter, UserService ) {
+  angular.module('OSWizardApp').controller( 'TeamsCtrl', function( $scope, $http, $filter, $element, $timeout, UserService ) {
     // Properties
     $scope.loggedIn = true;
     $scope.user = UserService.user;
@@ -139,11 +139,13 @@
       .done(function( msg ) {
         window.kratosResponse.log.push({ done: angular.fromJson(msg) });
         $scope.$apply(function () {
-          element.find('.slats-type_input').val('');
+          $element.find('#add-team .slats-type_input').val('');
+          $scope.teams.push( $filter('prepTeamData')( [msg] )[0] );
           $scope.waiting = false;
           $scope.confirmMessage.show = true;
-          $scope.confirmMessage.message = "Added";
-          $scope.confirmMessage.teamName = data.new;
+          $scope.confirmMessage.message = 'Added';
+          $scope.confirmMessage.teamName = msg.name;
+          $scope.confirmMessage.supplement = 'You will find it in the "Other teams" section.';
           $timeout( function() {
             $scope.confirmMessage.show = false;
           }, 4000);
@@ -154,8 +156,8 @@
         $scope.$apply(function () {
           $scope.waiting = false;
           $scope.confirmMessage.show = true;
-          $scope.confirmMessage.message = "There was a problem adding";
-          $scope.confirmMessage.teamName = data.new;
+          $scope.confirmMessage.message = 'There was a problem adding';
+          $scope.confirmMessage.teamName = msg.name;
           $timeout( function() {
             $scope.confirmMessage.show = false;
           }, 4000);
@@ -527,7 +529,7 @@
               element.find('.slats-type_input').val('');
               scope.waiting = false;
               scope.confirmMessage.show = true;
-              scope.confirmMessage.message = "Added";
+              scope.confirmMessage.message = 'Added';
               scope.confirmMessage.assetName = data.name;
               $timeout( function() {
                 scope.confirmMessage.show = false;
@@ -539,7 +541,7 @@
             scope.$apply(function () {
               scope.waiting = false;
               scope.confirmMessage.show = true;
-              scope.confirmMessage.message = "There was a problem adding";
+              scope.confirmMessage.message = 'There was a problem adding';
               scope.confirmMessage.assetName = data.name;
               $timeout( function() {
                 scope.confirmMessage.show = false;

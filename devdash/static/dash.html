@@ -131,7 +131,7 @@
                     </section>
                 </div>
             </div>
-            <div expandable class="expandable">
+            <div expandable class="expandable expandable__no-margin-on-expand">
                 <button class="expandable_target btn__block">
                     <span class="btn btn__secondary btn__block">
                         <span class="expandable_cue-open">
@@ -158,7 +158,8 @@
                 </div>
             </div><!-- END .expandable -->
             <div ng-if="editable"
-                 class="teams">
+                 class="teams"
+                 id="add-team">
                 <div class="teams_item team-content">
                     <div class="team-content_item">
                         <div class="team-content_item">
@@ -185,7 +186,9 @@
                                  class="slats">
                                 <div class="slats_item slat slat__bg-info">
                                     <span class="slat_label-regular">
-                                        {{ confirmMessage.message }} <b>{{ confirmMessage.teamName }}</b>.
+                                        {{ confirmMessage.message }}
+                                        <b>{{ confirmMessage.teamName }}</b>.
+                                        {{ confirmMessage.supplement }}
                                     </span>
                                 </div>
                             </div>
@@ -197,7 +200,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
+            </div><!-- END #add-team -->
         </div>
     </div>
 </main>
