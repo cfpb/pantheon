@@ -7,9 +7,9 @@
   <li class="breadcrumbs_item">Confirm Profile</li>
 {% endblock breadcrumbs %}
 {% block unauthed_content %}
-    <form action="{% url "github:enterprise_details" %}" method="post">
+    <form action="{% url "github:enterprise_details" %}" method="post" class="django-forms">
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_p }}
         <input type="submit" class="btn" value="Continue" />
     </form>
 {% endblock unauthed_content %}
