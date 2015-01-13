@@ -36958,12 +36958,18 @@ var styleDirective = valueFn({
      and sets two main properties used throughout the app.
      ========================================================================== */
 
-  angular.module('OSWizardApp').controller( 'TeamsCtrl', function( $scope, $http, $filter, UserService ) {
+  angular.module('OSWizardApp').controller( 'TeamsCtrl', function( $scope, $http, $filter, $element, $timeout, UserService ) {
     // Properties
     $scope.loggedIn = true;
     $scope.user = UserService.user;
     $scope.users = UserService.users;
     $scope.teams = [];
+    $scope.waiting = false;
+    $scope.confirmMessage = {
+      show: false
+    };
+    $scope.requestURL = '/kratos/orgs/devdesign/teams/';
+    // Watchers
     $scope.$watch(
       function() {
         return UserService.users;
@@ -36986,7 +36992,14 @@ var styleDirective = valueFn({
       if ( $scope.teams.length === 0 ) {
         return false;
       }
+      $scope.initDataDependantProps();
       return true;
+    };
+    $scope.initDataDependantProps = function() {
+      // Set some properties once we have all the data we need
+      $scope.canAdd = getObj( $scope.user, [ 'perms', 'team', 'add' ] );
+      $scope.canRemove = getObj( $scope.user, [ 'perms', 'team', 'remove' ] );
+      $scope.editable = $scope.canAdd && $scope.canRemove;
     };
     $scope.testStatus = function( status ) {
       if ( status === 401 ) {
@@ -36994,6 +37007,64 @@ var styleDirective = valueFn({
       } else {
         $scope.loggedIn = true;
       }
+    };
+    $scope.add = function( name ) {
+      $scope.waiting = true;
+      $.ajax({
+        type: 'PUT',
+        url: $scope.requestURL + name,
+        contentType: 'application/json'
+      })
+      .done(function( msg ) {
+        window.kratosResponse.log.push({ done: angular.fromJson(msg) });
+        $scope.$apply(function () {
+          $element.find('#add-team .slats-type_input').val('');
+          $scope.teams.push( $filter('prepTeamData')( [msg] )[0] );
+          $scope.waiting = false;
+          $scope.confirmMessage.show = true;
+          $scope.confirmMessage.message = 'Added';
+          $scope.confirmMessage.teamName = msg.name;
+          $scope.confirmMessage.supplement = 'You will find it in the "Other teams" section.';
+          $timeout( function() {
+            $scope.confirmMessage.show = false;
+          }, 4000);
+        });
+      })
+      .error(function( msg ) {
+        window.kratosResponse.log.push({ error: angular.fromJson(msg) });
+        $scope.$apply(function () {
+          $scope.waiting = false;
+          $scope.confirmMessage.show = true;
+          $scope.confirmMessage.message = 'There was a problem adding';
+          $scope.confirmMessage.teamName = msg.name;
+          $timeout( function() {
+            $scope.confirmMessage.show = false;
+          }, 4000);
+        });
+      });
+    };
+    $scope.remove = function( teamToRemove ) {
+      var assetObj, index;
+      angular.forEach( $scope.assets, function( asset ) {
+        if ( asset.name === teamToRemove.name || asset.new === teamToRemove.name ) {
+          assetObj = asset;
+        }
+      });
+      index = $scope.assets.indexOf( assetObj );
+      $.ajax({
+        type: 'DELETE',
+        url: $scope.requestURL + assetObj.id
+      })
+      .done(function( msg ) {
+        window.kratosResponse.log.push({ done: angular.fromJson(msg) });
+        $scope.$apply(function () {
+          $scope.assets.splice( index, 1 );
+          $scope.updateAssets();
+        });
+      })
+      .error(function( msg ) {
+        window.kratosResponse.log.push({ error: angular.fromJson(msg) });
+      });
     };
     // Data
     $http.get('/kratos/user/')
@@ -37298,7 +37369,7 @@ var styleDirective = valueFn({
           }
         });
         scope.assets = $filter( 'orderBy' )( scope.assets, 'name' );
-        scope.total = scope.assets.length;
+        scope.total = getObj( scope, [ 'assets', 'length' ] ) || 0;
         scope.waiting = false;
         scope.confirmMessage = {
           show: false
@@ -37306,7 +37377,7 @@ var styleDirective = valueFn({
         scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
                            '/resources/' + 'gh' + '/';
         scope.updateAssets = function() {
-          scope.total = scope.assets.length;
+          scope.total = getObj( scope, [ 'assets', 'length' ] ) || 0;
           angular.forEach( scope.assets, function( asset ) {
             asset.showConfirmRemove = false;
           });
@@ -37337,7 +37408,7 @@ var styleDirective = valueFn({
               element.find('.slats-type_input').val('');
               scope.waiting = false;
               scope.confirmMessage.show = true;
-              scope.confirmMessage.message = "Added";
+              scope.confirmMessage.message = 'Added';
               scope.confirmMessage.assetName = data.name;
               $timeout( function() {
                 scope.confirmMessage.show = false;
@@ -37349,7 +37420,7 @@ var styleDirective = valueFn({
             scope.$apply(function () {
               scope.waiting = false;
               scope.confirmMessage.show = true;
-              scope.confirmMessage.message = "There was a problem adding";
+              scope.confirmMessage.message = 'There was a problem adding';
               scope.confirmMessage.assetName = data.name;
               $timeout( function() {
                 scope.confirmMessage.show = false;
@@ -37526,7 +37597,7 @@ var styleDirective = valueFn({
      ========================================================================== */
   angular.module('OSWizardApp').filter( 'prepUserData', function( UserService ) {
     return function( user ) {
-      var output = { id: user.name, name: user.data.username, parsedRoles: [], isGHUser: true };
+      var output = { id: user.name, name: user.data.username, parsedRoles: [], isGHUser: true, perms: {} };
       var isGHUser = false;
       angular.forEach( user.roles, function( role ) {
         output.parsedRoles.push( UserService.parseRole( role ) );
@@ -37537,6 +37608,7 @@ var styleDirective = valueFn({
         }
       });
       output.isGHUser = isGHUser;
+      output.perms = user.perms;
       return output;
     };
   });

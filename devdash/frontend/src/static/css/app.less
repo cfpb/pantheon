@@ -23,6 +23,7 @@
    ## .slats-type
    ## .slat
    # .teams
+   # .team-admin-content
    # Directives
    ## userbutton, assetbutton
    ## userlist
@@ -329,6 +330,10 @@
    # Expandables
    ========================================================================== */
 
+.expandable__no-margin-on-expand.expandable__expanded {
+    margin-bottom: 0;
+}
+
 .expandable_target:focus {
     outline: 1px dotted @gray;
     outline-offset: 1px;
@@ -345,6 +350,7 @@
 
 .expandable__team {
     position: relative;
+    margin-bottom: 0;
     border: 1px solid @gray-20;
 
     &.expandable__expanded,
@@ -626,6 +632,8 @@
     });
 
     &_item {
+        margin-bottom: @grid_gutter-width;
+
         .respond-to-min(768px, {
             .grid_column(6);
             // ng-repeat does not add whitespace between items so we need to remove the default
@@ -651,6 +659,23 @@
             margin-top: 1em;
             margin-top: 1rem;
         }
+    }
+}
+
+
+/* ==========================================================================
+   # .team-admin-content
+   ========================================================================== */
+
+.team-admin-content {
+    .respond-to-min(768px, {
+        .grid_nested-col-group();
+    });
+
+    &_item {
+        .respond-to-min(768px, {
+            .grid_column(6);
+        });
     }
 }
 
