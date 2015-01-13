@@ -23,6 +23,7 @@
    ## .slats-type
    ## .slat
    # .teams
+   # .team-admin-content
    # Directives
    ## userbutton, assetbutton
    ## userlist
@@ -658,6 +659,23 @@
             margin-top: 1em;
             margin-top: 1rem;
         }
+    }
+}
+
+
+/* ==========================================================================
+   # .team-admin-content
+   ========================================================================== */
+
+.team-admin-content {
+    .respond-to-min(768px, {
+        .grid_nested-col-group();
+    });
+
+    &_item {
+        .respond-to-min(768px, {
+            .grid_column(6);
+        });
     }
 }
 
