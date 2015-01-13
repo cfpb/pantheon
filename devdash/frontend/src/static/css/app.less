@@ -345,6 +345,7 @@
 
 .expandable__team {
     position: relative;
+    margin-bottom: 0;
     border: 1px solid @gray-20;
 
     &.expandable__expanded,
@@ -626,6 +627,8 @@
     });
 
     &_item {
+        margin-bottom: @grid_gutter-width;
+
         .respond-to-min(768px, {
             .grid_column(6);
             // ng-repeat does not add whitespace between items so we need to remove the default

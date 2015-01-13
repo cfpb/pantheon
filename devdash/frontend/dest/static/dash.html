@@ -122,7 +122,7 @@
         <div ng-if="ready()"
              class="content_main">
             <div id="my-teams">
-                <h1 class="u-visually-hidden">My teams</h1>
+                <h1>My teams</h1>
                 <div class="teams">
                     <section team
                              ng-repeat="team in teams | hasCurrentUser"
@@ -146,6 +146,7 @@
                 </button>
                 <div class="expandable_content expandable_content__teams">
                     <div id="other-teams">
+                        <h1 class="u-visually-hidden">Other teams</h1>
                         <div class="teams">
                             <section team
                                      data="team"
@@ -156,6 +157,47 @@
                     </div><!-- END #other-teams -->
                 </div>
             </div><!-- END .expandable -->
+            <div ng-if="editable"
+                 class="teams">
+                <div class="teams_item team-content">
+                    <div class="team-content_item">
+                        <div class="team-content_item">
+                            <h2 class="slats-header slats-header__add">
+                                Add a new Team
+                            </h2>
+                            <div ng-show="!waiting"
+                                 class="slats-type">
+                                <input ng-model="newTeamName"
+                                       type="text"
+                                       class="slats-type_input"
+                                       placeholder="...">
+                            </div>
+                            <div ng-show="waiting"
+                                 class="slats">
+                                <div class="slats_item slat slat__bg-info">
+                                    <span class="slat_label-regular">
+                                        Adding <b>{{ newTeamName }}</b>, please wait...
+                                    </span>
+                                </div>
+                            </div>
+                            <div ng-model="confirmMessage"
+                                 ng-show="confirmMessage.show"
+                                 class="slats">
+                                <div class="slats_item slat slat__bg-info">
+                                    <span class="slat_label-regular">
+                                        {{ confirmMessage.message }} <b>{{ confirmMessage.teamName }}</b>.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <button ng-click="add(newTeamName)"
+                                ng-show="!waiting"
+                                class="team-content_item userlist_show-hide btn btn__block">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
