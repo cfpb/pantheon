@@ -488,7 +488,7 @@
           }
         });
         scope.assets = $filter( 'orderBy' )( scope.assets, 'name' );
-        scope.total = scope.assets.length;
+        scope.total = getObj( scope, [ 'assets', 'length' ] ) || 0;
         scope.waiting = false;
         scope.confirmMessage = {
           show: false
@@ -496,7 +496,7 @@
         scope.requestURL = '/kratos/orgs/devdesign/teams/' + scope.teamModel.name +
                            '/resources/' + 'gh' + '/';
         scope.updateAssets = function() {
-          scope.total = scope.assets.length;
+          scope.total = getObj( scope, [ 'assets', 'length' ] ) || 0;
           angular.forEach( scope.assets, function( asset ) {
             asset.showConfirmRemove = false;
           });
