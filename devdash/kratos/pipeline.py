@@ -34,12 +34,13 @@ def register_kratos(request, response, user, **kwargs):
         if not kratos_id:
             return
 
-        if 'gh|user' not in kratos_data.get('roles', []):
-            resp = kratos.users._(kratos_id).roles.gh.user.put()
-            print resp, resp.text
         if user.contractor != kratos_data.get('data', {}).get('contractor') or \
            user.username != kratos_data.get('data', {}).get('username'):
             resp = kratos.users._(kratos_id).data.put(data={'contractor': user.contractor, 'username': user.username})
+            print resp, resp.text
+
+        if 'gh|user' not in kratos_data.get('roles', []):
+            resp = kratos.users._(kratos_id).roles.gh.user.put()
             print resp, resp.text
 
     if kratos_id != user.kratos_id:
