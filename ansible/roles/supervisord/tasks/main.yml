@@ -2,7 +2,7 @@
   user: name={{ web_user }} system=yes createhome=no
 
 - name: chown web code to web user
-  file: path={{ root_dir }}/devdash state=file owner={{ web_user }} recurse=yes
+  file: path={{ root_dir }}/devdash state=directory owner={{ web_user }} recurse=yes
 
 - name: install supervisor
   pip: name=supervisor
