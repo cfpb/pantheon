@@ -6,6 +6,7 @@ The easiest way to run the system is to use vagrant.
 
 Prerequisites:
   * [Vagrant](https://www.vagrantup.com/)
+  * [Vagrant-Cachier](http://fgrehm.viewdocs.io/vagrant-cachier) - `vagrant plugin install vagrant-cachier`
   * [Virtualbox](https://www.vagrantup.com/)
   * [Ansible](http://www.ansible.com/) (if using mac w/o root install with `brew install ansible`, otherwise use pip)
   * Fork and check out the following repos as siblings of each other:
