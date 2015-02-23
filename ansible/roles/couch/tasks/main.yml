@@ -36,15 +36,13 @@
   when: not couch_bin.stat.exists
   failed_when: configure_result.stderr and 'directory already configured' not in configure_result.stderr
   changed_when: not configure_result.stderr or 'directory already configured' not in configure_result.stderr
-  sudo_user: couchdb
 
 - name: make couch
-  shell: 'make chdir={{ root_dir}}/apache-couchdb-1.6.1/'
+  shell: 'make chdir=/usr/local/src/apache-couchdb-1.6.1/'
   when: not couch_bin.stat.exists
-  sudo_user: couchdb
 
 - name: install couch
-  shell: 'make install chdir={{ root_dir}}/apache-couchdb-1.6.1/'
+  shell: 'make install chdir=/usr/local/src/apache-couchdb-1.6.1/'
   when: not couch_bin.stat.exists
 
 - name: change install permissions/ownership
