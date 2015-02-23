@@ -17,7 +17,8 @@ Vagrant.configure("2") do |config|
 
   # shared folders
   config.vm.synced_folder "../kratos", "/opt/kratos"
-
+  config.vm.synced_folder "../dash", "/opt/dash"
+  
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ansible/playbook.yml"
     ansible.groups = {
