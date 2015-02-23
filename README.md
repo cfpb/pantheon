@@ -8,7 +8,10 @@ Prerequisites:
   * [Vagrant](https://www.vagrantup.com/)
   * [Virtualbox](https://www.vagrantup.com/)
   * [Ansible](http://www.ansible.com/) (if using mac w/o root install with `brew install ansible`, otherwise use pip)
-  * you will need to check out both this repo and the cfpb/kratos repo as siblings in the filesystem.
+  * Fork and check out the following repos as siblings of each other:
+    * cfpb/devdash (this repo)
+    * cfpb/kratos (authorizion microserver)
+    * cfpb/dash (web client)
 
 1. add Node secret setting to `../kratos/src/config_secret.iced`
 1. add Django secret settings to `./devdash/devdash/settings_secret.py`
