@@ -30,15 +30,21 @@
 - name: unzip couchdb
   unarchive: src={{ root_dir }}/couchdb.tar.gz dest=/usr/local/src copy=no owner=couchdb
 
+  # For some reason owner=couchdb doesn't work above, assigns UID=1000 instead of the couchdb user
+- name: change ownership of couchdb source
+  file: path=/usr/local/src/apache-couchdb-1.6.1 owner=couchdb group=couchdb recurse=yes
+
+  # TODO figure out a better way to use the couchdb user, right now sudo_user: couchdb fails due to missing password
 - name: configure
-  shell: '/usr/local/src/apache-couchdb-1.6.1/configure --with-erlang=/usr/lib64/erlang/usr/include/'
+  shell: "su -l couchdb -c 'cd /usr/local/src/apache-couchdb-1.6.1; ./configure --with-erlang=/usr/lib64/erlang/usr/include/'"
   register: configure_result
   when: not couch_bin.stat.exists
-  failed_when: configure_result.stderr and 'directory already configured' not in configure_result.stderr
-  changed_when: not configure_result.stderr or 'directory already configured' not in configure_result.stderr
+  failed_when: configure_result.stderr and 'directory already configured' not in configure_result.stderr and 'You have configured Apache CouchDB' not in configure_result.stdout
+  changed_when: not configure_result.stderr or 'directory already configured' not in configure_result.stderr or 'You have configured Apache CouchDB' not in configure_result.stdout
 
+  # TODO figure out a better way to use the couchdb user, right now sudo_user: couchdb fails due to missing password
 - name: make couch
-  shell: 'make chdir=/usr/local/src/apache-couchdb-1.6.1/'
+  shell: "su -l couchdb -c 'cd /usr/local/src/apache-couchdb-1.6.1/; make'"
   when: not couch_bin.stat.exists
 
 - name: install couch
