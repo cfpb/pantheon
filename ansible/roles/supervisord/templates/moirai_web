@@ -1,0 +1,8 @@
+[program:moirai_web]
+directory={{ moirai_dir }}/lib
+command= {{ moirai_web_cmd }}
+user={{ web_user }}
+autostart=true
+autorestart=true
+stdout_logfile = /var/log/supervisord/moirai_web-stdout.log
+redirect_stderr=True

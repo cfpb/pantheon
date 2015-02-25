@@ -1,10 +1,13 @@
 root_dir: /vagrant
 is_virtualbox: yes
 kratos_dir: /opt/kratos
+moirai_dir: /opt/moirai
 couch_listen_address: 0.0.0.0
 kratos_web_cmd: icake runtestserver
+moirai_web_cmd: icake runtestserver
 devdash_cmd: '{{ root_dir }}/devdash/manage.py runserver'
 supervisord_cmds:
   - devdash
   - kratos_web
+  - moirai_web
 web_user: vagrant
