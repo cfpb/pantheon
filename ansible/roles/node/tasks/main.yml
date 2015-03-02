@@ -14,7 +14,13 @@
     - {name: 'supervisor', version: '0.6.0'}
     - {name: 'kanso', version: '0.4.0'}
     - {name: 'forever', version: '0.13.0'}
-- name: install node application package
+- name: install kratos application package
   npm: path={{ kratos_dir }}
-- name: build all iced coffeescript
+- name: build kratos coffeescript
   shell: icake build chdir={{ kratos_dir }}
+- name: add dir for kratos new repo template
+  file: path={{ kratos_dir }}/template_repo state=directory owner={{ web_user }}
+- name: install moirai application package
+  npm: path={{ moirai_dir }}
+- name: build moirai coffeescript
+  shell: icake build chdir={{ moirai_dir }}
