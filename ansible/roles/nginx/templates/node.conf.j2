@@ -19,7 +19,12 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 
-
+    location /beta {
+        {% if is_virtualbox %}
+        sendfile off;
+        {% endif %}
+        alias {{ dash_dir }}/dist;
+    }
 
     location /static {
         {% if is_virtualbox %}

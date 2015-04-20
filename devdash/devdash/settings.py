@@ -85,7 +85,7 @@ SOCIAL_AUTH_PIPELINE = (
 
 SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_KEY')
 SOCIAL_AUTH_GITHUB_ENTERPRISE_SECRET = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_SECRET')
-SOCIAL_AUTH_GITHUB_ENTERPRISE_SCOPE = ['user', 'repo', 'admin:repo_hook', 'admin:org', 'write:public_key']
+SOCIAL_AUTH_GITHUB_ENTERPRISE_SCOPE = ['user', 'admin:repo_hook', 'admin:org', 'write:public_key']
 SOCIAL_AUTH_GITHUB_ENTERPRISE_HOST = get_secret('SOCIAL_AUTH_GITHUB_ENTERPRISE_HOST')
 SOCIAL_AUTH_GITHUB_ENTERPRISE_USER_FIELDS = ('first_name', 'last_name', 'username', 'email', 'contractor',)
 SOCIAL_AUTH_GITHUB_KEY = get_secret('SOCIAL_AUTH_GITHUB_KEY')

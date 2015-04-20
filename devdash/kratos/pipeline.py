@@ -17,7 +17,7 @@ def register_kratos(request, response, user, **kwargs):
                 "username": user.username,
                 "contractor": user.contractor,
             },
-            "roles": ["gh|user"],
+            "roles": ["gh|user", "kratos|enabled"],
             "rsrcs": {
                 "gh": {
                     "username": social_auth['username'],
@@ -37,6 +37,10 @@ def register_kratos(request, response, user, **kwargs):
         if user.contractor != kratos_data.get('data', {}).get('contractor') or \
            user.username != kratos_data.get('data', {}).get('username'):
             resp = kratos.users._(kratos_id).data.put(data={'contractor': user.contractor, 'username': user.username})
+            print resp, resp.text
+
+        if 'kratos|enabled' not in kratos_data.get('roles', []):
+            resp = kratos.users._(kratos_id).put()
             print resp, resp.text
 
         if 'gh|user' not in kratos_data.get('roles', []):
