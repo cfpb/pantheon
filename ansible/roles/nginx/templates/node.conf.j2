@@ -23,7 +23,7 @@ server {
         {% if is_virtualbox %}
         sendfile off;
         {% endif %}
-        alias {{ dash_dir }}/dist;
+        alias {{ dash_dir }}/{{ dash_static_dir|default('dist') }};
     }
 
     location /static {
