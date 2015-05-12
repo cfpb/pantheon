@@ -75,4 +75,7 @@
   service: name=couchdb enabled=yes state=started
 
 - name: upgrade any design documents
-  shell: icake sync_design_docs chdir={{ kratos_dir }}
+  shell: icake sync_design_docs chdir={{ item }}
+  with_items:
+    - "{{ kratos_dir }}"
+    - "{{ moirai_dir }}"
