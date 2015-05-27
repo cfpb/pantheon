@@ -7,4 +7,10 @@
 - name: ensure kratos is installed and up-to-date
   git: repo=https://github.com/cfpb/kratos.git dest={{ kratos_dir }} force=yes
 
+- name: ensure moirai is installed and up-to-date
+  git: repo=https://github.com/cfpb/moirai.git dest={{ moirai_dir }} force=yes
+
+- name: ensure dash is installed and up-to-date
+  git: repo=https://github.com/cfpb/dash.git dest={{ dash_dir }} force=yes
+
 # todo handle migrations

@@ -1,0 +1,4 @@
+repositories:
+  - https://github.com/cfpb/dash.git
+  - https://github.com/cfpb/kratos.git
+  - https://github.com/cfpb/moirai.git

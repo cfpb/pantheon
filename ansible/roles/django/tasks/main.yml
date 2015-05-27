@@ -18,6 +18,9 @@
 - name: Install python packages
   pip: requirements={{ root_dir }}/devdash/requirements.txt executable=pip2.7
 
+- name: template settings_secret.py
+  template: src=settings_secret.py.j2 dest={{ root_dir }}/devdash/devdash/settings_secret.py
+
 - name: migrate db
   shell: "{{ root_dir }}/devdash/manage.py migrate"
   register: migrate_result

@@ -3,7 +3,7 @@ kratos_dir: /opt/kratos
 moirai_dir: /opt/moirai
 dash_dir: /opt/dash
 dash_static_dir: src
-couch_listen_address: 0.0.0.0
+couch_listen_address: 127.0.0.1
 is_virtualbox: yes
 kratos_web_cmd: icake runtestserver
 moirai_web_cmd: icake runtestserver
