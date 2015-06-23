@@ -24,6 +24,12 @@
 - name: create couch user
   user: name=couchdb createhome=no
 
+- name: ensure couchdb data directory exists
+  file: path={{ data_dir }}/couchdb owner=couchdb state=directory
+
+- name: ensure couchdb log directory exists
+  file: path=/var/log/couchdb owner=couchdb state=directory
+
 - name: get couchdb tar
   get_url: url=http://download.nextag.com/apache/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz dest={{ root_dir }}/couchdb.tar.gz
 

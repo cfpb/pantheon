@@ -21,6 +21,12 @@
 - name: template settings_secret.py
   template: src=settings_secret.py.j2 dest={{ root_dir }}/devdash/devdash/settings_secret.py
 
+- name: ensure data directory exists
+  file: path={{ data_dir }} state=directory
+
+- name: ensure django data directory exists
+  file: path={{ data_dir }}/django owner={{ web_user }} state=directory
+
 - name: migrate db
   shell: "{{ root_dir }}/devdash/manage.py migrate"
   register: migrate_result
