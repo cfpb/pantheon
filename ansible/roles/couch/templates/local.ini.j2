@@ -8,9 +8,11 @@
 
 [couchdb]
 ;max_document_size = 4294967296 ; bytes
+database_dir = {{ data_dir }}/couchdb
+view_index_dir = {{ data_dir }}/couchdb
 
 [httpd]
-bind_address={{ couch_listen_address }}
+bind_address=127.0.0.1
 ;port = 5984
 ;bind_address = 127.0.0.1
 ; Options for the MochiWeb HTTP server.
@@ -43,6 +45,7 @@ bind_address={{ couch_listen_address }}
 public_fields = username,rsrcs,type,name,audit,roles
 
 [log]
+file = /var/log/couchdb/couch.log
 ;level = debug
 
 [log_level_by_module]

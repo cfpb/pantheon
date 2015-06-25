@@ -2,15 +2,11 @@
 ##########
 *.pyc
 /devdash/devdash/settings_secret.py
+/data
 
 # Vagrant #
 ###########
 .vagrant
-
-# Ansible #
-###########
-/ansible/production_inventory
-/ansible/group_vars/production.yml
 
 # CouchDB #
 ###########

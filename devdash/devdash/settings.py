@@ -49,6 +49,7 @@ SECRET_KEY = get_secret('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -152,13 +153,16 @@ WSGI_APPLICATION = 'devdash.wsgi.application'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'frontend', 'dest', 'static'),
 )
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+
+DATA_DIR = get_secret('DATA_DIR', BASE_DIR)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(DATA_DIR, 'db.sqlite3'),
     }
 }
 KRATOS_URL = 'http://localhost/kratos'

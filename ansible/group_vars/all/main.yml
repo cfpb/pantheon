@@ -1,0 +1,5 @@
+repos_dir: /opt/pantheon-repos
+kratos_dir: "{{ repos_dir }}/kratos"
+moirai_dir: "{{ repos_dir }}/moirai"
+dash_dir: "{{ repos_dir }}/dash"
+data_dir: /data
