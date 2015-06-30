@@ -25,9 +25,10 @@
   file: path={{ data_dir }} state=directory
 
 - name: ensure django data directory exists
-  file: path={{ data_dir }}/django owner={{ web_user }} state=directory
+  file: path={{ data_dir }}/django owner={{ web_user }} group={{ web_user }} state=directory
 
 - name: migrate db
   shell: "{{ root_dir }}/devdash/manage.py migrate"
+  sudo_user: "{{ web_user }}"
   register: migrate_result
   changed_when: "'No migrations to apply.' not in migrate_result.stdout"
