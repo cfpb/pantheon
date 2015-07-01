@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
     ansible.groups = {
       "vagrant" => ["default"]
     }
-    ansible.vault_password_file = "../pantheon-private/get_vagrant_vault_password"
+    ansible.vault_password_file = "../pantheon-private/ansible/get_vagrant_vault_password"
   end
 
   config.vm.provider "virtualbox" do |v|
