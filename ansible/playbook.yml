@@ -1,4 +1,5 @@
 - hosts:
+    - test
     - production
   gather_facts: no
   roles:
@@ -6,6 +7,7 @@
       sudo: yes
 - hosts:
     - vagrant
+    - test
     - production
   gather_facts: no
   vars:
