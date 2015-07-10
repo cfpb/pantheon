@@ -17,6 +17,10 @@ Vagrant.configure("2") do |config|
 
   # shared folders
   config.vm.synced_folder "../pantheon-repos", "/opt/pantheon-repos" 
+
+  # Run a local script to ensure unitybox is available for ansible
+  # provisioning later
+  system('./unitybox-bootstrap.sh')
   
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ansible/playbook.yml"
