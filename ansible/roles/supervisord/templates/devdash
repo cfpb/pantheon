@@ -1,5 +1,5 @@
 [program:devdash]
-directory={{ root_dir }}/devdash
+directory={{ pantheon_dir }}/devdash
 command= {{ devdash_cmd }}
 user={{ web_user }}
 autostart=true

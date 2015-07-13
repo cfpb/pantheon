@@ -30,7 +30,7 @@ server {
         {% if is_virtualbox %}
         sendfile off;
         {% endif %}
-        alias {{ root_dir }}/devdash/static;
+        alias {{ pantheon_dir }}/devdash/static;
     }
 
     location / {

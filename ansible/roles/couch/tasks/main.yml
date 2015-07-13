@@ -31,10 +31,10 @@
   file: path=/var/log/couchdb owner=couchdb state=directory
 
 - name: get couchdb tar
-  get_url: url=http://download.nextag.com/apache/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz dest={{ root_dir }}/couchdb.tar.gz
+  get_url: url=http://download.nextag.com/apache/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz dest={{ pantheon_dir }}/couchdb.tar.gz
 
 - name: unzip couchdb
-  unarchive: src={{ root_dir }}/couchdb.tar.gz dest=/usr/local/src copy=no owner=couchdb
+  unarchive: src={{ pantheon_dir }}/couchdb.tar.gz dest=/usr/local/src copy=no owner=couchdb
 
   # For some reason owner=couchdb doesn't work above, assigns UID=1000 instead of the couchdb user
 - name: change ownership of couchdb source
