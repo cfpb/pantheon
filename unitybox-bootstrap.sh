@@ -8,7 +8,7 @@
 # Clone the unitybox repo if it doesn't exist
 if [ ! -d "../unitybox" ]; then
     echo "\033[1m Installing unitybox...\033[0m"
-    git clone https://github.com/Ooblioob/Unitybox.git ../unitybox
+    git clone https://github.com/Ooblioob/unitybox.git ../unitybox
 fi
 
 cd ../unitybox
