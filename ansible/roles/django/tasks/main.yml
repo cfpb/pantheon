@@ -31,6 +31,8 @@
 - name: ensure data directory exists
   file: path={{ data_dir }} state=directory
 
+- name: create web user
+  user: name={{ web_user }} system=yes createhome=no
 
 - name: ensure django data directory exists
   file: path={{ data_dir }}/django owner={{ web_user }} group={{ web_user }} state=directory
