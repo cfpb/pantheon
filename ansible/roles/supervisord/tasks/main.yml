@@ -28,5 +28,4 @@
   ignore_errors: yes
 
 - name: start supervised progs
-  supervisorctl: name={{ item }} state=restarted
-  with_items: supervisord_cmds
+  supervisorctl: name=all state=restarted

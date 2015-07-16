@@ -20,7 +20,7 @@
     - {name: 'forever', version: '0.13.0'}
 
 - name: rebuild kratos binaries
-  shell: npm rebuild chdir={{ kratos_dir }}
+  npm: production=yes path={{ kratos_dir }}
 
 - name: template kratos config_secret.py
   template: src=kratos_config_secret.js.j2 dest={{ kratos_dir }}/lib/config_secret.js
