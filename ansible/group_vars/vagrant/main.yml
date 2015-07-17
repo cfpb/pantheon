@@ -1,9 +1,8 @@
-root_dir: /vagrant
 dash_static_dir: src
 is_virtualbox: yes
 kratos_web_cmd: icake runtestserver
 moirai_web_cmd: icake runtestserver
-devdash_cmd: '{{ root_dir }}/devdash/manage.py runserver'
+devdash_cmd: '{{ pantheon_dir }}/devdash/manage.py runserver'
 supervisord_cmds:
   - devdash
   - kratos_web

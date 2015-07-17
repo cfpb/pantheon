@@ -1,4 +1,6 @@
-repos_dir: /opt/pantheon-repos
+project_dir: /opt
+pantheon_dir: "{{ project_dir }}/pantheon"
+repos_dir: "{{ project_dir }}/pantheon-repos"
 kratos_dir: "{{ repos_dir }}/kratos"
 moirai_dir: "{{ repos_dir }}/moirai"
 dash_dir: "{{ repos_dir }}/dash"

@@ -1,16 +1,19 @@
 - name: ensure git is on the machine
   yum: name=git
 
-- name: ensure the repo is up-to-date
-  git: repo=https://github.com/cfpb/devdash.git dest={{ root_dir }} force=yes
+- name: clone pantheon repo
+  clone_repos: 
+    urls: 
+      - "{{ project_repository }}"
+    processes: 1
+    install_dir: "{{ project_dir }}"
+    ensure_pinned: "{{ pin_versions }}"
 
-- name: ensure kratos is installed and up-to-date
-  git: repo=https://github.com/cfpb/kratos.git dest={{ kratos_dir }} force=yes
-
-- name: ensure moirai is installed and up-to-date
-  git: repo=https://github.com/cfpb/moirai.git dest={{ moirai_dir }} force=yes
-
-- name: ensure dash is installed and up-to-date
-  git: repo=https://github.com/cfpb/dash.git dest={{ dash_dir }} force=yes
+- name: clone dependent sub-repos
+  clone_repos: 
+    urls: "{{ repositories }}"
+    processes: 5
+    install_dir: "{{ repos_dir }}"
+    ensure_pinned: "{{ pin_versions }}"
 
 # todo handle migrations

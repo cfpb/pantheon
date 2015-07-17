@@ -1,11 +1,8 @@
-- name: create web user
-  user: name={{ web_user }} system=yes createhome=no
-
 - name: chown web code to web user
   file: path={{ item }} state=directory owner={{ web_user }} recurse=yes
   with_items:
     - "{{ dash_dir }}/{{ dash_static_dir }}"
-    - "{{ root_dir }}/devdash"
+    - "{{ pantheon_dir }}/devdash"
 
 - name: install supervisor
   pip: name=supervisor
@@ -31,5 +28,4 @@
   ignore_errors: yes
 
 - name: start supervised progs
-  supervisorctl: name={{ item }} state=restarted
-  with_items: supervisord_cmds
+  supervisorctl: name=all state=restarted
