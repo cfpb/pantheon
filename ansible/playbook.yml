@@ -1,6 +1,6 @@
 - hosts:
     - test
-    - production
+    - prod
   gather_facts: no
   pre_tasks:
     - name: set umask to 022 so we can deploy
@@ -15,7 +15,7 @@
 - hosts:
     - vagrant
     - test
-    - production
+    - prod
   gather_facts: no
   vars:
     kratos_port: 5000
@@ -34,7 +34,7 @@
       sudo: yes
 - hosts:
     - test
-    - production
+    - prod
   gather_facts: no
   post_tasks:
     - name: set umask to 077 for safety

@@ -38,6 +38,6 @@
   file: path={{ data_dir }}/django owner={{ web_user }} group={{ web_user }} state=directory
 
 - name: migrate db
-  shell: "{{ pantheon_dir }}/devdash/manage.py migrate"
+  shell: "su -l {{ web_user }} -c '{{ pantheon_dir }}/devdash/manage.py migrate'"
   register: migrate_result
   changed_when: "'No migrations to apply.' not in migrate_result.stdout"
