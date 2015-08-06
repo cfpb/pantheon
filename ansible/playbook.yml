@@ -1,4 +1,5 @@
 - hosts:
+    - dev
     - test
     - prod
   gather_facts: no
@@ -14,6 +15,7 @@
       sudo: yes
 - hosts:
     - vagrant
+    - dev
     - test
     - prod
   gather_facts: no
@@ -33,6 +35,7 @@
     - role: supervisord
       sudo: yes
 - hosts:
+    - dev
     - test
     - prod
   gather_facts: no
