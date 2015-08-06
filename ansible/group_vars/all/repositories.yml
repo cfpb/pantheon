@@ -1,5 +1,5 @@
 repositories:
-  - https://github.com/cfpb/dash.git@0.2.3
+  - https://github.com/cfpb/dash.git@0.2.4
   - https://github.com/cfpb/kratos.git@0.2.2
   - https://github.com/cfpb/moirai.git@0.1.1
 unitybox_repository: https://github.com/cfpb/unitybox.git@1.0.1
