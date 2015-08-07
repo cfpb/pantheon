@@ -18,4 +18,6 @@ def enterprise_details(request, response, backend, details, is_new, **kwargs):
         'email': details['email'],
         'location': details['location'],
     }
-    ghe.user.patch(data=updated_user_data)
+    resp = ghe.user.patch(data=updated_user_data)
+    if resp.status_code >= 400:
+        raise Exception(resp.text)
